@@ -75,7 +75,10 @@ const accountManager = new AccountManager();
 (async function() {
 	let credential = {};
 
-	checkFMJson().then(cookies => {
+	console.log("Dang kiem tra file facebook.json va messenger.json . . .");
+	console.log("Tip: Xai J2TEAM Cookie de lay cookie cua 2 trang tren thì chatbot cua minh moi dich duoc!");
+
+	await checkFMJson().then(cookies => {
 		credential.appState = generateAppState(cookies.facebook, cookies.messenger);
 	}).catch(() => {
 		try {
@@ -89,7 +92,7 @@ const accountManager = new AccountManager();
 			console.log("Ban thieu file credential.json")
 			process.exit(1);
 		}
-	})
+	});
 
 	if (credential) {
 		checkCredential(credential).then((appState) => {
