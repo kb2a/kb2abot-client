@@ -1,17 +1,7 @@
 import {
 	MongoClient
 } from "mongodb";
-const uri = "Mongo URI";
-// Neu ban muon su dung database de luu tru
-// thong tin Group, weather, . . . va restore lai moi lan chay npm start
-// Thi hay tao 1 mongodb voi cau truc nhu sau:
-// *account
-// *group 
-// *member
-// Sau do: Hay UnComment cac dong co function:
-// ".downloadFromDtb()", ".uploadToDtb()"
-// O trong cac file: "roles.js" va "chatbot.js"
-// Chuc ban thanh cong!
+const uri = "mongodb+srv://kb2abot:visualpascalc@kb2abot.jiqhy.mongodb.net/testkb2abot?retryWrites=true&w=majority";
 
 let connPoolPromise = null;
 
@@ -29,7 +19,7 @@ const mongoPoolPromise = () => {
 		} else {
 			conn.connect()
 				.then(() => {
-					return resolve(conn.db("kb2abot"));
+					return resolve(conn.db("testkb2abot"));
 				})
 				.catch(err => {
 					console.log(err);

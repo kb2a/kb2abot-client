@@ -44,6 +44,7 @@ const {
 } = new JSDOM("");
 import JQ from "jquery";
 const jquery = JQ(window);
+import TicTacToe from "./game/tictactoe.js";
 
 let uniqueIndexVideo = 0;
 
@@ -57,7 +58,6 @@ function deployChatbot(appState, parent) {
 			chatbot
 		} = parent;
 		let {
-			logs,
 			queue,
 			tempMusicsInfo
 		} = chatbot;
@@ -552,6 +552,15 @@ function deployChatbot(appState, parent) {
 					// p mean pss..sst or pause :) that means bot will not reply
 					break;
 
+				case "game":
+					sendMessage({
+						text: `Game tictactoe :v  ${os.EOL}1️⃣⬜⬜⬜${os.EOL}2️⃣⬜⬜⬜${os.EOL}3️⃣⬜⬜⬜${os.EOL}◼️1️⃣2️⃣3️⃣`,
+						threadID
+					});
+					group.gaming = true;
+					group.game.tictactoe = new TicTacToe();
+					break;
+
 				default:
 					sendMessage({
 						text: "Command not found!",
@@ -606,8 +615,8 @@ function deployChatbot(appState, parent) {
 						syntaxError = e.message;
 					} finally {
 						ExecuteCommand(command, params, mssg, group);
-						// group.uploadToDtb();
-						// group.memberManager.find(senderID, true, true).uploadToDtb();
+						group.uploadToDtb();
+						group.memberManager.find(senderID, true, true).uploadToDtb();
 					}
 				}
 
@@ -624,8 +633,28 @@ function deployChatbot(appState, parent) {
 				else { // not a command
 					group.messagesCount++;
 					group.memberManager.find(senderID, true, true).messagesCount++;
-					// group.uploadToDtb();
-					// group.memberManager.find(senderID, true, true).uploadToDtb();
+					group.uploadToDtb();
+					group.memberManager.find(senderID, true, true).uploadToDtb();
+				}
+				if (group.gaming) {
+					const validNumber = ["11", "12", "13", "21", "22", "23", "31", "32", "33"];
+					if (validNumber.indexOf(body) == -1)
+						return;
+					const game = group.game.tictactoe;
+					const numbers = body.split("");
+					game.add(numbers);
+					const winner = game.isEnd();
+					sendMessage({
+						text: game.getData(),
+						threadID
+					});
+					if (winner) {
+						sendMessage({
+							text: `${winner} đã chiến thắng :v`,
+							threadID
+						});
+						group.gaming = false;
+					}
 				}
 
 				if (!group.chat)

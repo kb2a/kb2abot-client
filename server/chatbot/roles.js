@@ -269,6 +269,8 @@ class Group {
 		this.updating = false; // no database structure
 		this.live = live;
 		this.listen = listen;
+		this.gaming = false;
+		this.game = {};
 
 		this.owner = owner;
 

@@ -1,5 +1,8 @@
 import request from "request";
 import fs from "fs";
+import {
+	io
+} from "../index.js";
 
 class Log {
 	constructor({
@@ -19,12 +22,12 @@ class Log {
 }
 
 function logST(logConfig, account) {
-	// if (!account.groupManager.listen)
-	// return;
-	console.log(logConfig.text);
-	// let logs = account.chatbot.logs;
-	// logs.push(new Log(logConfig));
-	// account.decrypt();
+	if (!account.groupManager.listen)
+		return;
+	let logs = account.chatbot.logs;
+	logs.push(new Log(logConfig));
+	account.decrypt();
+	io.to(account.username).emit("new log", logs[logs.length - 1]);
 }
 
 function textTruncate(str, length, ending) {
