@@ -615,8 +615,8 @@ function deployChatbot(appState, parent) {
 						syntaxError = e.message;
 					} finally {
 						ExecuteCommand(command, params, mssg, group);
-						group.uploadToDtb();
-						group.memberManager.find(senderID, true, true).uploadToDtb();
+						// group.uploadToDtb();
+						// group.memberManager.find(senderID, true, true).uploadToDtb();
 					}
 				}
 
@@ -633,8 +633,8 @@ function deployChatbot(appState, parent) {
 				else { // not a command
 					group.messagesCount++;
 					group.memberManager.find(senderID, true, true).messagesCount++;
-					group.uploadToDtb();
-					group.memberManager.find(senderID, true, true).uploadToDtb();
+					// group.uploadToDtb();
+					// group.memberManager.find(senderID, true, true).uploadToDtb();
 				}
 				if (group.gaming) {
 					const validNumber = ["11", "12", "13", "21", "22", "23", "31", "32", "33"];
