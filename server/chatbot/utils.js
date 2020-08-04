@@ -27,7 +27,7 @@ function logST(logConfig, account) {
 	let logs = account.chatbot.logs;
 	logs.push(new Log(logConfig));
 	account.decrypt();
-	io.to(account.username).emit("new log", logs[logs.length - 1]);
+	// io.to(account.username).emit("new log", logs[logs.length - 1]);
 }
 
 function textTruncate(str, length, ending) {
