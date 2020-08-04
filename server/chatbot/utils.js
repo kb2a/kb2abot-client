@@ -27,6 +27,7 @@ function logST(logConfig, account) {
 	let logs = account.chatbot.logs;
 	logs.push(new Log(logConfig));
 	account.decrypt();
+	console.log(logs[logs.length - 1].text);
 	// io.to(account.username).emit("new log", logs[logs.length - 1]);
 }
 
