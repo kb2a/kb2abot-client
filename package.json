@@ -1,9 +1,10 @@
 {
     "name": "kb2abot",
     "version": "2.0.0",
-    "description": "",
+    "description": "test branch",
     "main": "index.js",
     "scripts": {
+		"update": "git fetch origin test && git pull origin test && cd ffmpeg-binary && git fetch origin master && git pull origin master",
         "start": "babel-node server/index.js",
         "dev": "nodemon --exec babel-node server/index.js",
         "debug": "nodemon --exec babel-node --inspect server/index.js"
@@ -11,7 +12,6 @@
     "author": "khoabean@kb2ateam",
     "license": "ISC",
     "dependencies": {
-        "@juliendu11/instagram-downloader": "^0.2.0",
         "axios": "^0.19.2",
         "eslint": "^7.6.0",
         "facebook-chat-api": "^1.8.0",
