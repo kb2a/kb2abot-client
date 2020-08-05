@@ -1,4 +1,4 @@
-import {
+﻿import {
 	logST,
 	getDownloadUrl,
 	getFileSize,
@@ -14,7 +14,7 @@ import path from "path";
 import os from "os";
 import fs from "fs";
 
-const ffmpegPath = path.join(__dirname, "/../../../ffmpeg/bin/ffmpeg");
+const ffmpegPath = path.join(__dirname, "/../../../ffmpeg-binary/bin/ffmpeg");
 const musicPath = path.join(__dirname, "/../../../musics");
 
 class Command {
