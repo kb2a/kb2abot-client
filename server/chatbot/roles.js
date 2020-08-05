@@ -31,7 +31,6 @@ class Manager {
 }
 
 class AccountManager extends Manager {
-	// eslint-disable-next-line no-useless-constructor
 	constructor() {
 		super();
 	}
@@ -97,7 +96,7 @@ class Account {
 		secretKey,
 		appState,
 		encrypted = false
-	}) {
+	} = {}) {
 		this.dateCreated = dateCreated;
 		this.username = username;
 		this.secretKey = secretKey;
@@ -246,6 +245,12 @@ class GroupManager extends Manager {
 			});
 		});
 	}
+
+	downloadAllFromFacebook(api) {
+		for (const group of this.items) {
+			group.downloadFromFacebook(api);
+		}
+	}
 }
 
 class Group {
@@ -280,20 +285,25 @@ class Group {
 		// this.memberManager.downloadFromDtb().then(() => {});
 	}
 
-	getUserData(api, userID) {
-		return new Promise(resolve => {
+	async downloadFromFacebook(api) {
+		const users = await new Promise(resolve => {
+			api.getThreadInfo(this.id, (err, arr) => {
+				resolve(arr.participantIDs);
+			});
+		});
+
+		for (const userID of users) {
+			let member = this.memberManager.find(userID, true, true);
 			api.getUserInfo(userID, (error, ret) => {
 				if (error) throw error;
 				for (let i in ret) {
 					if (i == userID) {
-						return resolve(ret[userID]);
+						return Object.assign(member, ret[i]);
 					}
 				}
-				return resolve({
-					name: "Unknown"
-				});
 			});
-		});
+		}
+
 	}
 
 	sortRank(dependent, growing) {

@@ -1,3 +1,4 @@
+import minimist from "minimist";
 import request from "request";
 import fs from "fs";
 import {
@@ -27,8 +28,8 @@ function logST(logConfig, account) {
 	let logs = account.chatbot.logs;
 	logs.push(new Log(logConfig));
 	account.decrypt();
-	console.log(logs[logs.length - 1].text);
 	// io.to(account.username).emit("new log", logs[logs.length - 1]);
+	console.log(logs[logs.length - 1].text);
 }
 
 function textTruncate(str, length, ending) {
@@ -55,37 +56,6 @@ async function getDownloadUrl(id) {
 			}
 		});
 	});
-}
-
-function addMusicInfo(data, musicsInfo) {
-	let {
-		id,
-		title,
-		artists_names
-	} = data;
-	let index = musicsInfo.findIndex(e => e.id == id);
-
-	if (index == -1) {
-		musicsInfo.push({
-			id,
-			title,
-			artists_names
-		});
-	} else {
-		Object.assign(musicsInfo[index], {
-			id,
-			title,
-			artists_names
-		});
-	}
-}
-
-function getMusicInfo(id, musicsInfo) {
-	let index = musicsInfo.findIndex(e => e.id == id);
-	if (index != -1)
-		return musicsInfo[index];
-	else
-		return null;
 }
 
 function getFileSize(path) {
@@ -135,15 +105,35 @@ function generateAppState(facebookCookie, messengerCookie) {
 	return appState;
 }
 
+function round(number, amount) {
+	return parseFloat(Number(number).toFixed(amount));
+}
+
+function parseArg(str, specialChar) {
+	const quotes = ["\"", "'", "`"];
+	for (let quote of quotes) {
+		let tmp = str.split(quote);
+		for (let i = 1; i < tmp.length; i += 2) {
+			str = str.replace(`${quote}${tmp[i]}`, `${tmp[i].replace(/ /g, specialChar)}`);
+			str = str.replace(quote, "");
+		}
+	}
+	const output = [];
+	str.split(" ").forEach(word => {
+		output.push(word.replace(new RegExp(specialChar, "g"), " "));
+	});
+	return minimist(output);
+}
+
 export {
 	logST,
 	textTruncate,
 	getDownloadUrl,
-	addMusicInfo,
-	getMusicInfo,
 	getFileSize,
 	NumbersToWords,
 	addComma,
 	removeSpecialChar,
-	generateAppState
+	generateAppState,
+	round,
+	parseArg
 };
