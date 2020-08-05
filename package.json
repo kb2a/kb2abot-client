@@ -4,7 +4,7 @@
     "description": "Auto Replying Messages",
     "main": "index.js",
     "scripts": {
-        "update": "git fetch origin test & git reset --hard origin/test & cd ffmpeg-binary & git fetch origin master & git reset --hard origin/master",
+        "update": "git fetch origin master & git reset --hard origin/master & cd ffmpeg-binary & git fetch origin master & git reset --hard origin/master",
         "setup": "git clone https://github.com/MrKhoaBean/ffmpeg-binary & npm run update & npm install",
         "start": "babel-node server",
         "dev": "nodemon --exec babel-node server",
