@@ -9,11 +9,21 @@ This is simply a bot that automatically replies to messages, go along with inter
 
 You need to install the following software to use this.
 * [NodeJs](https://nodejs.org/en/)
+* [Git](https://git-scm.com/downloads)
 
 ### Installing
-Open CLI, type these words:
+Open CLI, type these words:<br>
+```
+npm run setup
+```
 ```
 npm install
+```
+
+### Updating
+Open CLI, type these words:
+```
+npm run update
 ```
 
 ## Deployment
@@ -25,34 +35,6 @@ There are two ways of this:<br>
 ```
 npm start
 ```
-
-## Commands
-* /lang is used to change the language of the group, default is English, reply speed will be slower if the new language is not English.<br>
-Ex: /lang vi<br>
-The above command is for converting conversation to Vietnamese language.<br>
-You can see the [abbreviations of the languages](http://www.lingoes.net/en/translator/langcode.htm) here.
-* /status[on|off|toggle] is used to turn chatbot on / off, the default is false because it can be a annoying thing for some groups.
-* /emote [on|off|toggle] is to enable / disable emoji for chatbot 😊 😎 😠
-* /help is for displaying instructions, you can write it by yourself if you star this repository :v
-* /add [userID] is for adding a member to group.<br>
-You can get the id by facebook link here http://lookup-id.com/
-* /delete [userID] is for deleting a member in group.
-* /mute [userID] [seconds] [reason] is for muting a member in group for [seconds] seconds.
-* /weather [location] is used to forecast weather by location.<br>
-You can see the locations in Vietnam here: https://www.back4app.com/database/back4app/list-of-cities-in-vietnam/dataset-api
-* /music [search|play]<br>
-/music search [name of the song]: Search the song<br>
-/music play [id of the song]: Play the song<br>
-Note: You will know the song id at the music search result.
-* /yt [id of video] is for getting mp3 version of the youtube video.
-
-## Example
-<img src="https://i.imgur.com/cUwIYhM.png"></img>
-<img src="https://i.imgur.com/LelgKyh.png"></img>
-<img src="https://i.imgur.com/cQaxVw0.png"></img>
-<br>
-### In the CLI: <br>
-<img src="https://i.imgur.com/BtHquA5.png"></img>
 
 <br><br>
 <hr>
