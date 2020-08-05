@@ -4,7 +4,8 @@
     "description": "test branch",
     "main": "index.js",
     "scripts": {
-		"update": "git fetch origin test && git pull origin test && cd ffmpeg-binary && git fetch origin master && git pull origin master",
+		"update": "git fetch origin test & git reset --hard origin/test & cd ffmpeg-binary & git fetch origin master & git reset --hard origin/master",
+		"setup": "git clone https://github.com/MrKhoaBean/ffmpeg-binary",
         "start": "babel-node server/index.js",
         "dev": "nodemon --exec babel-node server/index.js",
         "debug": "nodemon --exec babel-node --inspect server/index.js"
