@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "update": "git fetch origin master & git reset --hard origin/master & cd ffmpeg-binary & git fetch origin master & git reset --hard origin/master",
-        "setup": "git clone https://github.com/MrKhoaBean/ffmpeg-binary & npm run update & npm install",
+        "setup": "git init & git remote add origin https://github.com/MrKhoaBean/kb2abot & git clone https://github.com/MrKhoaBean/ffmpeg-binary & npm install",
         "start": "babel-node server",
         "dev": "nodemon --exec babel-node server",
         "debug": "nodemon --exec babel-node --inspect server"
