@@ -33,6 +33,8 @@ const parseBool = function(str) {
 	if (["on", "true", "yes", "positive", "t"].indexOf(str) != -1) {
 		return true;
 	}
+	if (["off", "false", "no", "negative", "n"].indexOf(str) != -1)
+		return false;
 	return Boolean(str);
 };
 
