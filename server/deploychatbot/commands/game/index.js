@@ -1,6 +1,6 @@
-import os from "os";
+// import os from "os";
 // import TaiXiu from "./TaiXiu.js";
-import TicTacToe from "./TicTacToe.js";
+// import TicTacToe from "./TicTacToe.js";
 import Command from "../Command.js";
 
 class Game extends Command {
@@ -12,10 +12,11 @@ class Game extends Command {
 
 	execute(args, api, parent, mssg, group) {
 		super.execute(args, api, parent, mssg, group);
-		const replyMsg = `Game tictactoe :v  ${os.EOL}1️⃣⬜⬜⬜${os.EOL}2️⃣⬜⬜⬜${os.EOL}3️⃣⬜⬜⬜${os.EOL}◼️1️⃣2️⃣3️⃣`;
+		// const replyMsg = `Game tictactoe :v  ${os.EOL}1️⃣⬜⬜⬜${os.EOL}2️⃣⬜⬜⬜${os.EOL}3️⃣⬜⬜⬜${os.EOL}◼️1️⃣2️⃣3️⃣`;
+		const replyMsg = "Đã phát hiện lỗi về lệnh này nên mong bạn thông cảm :(())";
 		api.sendMessage(replyMsg, mssg.threadID);
-		group.gaming = true;
-		group.game.tictactoe = new TicTacToe();
+		// group.gaming = true;
+		// group.game.tictactoe = new TicTacToe();
 	}
 }
 
