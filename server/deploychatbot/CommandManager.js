@@ -1,4 +1,4 @@
-import * as COMMANDS from "./Commands";
+import * as COMMANDS from "./commands";
 import Manager from "../roles/Manager.js";
 
 class CommandManager extends Manager {
