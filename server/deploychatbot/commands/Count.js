@@ -9,7 +9,7 @@ import Command from "./Command.js";
 class Count extends Command {
 	constructor() {
 		super({
-			keywords: "count",
+			keywords: ["count", "dem"],
 			help: "[--global | -g] [--id=<memberID> | -i <memberID>]",
 			description: "Dùng để đếm tin nhắn của 1 cá nhân hoặc trong cả group (kể từ khi cài bot)"
 		});
