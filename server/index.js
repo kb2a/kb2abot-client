@@ -55,12 +55,6 @@ function checkFMJson() {
 	return new Promise((resolve, reject) => {
 		const cookies = [];
 
-		if (fs.existsSync(kb2abotDir)) {
-			return resolve({
-				kb2abot: JSON.parse(fs.readFileSync(kb2abotDir, "utf-8"))
-			});
-		}
-
 		if (fs.existsSync(fbDir)) {
 			cookies.push(JSON.parse(fs.readFileSync(fbDir, "utf-8")).cookies);
 		} else {
@@ -79,9 +73,16 @@ function checkFMJson() {
 				messenger: cookies[1]
 			});
 		} else {
-			console.log("Ban thieu/sai cu phap file facebook.json hoac messenger.json nen ko the tiep tuc login = cookie");
-			console.log("Chuyen sang login = email/passwrd . . .");
-			reject();
+			if (fs.existsSync(kb2abotDir)) {
+				console.log("Dang su dung cookie cu~ . . .");
+				resolve({
+					kb2abot: JSON.parse(fs.readFileSync(kb2abotDir, "utf-8"))
+				});
+			} else {
+				console.log("Ban thieu/sai cu phap file facebook.json hoac messenger.json nen ko the tiep tuc login = cookie");
+				console.log("Chuyen sang login = email/password . . .");
+				reject();
+			}
 		}
 	});
 }
@@ -92,14 +93,10 @@ const accountManager = new AccountManager();
 
 	console.log("Dang kiem tra . . .");
 	console.log("Tip 1: Xai J2TEAM Cookie de lay cookie cua 2 trang tren thì chatbot cua minh moi dich duoc!");
-	console.log("Tip 2: Neu login thanh cong roi thi ban khong can phai refresh 2 cai cookie nua, da co kb2abotcookie.json roi :)))");
+	console.log("Tip 2: Neu bi loi: Error retrieving userID. This can be caused by a lot of things . . . , co ve nhu cookie cua ban da het han");
+	console.log("Tip 3: Neu bi loi: Error Connection refused, thi ban phai refresh lai cookie (acc ban da bi checkpoint)");
 
-	await checkFMJson().then(cookies => {
-		if (!cookies.kb2abot)
-			credential.appState = generateAppState(cookies.facebook, cookies.messenger);
-		else
-			credential.appState = cookies.kb2abot;
-	}).catch(() => {
+	const cookies = await checkFMJson().catch(() => {
 		if (fs.existsSync(accDir)) {
 			parseJSON(fs.readFileSync(accDir, "utf8")).then(json => {
 				Object.assign(credential, json);
@@ -113,12 +110,18 @@ const accountManager = new AccountManager();
 			process.exit(1);
 		}
 	});
+	if (cookies.kb2abot)
+		credential.appState = cookies.kb2abot;
+	else
+		credential.appState = generateAppState(cookies.facebook, cookies.messenger);
 
 	checkCredential(credential).then((appState) => {
-		fs.unlink(fbDir, () => {
+		fs.unlink(fbDir, (err) => {
+			if (err) return;
 			console.log("Da xoa file cookie facebook");
 		});
-		fs.unlink(meDir, () => {
+		fs.unlink(meDir, (err) => {
+			if (err) return;
 			console.log("Da xoa file cookie messenger");
 		});
 		fs.writeFileSync(kb2abotDir, appState);
