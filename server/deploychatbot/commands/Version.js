@@ -11,7 +11,9 @@ import {
 class Version extends Command {
 	constructor() {
 		super({
-			keywords: ["version", "v"]
+			keywords: ["version", "v"],
+			help: "",
+			description: "Tra cứu phiên bản của chatbot"
 		});
 	}
 
