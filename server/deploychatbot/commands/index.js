@@ -8,6 +8,7 @@ import Everyone from "./Everyone.js";
 import Data from "./Data.js";
 import Game from "./game";
 import Help from "./Help.js";
+import Version from "./Version.js";
 
 export {
 	SwitchStatus,
@@ -19,5 +20,6 @@ export {
 	Everyone,
 	Data,
 	Game,
-	Help
+	Help,
+	Version
 };
