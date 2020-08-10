@@ -27,7 +27,7 @@ const getFileSize = function(path) {
 
 const musicPath = path.join(__dirname, "/../../musics");
 
-const ffmpegPath = path.join(__dirname, "/../../ffmpeg-binary/bin/ffmpeg");
+const ffmpegPath = path.join(__dirname, "/../../ffmpeg-binary/bin/ffmpeg.exe");
 
 const parseBool = function(str) {
 	if (["on", "true", "yes", "positive", "t"].indexOf(str) != -1) {

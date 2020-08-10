@@ -37,7 +37,6 @@ class Youtube extends Command {
 		const filename = `${uniqid()}.mp3`;
 
 		if (id) {
-			api.sendMessage(`Đang thu thập dữ liệu, vui lòng đợi . . . (${id})`, mssg.threadID);
 			const YD = new YoutubeMp3Downloader({
 				"ffmpegPath": ffmpegPath, // FFmpeg binary location
 				"outputPath": musicPath, // Output file location (default: the home directory)
@@ -88,6 +87,7 @@ class Youtube extends Command {
 					bg: "bg3"
 				}, parent);
 			});
+			api.sendMessage(`Đang thu thập dữ liệu, vui lòng đợi . . . (${id})`, mssg.threadID);
 		}
 
 		if (search) {
