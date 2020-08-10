@@ -10,6 +10,7 @@ import Game from "./game";
 import Help from "./Help.js";
 import Version from "./Version.js";
 import Bug from "./Bug.js";
+import AutoReply from "./AutoReply.js";
 
 export {
 	SwitchStatus,
@@ -23,5 +24,6 @@ export {
 	Game,
 	Help,
 	Version,
-	Bug
+	Bug,
+	AutoReply
 };

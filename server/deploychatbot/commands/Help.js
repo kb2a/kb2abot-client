@@ -17,7 +17,7 @@ class Help extends Command {
 			const tmp = command.keywords.toString().replace(/,/g, " | ") + os.EOL;
 			replyMsg += tmp;
 		}
-		replyMsg += "Nhớ thêm dấu / đằng trước và xài param --help hoặc -h để xem hướng dẫn sử dụng lệnh (vd: /rank --help | /rank -h)";
+		replyMsg += `Nhớ thêm dấu / đằng trước và xài param --help hoặc -h để xem hướng dẫn sử dụng lệnh (vd: /rank --help | /rank -h)${os.EOL}Một số lệnh đặc biệt: ${os.EOL}/switch --chat on: Mở bot autoreply lên${os.EOL}`;
 		api.sendMessage(replyMsg, mssg.threadID);
 	}
 }
