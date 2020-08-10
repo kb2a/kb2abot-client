@@ -23,7 +23,7 @@ class Group {
 		this.live = live;
 		this.listen = listen;
 		this.gaming = false;
-		this.game = {};
+		this.game = undefined;
 
 		this.owner = owner;
 

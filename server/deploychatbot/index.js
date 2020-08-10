@@ -72,18 +72,7 @@ function deployChatbot(appState, parent) {
 				// group.uploadToDtb();
 				// group.memberManager.find(senderID, true, true).uploadToDtb();
 				if (group.gaming) {
-					const validNumber = ["11", "12", "13", "21", "22", "23", "31", "32", "33"];
-					if (validNumber.indexOf(body) == -1)
-						return;
-					const game = group.game.tictactoe;
-					const numbers = body.split("");
-					game.add(numbers);
-					const winner = game.isEnd();
-					api.sendMessage(game.getData(), threadID);
-					if (winner) {
-						api.sendMessage(`${winner} đã chiến thắng :v`, threadID);
-						group.gaming = false;
-					}
+					group.game.update(body, api, parent, mssg, group);
 				} else {
 					if (group.chat) // bot autoreply is on?
 						commandManager.find("autoreply").reply(body, api, parent, mssg);

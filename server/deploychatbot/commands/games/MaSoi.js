@@ -1,6 +1,6 @@
 import os from "os";
 
-class TicTacToe {
+class MaSoi {
 	constructor({
 		bot = true
 	} = {}) {
@@ -87,4 +87,4 @@ class TicTacToe {
 	}
 }
 
-export default TicTacToe;
+export default MaSoi;

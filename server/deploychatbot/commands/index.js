@@ -6,7 +6,7 @@ import Youtube from "./Youtube.js";
 import ZingMp3 from "./ZingMp3.js";
 import Everyone from "./Everyone.js";
 import Data from "./Data.js";
-import Game from "./game";
+import Game from "./Game.js";
 import Help from "./Help.js";
 import Version from "./Version.js";
 import Bug from "./Bug.js";
