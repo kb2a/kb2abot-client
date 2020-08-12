@@ -4,7 +4,8 @@ import {
 	log
 } from "../../helper/helper.js";
 import {
-	parseValue
+	parseValue,
+	isNoParam
 } from "../../helper/helperCommand.js";
 import Command from "./Command.js";
 
@@ -37,43 +38,45 @@ class Weather extends Command {
 			}, parent);
 		}
 
-		if (!location) {
-			if (!group.location) {
-				const replyMsg = "Bạn chưa đặt vị trí mặc định cho group, hãy xài lệnh: /weather --set \"[location]\"";
+		if (isNoParam(args)) {
+			if (!location) {
+				if (!group.location) {
+					const replyMsg = "Bạn chưa đặt vị trí mặc định cho group, hãy xài lệnh: /weather --set \"[location]\"";
+					api.sendMessage(replyMsg, mssg.threadID);
+					log({
+						text: replyMsg,
+						icon: "exclamation-triangle",
+						bg: "bg3"
+					}, parent);
+					return;
+				} else {
+					location = group.location;
+				}
+			}
+			axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${encodeURI(location)}&APPID=${this.WEATHER_KEY}`).then(response => {
+				const {
+					weather,
+					main,
+					name
+				} = response.data;
+				const replyMsg = `Name: ${name}${os.EOL}Weather: ${weather[0].main}(${weather[0].description})${os.EOL}Temperature: ${Math.round(main.temp_min-273)}°C ~ ${Math.round(main.temp_max-273)}°C`;
+				api.sendMessage(replyMsg, mssg.threadID);
+				log({
+					text: replyMsg,
+					icon: "cloud-sun",
+					bg: "bg1"
+				}, parent);
+			}).catch((e) => {
+				console.log(e);
+				const replyMsg = `Không tìm thấy địa điểm nào có tên: ${location}`;
 				api.sendMessage(replyMsg, mssg.threadID);
 				log({
 					text: replyMsg,
 					icon: "exclamation-triangle",
 					bg: "bg3"
 				}, parent);
-				return;
-			} else {
-				location = group.location;
-			}
+			});
 		}
-		axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${encodeURI(location)}&APPID=${this.WEATHER_KEY}`).then(response => {
-			const {
-				weather,
-				main,
-				name
-			} = response.data;
-			const replyMsg = `Name: ${name}${os.EOL}Weather: ${weather[0].main}(${weather[0].description})${os.EOL}Temperature: ${Math.round(main.temp_min-273)}°C ~ ${Math.round(main.temp_max-273)}°C`;
-			api.sendMessage(replyMsg, mssg.threadID);
-			log({
-				text: replyMsg,
-				icon: "cloud-sun",
-				bg: "bg1"
-			}, parent);
-		}).catch((e) => {
-			console.log(e);
-			const replyMsg = `Không tìm thấy địa điểm nào có tên: ${location}`;
-			api.sendMessage(replyMsg, mssg.threadID);
-			log({
-				text: replyMsg,
-				icon: "exclamation-triangle",
-				bg: "bg3"
-			}, parent);
-		});
 	}
 }
 

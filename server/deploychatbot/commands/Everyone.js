@@ -1,4 +1,7 @@
 import Command from "./Command.js";
+import {
+	isNoParam
+} from "../../helper/helperCommand.js";
 
 class Everyone extends Command {
 	constructor() {
@@ -11,6 +14,8 @@ class Everyone extends Command {
 
 	execute(args, api, parent, mssg, group) {
 		super.execute(args, api, parent, mssg, group);
+		if (!isNoParam(args))
+			return;
 		let replyMsg = "";
 		const mentions = [];
 		for (const member of group.memberManager.items) {

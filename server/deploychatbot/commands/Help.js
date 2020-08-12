@@ -1,5 +1,8 @@
 import os from "os";
 import Command from "./Command.js";
+import {
+	isNoParam
+} from "../../helper/helperCommand.js";
 
 class Help extends Command {
 	constructor() {
@@ -12,6 +15,8 @@ class Help extends Command {
 
 	execute(args, api, parent, mssg, group, _commandManager) {
 		super.execute(args, api, parent, mssg, group);
+		if (!isNoParam(args))
+			return;
 		let replyMsg = `Danh sách các câu lệnh: ${os.EOL}`;
 		for (const command of _commandManager.items) {
 			const tmp = command.keywords.toString().replace(/,/g, " | ") + os.EOL;

@@ -4,7 +4,8 @@ import {
 import os from "os";
 import Command from "./Command.js";
 import {
-	round
+	round,
+	isNoParam
 } from "../../helper/helperCommand.js";
 
 class Version extends Command {
@@ -18,6 +19,8 @@ class Version extends Command {
 
 	execute(args, api, parent, mssg, group) {
 		super.execute(args, api, parent, mssg, group);
+		if (!isNoParam(args))
+			return;
 		const commitCount = new Promise(resolve => {
 			exec("git rev-list --count master", (err, stdout) => resolve(stdout.toString().trim()));
 		});
