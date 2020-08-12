@@ -66,6 +66,15 @@ const parseValue = function(args, validList) {
 	return undefined;
 };
 
+const isNoParam = function(args) {
+	for (const param in args) {
+		if (param) {
+			return false;
+		}
+	}
+	return true;
+};
+
 export {
 	round,
 	getDownloadUrl,
@@ -75,5 +84,6 @@ export {
 	parseBool,
 	checkError,
 	deleteFile,
-	parseValue
+	parseValue,
+	isNoParam
 };
