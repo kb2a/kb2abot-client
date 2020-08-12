@@ -56,6 +56,8 @@ class Rank extends Command {
 			let rank = group.memberManager.find(id);
 			if (rank == -1)
 				rank = "không có";
+			else
+				rank++;
 			const name = group.memberManager.find(id, true).name;
 			const replyMsg = `Rank của ${name} trong group là ${rank}!`;
 			api.sendMessage(replyMsg, mssg.threadID);
