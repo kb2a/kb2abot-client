@@ -30,13 +30,14 @@ class Werewolf extends Cluster {
 					this.poll.vote(voteID, mssg.senderID);
 					const voteItem = this.poll.find(voteID, true);
 					if (voteItem.getAmount() >= masterGame.playerManager.getPlayersByRole("Werewolf", true).length) {
-						api.sendMessage(`Vì tất cả mọi người đều bầu nên tối nay ${voteItem.name} sẽ bị chết!`, mssg.threadID);
+						api.sendMessage(`Vì tất cả mọi người đều đã bỏ phiếu nên tối nay ${voteItem.name} sẽ bị chết!`, mssg.threadID);
 						this.commit(voteID);
 					}
 				}
-				let replyMsg = `Tình trạng cuộc bầu cử: ${os.EOL}`;
+				let replyMsg = `Tình trạng cuộc bỏ phiếu: ${os.EOL}`;
+				let indexPlayer = 1;
 				for (const item of this.poll.items) {
-					replyMsg += `${item.name} - ${item.getAmount()}${os.EOL}`;
+					replyMsg += `${symbols[indexPlayer++]}. ${item.name} - ${item.getAmount()}${os.EOL}`;
 				}
 				api.sendMessage(replyMsg, mssg.threadID);
 			}

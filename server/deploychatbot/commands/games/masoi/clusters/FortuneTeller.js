@@ -26,7 +26,6 @@ class FortuneTeller extends Cluster {
 				}
 			}
 		}
-		symbols
 	}
 
 	doObligation(api, game, timeout) {

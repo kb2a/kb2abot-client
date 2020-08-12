@@ -270,11 +270,11 @@ class MaSoi extends Game {
 				const debate = () => {
 					return new Promise(resolve => {
 						setTimeout(() => {
-							api.sendMessage("30 giây tranh luận bắt đầu ._.", mssg.threadID);
+							api.sendMessage("1 phút tranh luận bắt đầu ._.", mssg.threadID);
 						}, 1000);
 						setTimeout(() => {
 							resolve();
-						}, 30000);
+						}, 60000);
 					});
 				};
 				const voteKill = () => {
@@ -307,7 +307,7 @@ class MaSoi extends Game {
 								api.sendMessage("Sẽ không ai bị giết trong hôm nay :/", mssg.threadID);
 							}
 							resolve();
-						}, 30000 + 10000);
+						}, 30000);
 					});
 				};
 
@@ -352,7 +352,7 @@ class MaSoi extends Game {
 						this.pollVoteKill.vote(voteID, mssg.senderID);
 					}
 
-					let replyMsg = `20 giây để vote treo cổ bắt đầu${os.EOL}${symbols[0]}. Bỏ vote tất cả${os.EOL}`;
+					let replyMsg = `30 giây để vote treo cổ bắt đầu${os.EOL}${symbols[0]}. Bỏ vote tất cả${os.EOL}`;
 					let indexPlayer = 1;
 					for (const player of this.playerManager.getAlives()) {
 						replyMsg += `${symbols[indexPlayer++]}. ${player.name} - ${this.pollVoteKill.find(player.id, true).getAmount()}${os.EOL}`;
