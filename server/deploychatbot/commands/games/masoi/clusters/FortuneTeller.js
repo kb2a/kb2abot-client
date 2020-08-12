@@ -17,7 +17,7 @@ class FortuneTeller extends Cluster {
 		if (this.isDoingObligation) {
 			body = parseInt(body);
 			if (!isNaN(body) && body >= 1 && body <= masterGame.playerManager.getAlives(true)) {
-				const player = masterGame.playerManager.items[body - 1];
+				const player = masterGame.playerManager.getAlives()[body - 1];
 				if (player.id == this.threadID) {
 					api.sendMessage("Bạn không thể tự soi chính mình được (mặc dù có thể idk :/)", this.threadID);
 				} else {

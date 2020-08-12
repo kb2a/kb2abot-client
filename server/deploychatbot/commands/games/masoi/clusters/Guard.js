@@ -18,7 +18,7 @@ class Guard extends Cluster {
 		if (this.isDoingObligation) {
 			body = parseInt(body);
 			if (!isNaN(body) && body >= 1 && body <= masterGame.playerManager.getAlives(true)) {
-				const choice = masterGame.playerManager.items[body - 1];
+				const choice = masterGame.playerManager.getAlives()[body - 1];
 				if (choice.id == this.threadID) {
 					if (!this.selfProtected) {
 						this.selfProtected = true;

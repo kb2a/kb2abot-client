@@ -206,6 +206,8 @@ class MaSoi {
 								deathManager.add(player);
 							}
 							let replyMsg = `Đêm thứ ${this.day}. . .${os.EOL}`;
+							if (GuardValue == WerewolfValue && WerewolfValue != 0)
+								replyMsg += `${this.playerManager.find(GuardValue, true).name} đã được cứu sống bởi BẢO VỆ!${os.EOL}`;
 							const deathAmount = deathManager.getLength();
 							if (deathAmount > 0) {
 								replyMsg += `Có ${deathAmount} người chết: `;
@@ -375,6 +377,11 @@ class MaSoi {
 		const winner = this.isEnd();
 		if (winner) {
 			api.sendMessage(`Phe ${winner} đã chiến thắng :)))`, mssg.threadID, (err) => {
+				let replyMsg = `Đây là các role của mọi người: ${os.EOL}`;
+				for (const player of this.playerManager.items) {
+					replyMsg += `${player.name} - ${player.role}${os.EOL}`;
+				}
+				api.sendMessage(replyMsg, mssg.threadID);
 				if (err) console.log(err);
 				api.sendMessage(`Đang dọn dẹp game . . . (vui lòng chờ ${4*this.playerManager.getPlayersByParty("Werewolf", false, true).length} giây)`, mssg.threadID);
 			});
