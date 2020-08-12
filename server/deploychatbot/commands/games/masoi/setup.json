@@ -5,10 +5,16 @@
 		"Villager": 1
 	},
 	{
+		"Guard": 1,
+		"Werewolf": 1,
+		"Hunter": 1,
+		"FortuneTeller": 1
+	},
+	{
         "FortuneTeller": 1,
         "Guard": 1,
-        "Werewolf": 2,
-        "Hunter": 1
+        "Werewolf": 1,
+        "Hunter": 2
     },
     {
         "FortuneTeller": 1,

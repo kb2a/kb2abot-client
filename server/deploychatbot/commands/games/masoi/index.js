@@ -1,5 +1,6 @@
 import os from "os";
 import fs from "fs";
+import Game from "../Game.js";
 import PlayerManager from "./PlayerManager.js";
 import Player from "./Player.js";
 import Group from "../../../../roles/Group.js";
@@ -22,8 +23,9 @@ const getValueFromRole = (values, role) => {
 	return values[index].value;
 };
 
-class MaSoi {
+class MaSoi extends Game {
 	constructor() {
+		super();
 		this.setup;
 		this.day = 0;
 		this.playerManager = new PlayerManager();
@@ -206,8 +208,8 @@ class MaSoi {
 								deathManager.add(player);
 							}
 							let replyMsg = `Đêm thứ ${this.day}. . .${os.EOL}`;
-							if (GuardValue == WerewolfValue && WerewolfValue != 0)
-								replyMsg += `${this.playerManager.find(GuardValue, true).name} đã được cứu sống bởi BẢO VỆ!${os.EOL}`;
+							// if (GuardValue == WerewolfValue && WerewolfValue != 0)
+							// 	replyMsg += `${this.playerManager.find(GuardValue, true).name} đã được cứu sống bởi BẢO VỆ!${os.EOL}`;
 							const deathAmount = deathManager.getLength();
 							if (deathAmount > 0) {
 								replyMsg += `Có ${deathAmount} người chết: `;
@@ -390,14 +392,15 @@ class MaSoi {
 	}
 
 	clear(api, group) {
+		super.clear(api, group);
 		return new Promise(resolve => {
 			const werewolves = this.playerManager.getPlayersByParty("Werewolf", false, true); // werewolves
+			if (werewolves.length == 0)
+				resolve();
 			for (let i = 0; i < werewolves.length; i++)
 				setTimeout(() => {
 					api.removeUserFromGroup(werewolves[i], this.werewolvesGroupID);
 					if (i == werewolves.length - 1) {
-						delete group.game;
-						group.gaming = false;
 						resolve();
 					}
 				}, 4000 * (i + 1));

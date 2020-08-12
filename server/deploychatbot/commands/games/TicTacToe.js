@@ -1,9 +1,11 @@
 import os from "os";
+import Game from "./Game.js";
 
 const validNumber = ["11", "12", "13", "21", "22", "23", "31", "32", "33"];
 
-class TicTacToe {
+class TicTacToe extends Game {
 	constructor() {
+		super();
 		this.table = [
 			["⬜", "⬜", "⬜"],
 			["⬜", "⬜", "⬜"],
@@ -130,6 +132,13 @@ class TicTacToe {
 		} else {
 			this.changeTurn();
 		}
+	}
+
+	clear(api, group) {
+		return new Promise(resolve => {
+			super.clear(api, group);
+			resolve();
+		});
 	}
 }
 
