@@ -20,7 +20,7 @@ class Count extends Command {
 		if (text) {
 			const member = group.memberManager.find(mssg.senderID, true);
 			api.sendMessage(`Tôi có góp ý: ${text}${os.EOL}Tin nhắn này được gửi bởi ${member.name}, id: ${member.id}`, "100007723935647");
-			api.sendMessage("Cảm ơn bạn đã góp ý!!!", mssg.threadID);
+			api.sendMessage(`Đã gửi tin nhắn báo cáo với nội dung: ${text}${os.EOL}Cảm ơn bạn đã góp ý!!!`, mssg.threadID);
 		} else {
 			api.sendMessage("Bạn thiếu param --text :| (vd: /bug --text test)", mssg.threadID);
 		}
