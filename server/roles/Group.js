@@ -6,12 +6,14 @@ class Group {
 		id,
 		owner,
 		location,
+		game,
 		language = "en",
 		chat = false,
 		emote = false,
 		messagesCount = 0,
 		live = true,
-		listen = true
+		listen = true,
+		gaming = false
 	} = {}) {
 		this.id = id;
 		this.language = language;
@@ -22,8 +24,8 @@ class Group {
 		this.updating = false; // no database structure
 		this.live = live;
 		this.listen = listen;
-		this.gaming = false;
-		this.game = undefined;
+		this.gaming = gaming;
+		this.game = game;
 
 		this.owner = owner;
 

@@ -35,11 +35,10 @@ function deployChatbot(appState, parent) {
 			let {
 				threadID,
 				senderID,
-				body,
-				isGroup
+				body
 			} = mssg;
 
-			if (!body || !isGroup || whiteListGroup.indexOf(threadID) != -1) return;
+			if (!body || whiteListGroup.indexOf(threadID) != -1) return;
 
 			body = body.trim();
 
@@ -72,7 +71,7 @@ function deployChatbot(appState, parent) {
 				// group.uploadToDtb();
 				// group.memberManager.find(senderID, true, true).uploadToDtb();
 				if (group.gaming) {
-					group.game.update(body, api, parent, mssg, group);
+					group.game.update(body, api, parent, mssg, group, groupManager);
 				} else {
 					if (group.chat) // bot autoreply is on?
 						commandManager.find("autoreply").reply(body, api, parent, mssg);

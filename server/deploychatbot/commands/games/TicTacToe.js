@@ -3,15 +3,13 @@ import os from "os";
 const validNumber = ["11", "12", "13", "21", "22", "23", "31", "32", "33"];
 
 class TicTacToe {
-	constructor({
-		bot = true
-	} = {}) {
+	constructor() {
 		this.table = [
 			["⬜", "⬜", "⬜"],
 			["⬜", "⬜", "⬜"],
 			["⬜", "⬜", "⬜"]
 		];
-		this.bot = bot;
+		// this.bot = bot;
 		this.turn = "❌";
 	}
 

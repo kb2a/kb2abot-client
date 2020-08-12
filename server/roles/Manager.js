@@ -18,7 +18,12 @@ class Manager {
 
 	delete(item) {
 		let index = this.items.indexOf(item);
-		this.items.splice(index, 1);
+		if (index != -1)
+			this.items.splice(index, 1);
+	}
+
+	clear() {
+		this.items.splice(0, this.items.length);
 	}
 }
 
