@@ -14,20 +14,21 @@ import {
 	musicPath,
 	parseValue,
 	deleteFile,
-	checkError
+	checkError,
+	parseBool
 } from "../../helper/helperCommand.js";
 
 class ZingMp3 extends Command {
 	constructor() {
 		super({
 			keywords: ["zingmp3", "zing", "z"],
-			help: "[--play=<musicID> | -p <musicID>] [--search=<musicName> | -s <musicName>]",
+			help: "[--play=<musicID> | -p <musicID>] [--search=<musicName> | -s <musicName>] [--autodelete=<boolean>]",
 			description: "Tải hoặc tìm kiếm nhạc mp3 trên ZingMp3"
 		});
 		this.MP3_SIG = "b92dd121d84c5597d770896c7a93e60f03247b50828bdf1012b5da052951c74c22f9db6072ec5b942546114dbd3a773d79d675f9e668cf1e9a31af37c9aa2efa";
 		this.MP3_KEY = "38e8643fb0dc04e8d65b99994d3dafff";
 		this.musicsInfo = [];
-		this.autoDelete = false; // you can delete the music if you want
+		this.autoDelete = true; // you can delete the music if you want
 	}
 
 	addMusicInfo(data) {
@@ -55,6 +56,7 @@ class ZingMp3 extends Command {
 
 		const search = parseValue(args, ["search", "s"]);
 		const play = parseValue(args, ["play", "p"]);
+		const autoDelete = parseValue(args, ["autodelete"]);
 
 		if (search) {
 			const song = search;
@@ -151,6 +153,15 @@ class ZingMp3 extends Command {
 					}, parent);
 				}, 100);
 			});
+		}
+		if (autoDelete) {
+			if (autoDelete === true) {
+				this.autoDelete = !this.autoDelete;
+			} else {
+				this.autoDelete = parseBool(autoDelete);
+			}
+			const replyMsg = `Đã chuyển autoDelete sang trạng thái: ${this.autoDelete}`;
+			api.sendMessage(replyMsg, mssg.threadID);
 		}
 	}
 }

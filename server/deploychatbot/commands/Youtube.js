@@ -13,7 +13,8 @@ import {
 	ffmpegPath,
 	parseValue,
 	deleteFile,
-	checkError
+	checkError,
+	parseBool
 } from "../../helper/helperCommand.js";
 import Command from "./Command.js";
 
@@ -21,10 +22,10 @@ class Youtube extends Command {
 	constructor() {
 		super({
 			keywords: ["yt", "youtube"],
-			help: "[--play=<videoID> | -p <videoID>] [--search=<videoName> | -s <videoName>]",
+			help: "[--play=<videoID> | -p <videoID>] [--search=<videoName> | -s <videoName>] [--autodelete=<boolean>]",
 			description: "Tải hoặc tìm kiếm nhạc mp3 trên youtube"
 		});
-		this.autoDelete = false;
+		this.autoDelete = true;
 	}
 
 	execute(args, api, parent, mssg, group) {
@@ -32,6 +33,7 @@ class Youtube extends Command {
 
 		const id = parseValue(args, ["play", "p"]);
 		const search = parseValue(args, ["search", "s"]);
+		const autoDelete = parseValue(args, ["autodelete"]);
 
 		const start = Date.now();
 		const filename = `${uniqid()}.mp3`;
@@ -110,6 +112,16 @@ class Youtube extends Command {
 					bg: "bg1"
 				}, parent);
 			});
+		}
+
+		if (autoDelete) {
+			if (autoDelete === true) {
+				this.autoDelete = !this.autoDelete;
+			} else {
+				this.autoDelete = parseBool(autoDelete);
+			}
+			const replyMsg = `Đã chuyển autoDelete sang trạng thái: ${this.autoDelete}`;
+			api.sendMessage(replyMsg, mssg.threadID);
 		}
 
 
