@@ -1,5 +1,9 @@
 [
 	{
+        "Werewolf": 1,
+        "Hunter": 1
+    },
+	{
 		"Guard": 1,
 		"Werewolf": 1,
 		"Villager": 1
@@ -14,7 +18,8 @@
         "FortuneTeller": 1,
         "Guard": 1,
         "Werewolf": 1,
-        "Hunter": 2
+        "Hunter": 1,
+		"Villager": 1
     },
     {
         "FortuneTeller": 1,
@@ -23,17 +28,18 @@
         "Villager": 1,
         "Hunter": 1
     },
-    {
-        "FortuneTeller": 1,
-        "Guard": 1,
-        "Werewolf": 2,
-        "Hunter": 2
-    },
 	{
         "FortuneTeller": 1,
         "Werewolf": 2,
         "Hunter": 1,
-		"Villager": 3
+		"Guard": 1,
+		"Villager": 1
+    },
+	{
+        "FortuneTeller": 2,
+        "Werewolf": 3,
+        "Hunter": 1,
+		"Guard": 1
     },
 	{
         "FortuneTeller": 1,

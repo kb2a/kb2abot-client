@@ -134,9 +134,8 @@ class TicTacToe extends Game {
 		}
 	}
 
-	clear(api, group) {
+	clear() {
 		return new Promise(resolve => {
-			super.clear(api, group);
 			resolve();
 		});
 	}

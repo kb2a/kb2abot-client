@@ -7,6 +7,7 @@
         "update": "git fetch origin master && git reset --hard origin/master && cd ffmpeg-binary && git fetch origin master && git reset --hard origin/master",
         "setup": "git init && git remote add origin https://github.com/MrKhoaBean/kb2abot && git clone https://github.com/MrKhoaBean/ffmpeg-binary && npm install",
         "start": "babel-node server",
+        "test": "babel-node test",
         "dev": "nodemon --exec babel-node server",
         "debug": "nodemon --exec babel-node --inspect server"
     },
@@ -24,6 +25,7 @@
         "package": "^1.0.1",
         "random": "^2.2.0",
         "request": "^2.88.2",
+        "translate-google": "^1.4.3",
         "uniqid": "^5.2.0",
         "vigenere": "^1.0.2",
         "youtube-mp3-downloader": "^0.7.2",
