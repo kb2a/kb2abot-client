@@ -230,7 +230,7 @@ class MaSoi extends Game {
 									id: wwID,
 									gaming: true,
 									game: new Clusters.Werewolf({
-										wwID,
+										threadID: wwID,
 										masterID: group.id
 									})
 								})
