@@ -6,6 +6,7 @@
     "scripts": {
         "update": "git fetch origin master && git reset --hard origin/master && cd ffmpeg-binary && git fetch origin master && git reset --hard origin/master",
         "setup": "git init && git remote add origin https://github.com/MrKhoaBean/kb2abot && git clone https://github.com/MrKhoaBean/ffmpeg-binary && npm install",
+		"mobile-setup": "git clone https://github.com/MrKhoaBean/ffmpeg-binary && npm install",
         "start": "babel-node server",
         "test": "babel-node test",
         "dev": "nodemon --exec babel-node server",
@@ -17,8 +18,10 @@
         "axios": "^0.19.2",
         "eslint": "^7.6.0",
         "facebook-chat-api": "^1.8.0",
+        "ffmpeg-static": "^4.2.7",
         "jquery": "^3.5.1",
         "jsdom": "^16.3.0",
+        "md5": "^2.3.0",
         "minimist": "^1.2.5",
         "mongodb": "^3.5.9",
         "os": "^0.1.1",
