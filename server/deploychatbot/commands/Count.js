@@ -1,9 +1,5 @@
-import {
-	log
-} from "../../helper/helper.js";
-import {
-	parseValue
-} from "../../helper/helperCommand.js";
+import {log} from "../../helper/helper.js";
+import {parseValue} from "../../helper/helperCommand.js";
 import Command from "./Command.js";
 
 class Count extends Command {
@@ -11,7 +7,8 @@ class Count extends Command {
 		super({
 			keywords: ["count", "dem"],
 			help: "[--global | -g] [--id=<memberID> | -i <memberID>]",
-			description: "Dùng để đếm tin nhắn của 1 cá nhân hoặc trong cả group (kể từ khi cài bot)"
+			description:
+				"Dùng để đếm tin nhắn của 1 cá nhân hoặc trong cả group (kể từ khi cài bot)"
 		});
 	}
 
@@ -23,23 +20,29 @@ class Count extends Command {
 		if (global) {
 			const replyMsg = `Tổng số tin nhắn trong group: ${group.messagesCount}`;
 			api.sendMessage(replyMsg, mssg.threadID);
-			log({
-				text: replyMsg,
-				icon: "calculator",
-				bg: "bg1"
-			}, parent);
-		}
-
-		if (id) {
-			const member = group.memberManager.find(id);
-			if (member) {
-				const replyMsg = `Tổng số tin nhắn của ${member.name}: ${member.messagesCount}`;
-				api.sendMessage(replyMsg, mssg.threadID);
-				log({
+			log(
+				{
 					text: replyMsg,
 					icon: "calculator",
 					bg: "bg1"
-				}, parent);
+				},
+				parent
+			);
+		}
+
+		if (id) {
+			const member = group.memberManager.find({id});
+			if (member) {
+				const replyMsg = `Tổng số tin nhắn của ${member.name}: ${member.messagesCount}`;
+				api.sendMessage(replyMsg, mssg.threadID);
+				log(
+					{
+						text: replyMsg,
+						icon: "calculator",
+						bg: "bg1"
+					},
+					parent
+				);
 			}
 		}
 	}

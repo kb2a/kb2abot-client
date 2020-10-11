@@ -1,7 +1,5 @@
 import Command from "./Command.js";
-import {
-	isNoParam
-} from "../../helper/helperCommand.js";
+import {hasHelpParam, parseValue} from "../../helper/helperCommand.js";
 
 class Everyone extends Command {
 	constructor() {
@@ -14,8 +12,10 @@ class Everyone extends Command {
 
 	execute(args, api, parent, mssg, group) {
 		super.execute(args, api, parent, mssg, group);
-		if (!isNoParam(args))
-			return;
+		if (hasHelpParam(args)) return;
+
+		const text = parseValue(args, ["t", "text"]);
+
 		let replyMsg = "";
 		const mentions = [];
 		for (const member of group.memberManager.items) {
@@ -27,10 +27,15 @@ class Everyone extends Command {
 				fromIndex: replyMsg.length - tag.length
 			});
 		}
-		api.sendMessage({
-			body: replyMsg,
-			mentions
-		}, mssg.threadID);
+
+		api.sendMessage(
+			{
+				body:
+					replyMsg + (typeof text != "undefined" ? ` - ${text}` : ""),
+				mentions
+			},
+			mssg.threadID
+		);
 	}
 }
 

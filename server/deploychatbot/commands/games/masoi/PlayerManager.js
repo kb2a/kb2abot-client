@@ -1,5 +1,4 @@
 import Manager from "../../../../roles/Manager.js";
-import Player from "./Player.js";
 
 class PlayerManager extends Manager {
 	constructor() {
@@ -44,42 +43,12 @@ class PlayerManager extends Manager {
 		return out;
 	}
 
-	find(id, returnPlayer = false, autoAdd = false) {
-		let index = this.items.findIndex(e => e.id == id);
-		if (index == -1 && autoAdd) {
-			this.add(new Player({
-				id
-			}), false);
-			index = this.find(id);
-		}
-
-		if (returnPlayer) {
-			return this.items[index];
-		}
-		return index;
-	}
-
-	add(player, duplicateCheck = true) {
-		if (duplicateCheck) {
-			const index = this.find(player.id);
-			if (index == -1) {
-				this.items.push(player);
-				return this.bottom();
-			}
-			return this.items[index];
-		}
-		this.items.push(player);
-		return this.bottom();
-	}
-
 	getAlives(returnAmount) {
 		const out = [];
 		for (const player of this.items) {
-			if (!player.dead)
-				out.push(player);
+			if (!player.dead) out.push(player);
 		}
-		if (returnAmount)
-			return out.length;
+		if (returnAmount) return out.length;
 		return out;
 	}
 }

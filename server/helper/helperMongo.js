@@ -1,18 +1,15 @@
-import {
-	MongoClient
-} from "mongodb";
+import {MongoClient} from "mongodb";
 const uri = "your mongoURI";
 
 let connPoolPromise = null;
 
 const mongoPoolPromise = () => {
-	if (connPoolPromise)
-		return connPoolPromise;
+	if (connPoolPromise) return connPoolPromise;
 
 	connPoolPromise = new Promise((resolve, reject) => {
 		const conn = new MongoClient(uri, {
 			useNewUrlParser: true,
-			useUnifiedTopology: true,
+			useUnifiedTopology: true
 		});
 		if (conn.isConnected()) {
 			return resolve(conn);

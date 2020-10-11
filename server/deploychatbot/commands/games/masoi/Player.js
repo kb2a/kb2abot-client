@@ -1,13 +1,7 @@
-import {
-	getParty
-} from "../../../../helper/helperMaSoi.js";
+import {getParty} from "../../../../helper/helperMaSoi.js";
 
 class Player {
-	constructor({
-		id,
-		name,
-		role
-	} = {}) {
+	constructor({id, name, role} = {}) {
 		this.id = id;
 		this.name = name;
 		this.role = role;

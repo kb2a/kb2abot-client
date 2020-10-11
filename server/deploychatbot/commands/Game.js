@@ -50,18 +50,20 @@ class Game extends Command {
 		if (suspend) {
 			if (group.game.owner != mssg.senderID) {
 				return api.sendMessage(
-					"Chỉ có chủ phòng mới có thể dọn game!",
+					"Chỉ có chủ mới có thể dọn game!",
 					mssg.threadID
 				);
 			}
 			api.sendMessage(
 				"Đang dọn dẹp game, vui lòng chờ . . .",
-				mssg.threadID
+				mssg.threadID,
+				() => {
+					group.game.clear(api, group).then(() => {
+						group.game.destroy(api, group);
+						api.sendMessage("Game died :/", mssg.threadID);
+					});
+				}
 			);
-			group.game.clear(api, group).then(() => {
-				group.game.destroy(api, group);
-				api.sendMessage("Game died :/", mssg.threadID);
-			});
 		}
 	}
 }

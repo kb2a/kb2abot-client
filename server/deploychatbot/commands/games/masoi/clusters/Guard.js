@@ -1,8 +1,6 @@
 import os from "os";
 import Cluster from "./Cluster.js";
-import {
-	symbols
-} from "../../../../../helper/helperMaSoi.js";
+import {symbols} from "../../../../../helper/helperMaSoi.js";
 
 class Guard extends Cluster {
 	constructor(config) {
@@ -14,18 +12,30 @@ class Guard extends Cluster {
 	}
 
 	update(body, api, parent, mssg, group, groupManager) {
-		const masterGame = groupManager.find(this.masterID, true).game;
+		const masterGame = groupManager.find({
+			id: this.masterID
+		}).game;
 		if (this.isDoingObligation) {
 			body = parseInt(body);
-			if (!isNaN(body) && body >= 1 && body <= masterGame.playerManager.getAlives(true)) {
+			if (
+				!isNaN(body) &&
+				body >= 1 &&
+				body <= masterGame.playerManager.getAlives(true)
+			) {
 				const choice = masterGame.playerManager.getAlives()[body - 1];
 				if (choice.id == this.threadID) {
 					if (!this.selfProtected) {
 						this.selfProtected = true;
-						api.sendMessage("Bạn đã bảo vệ chính mình", mssg.threadID);
+						api.sendMessage(
+							"Bạn đã bảo vệ chính mình",
+							mssg.threadID
+						);
 						this.commit(choice.id);
 					} else {
-						api.sendMessage("[rejected] Bạn đã bảo vệ chính mình đêm trước!", mssg.threadID);
+						api.sendMessage(
+							"[rejected] Bạn đã bảo vệ chính mình đêm trước!",
+							mssg.threadID
+						);
 					}
 				} else {
 					this.selfProtected = false;
@@ -43,7 +53,10 @@ class Guard extends Cluster {
 			let checkAnswer = setInterval(() => {
 				passedTime += 1000;
 				if (passedTime >= timeout) {
-					api.sendMessage("Đã hết thời gian, sẽ không ai được bảo vệ trong đêm nay!", this.threadID);
+					api.sendMessage(
+						"Đã hết thời gian, sẽ không ai được bảo vệ trong đêm nay!",
+						this.threadID
+					);
 					this.selfProtected = false;
 					this.commit(0);
 				}
@@ -57,7 +70,9 @@ class Guard extends Cluster {
 			let indexPlayer = 1;
 			const players = game.playerManager.getAlives();
 			for (const player of players) {
-				replyMsg += `${symbols[indexPlayer++]}. ${player.name}(${player.id})${os.EOL}`;
+				replyMsg += `${symbols[indexPlayer++]}. ${player.name}(${
+					player.id
+				})${os.EOL}`;
 			}
 			replyMsg += `Vui lòng nhập số từ (1 - ${players.length})`;
 			api.sendMessage(replyMsg, this.threadID);

@@ -63,34 +63,40 @@ class Account {
 		this.encrypt();
 
 		const dtb = await mongoPoolPromise();
-		dtb.collection("account").updateOne({
-			username: this.username
-		}, {
-			$set: {
-				username: this.username,
-				appState: this.appState,
-				secretKey: this.secretKey,
-				dateCreated: this.dateCreated
+		dtb.collection("account").updateOne(
+			{
+				username: this.username
+			},
+			{
+				$set: {
+					username: this.username,
+					appState: this.appState,
+					secretKey: this.secretKey,
+					dateCreated: this.dateCreated
+				}
+			},
+			{
+				upsert: true
 			}
-		}, {
-			upsert: true
-		});
+		);
 	}
 
 	getData() {
 		this.encrypt();
 		return new Promise(async (resolve, reject) => {
 			const dtb = await mongoPoolPromise();
-			dtb.collection("account").find({
-				username: this.username
-			}).toArray((error, data) => {
-				if (error) throw error;
-				if (data.length == 1) {
-					resolve(data[0]);
-				} else {
-					reject();
-				}
-			});
+			dtb.collection("account")
+				.find({
+					username: this.username
+				})
+				.toArray((error, data) => {
+					if (error) throw error;
+					if (data.length == 1) {
+						resolve(data[0]);
+					} else {
+						reject();
+					}
+				});
 		});
 	}
 }

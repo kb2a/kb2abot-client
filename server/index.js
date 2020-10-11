@@ -2,13 +2,8 @@ import path from "path";
 import fs from "fs";
 import login from "facebook-chat-api";
 import uniqid from "uniqid";
-import {
-	AccountManager,
-	Account,
-} from "./roles";
-import {
-	generateAppState,
-} from "./helper/helper.js";
+import {AccountManager, Account} from "./roles";
+import {generateAppState} from "./helper/helper.js";
 
 const creDir = path.join(__dirname, "/../credentials/");
 const fbDir = path.join(creDir, "facebook.json");
@@ -79,7 +74,9 @@ function checkFMJson() {
 					kb2abot: JSON.parse(fs.readFileSync(kb2abotDir, "utf-8"))
 				});
 			} else {
-				console.log("Ban thieu/sai cu phap file facebook.json hoac messenger.json nen ko the tiep tuc login = cookie");
+				console.log(
+					"Ban thieu/sai cu phap file facebook.json hoac messenger.json nen ko the tiep tuc login = cookie"
+				);
 				console.log("Chuyen sang login = email/password . . .");
 				reject();
 			}
@@ -92,48 +89,66 @@ const accountManager = new AccountManager();
 	let credential = {};
 
 	console.log("Dang kiem tra . . .");
-	console.log("Tip 1: Xai J2TEAM Cookie de lay cookie cua 2 trang tren thì chatbot cua minh moi dich duoc!");
-	console.log("Tip 2: Neu bi loi: Error retrieving userID. This can be caused by a lot of things . . . , co ve nhu cookie cua ban da het han");
-	console.log("Tip 3: Neu bi loi: Error Connection refused, thi ban phai refresh lai cookie (acc ban da bi checkpoint)");
+	console.log(
+		"Tip 1: Xai J2TEAM Cookie de lay cookie cua 2 trang tren thì chatbot cua minh moi dich duoc!"
+	);
+	console.log(
+		"Tip 2: Neu bi loi: Error retrieving userID. This can be caused by a lot of things . . . , co ve nhu cookie cua ban da het han"
+	);
+	console.log(
+		"Tip 3: Neu bi loi: Error Connection refused, thi ban phai refresh lai cookie (acc ban da bi checkpoint)"
+	);
 
 	const cookies = await checkFMJson().catch(() => {
 		if (fs.existsSync(accDir)) {
-			parseJSON(fs.readFileSync(accDir, "utf8")).then(json => {
-				Object.assign(credential, json);
-			}).catch((err) => {
-				console.log(err);
-				console.log("Vui long kiem tra lai file credential.json, loi: khong the doc json!");
-				process.exit(1);
-			});
+			parseJSON(fs.readFileSync(accDir, "utf8"))
+				.then(json => {
+					Object.assign(credential, json);
+				})
+				.catch(err => {
+					console.log(err);
+					console.log(
+						"Vui long kiem tra lai file credential.json, loi: khong the doc json!"
+					);
+					process.exit(1);
+				});
 		} else {
 			console.log("Ban thieu file credential.json");
 			process.exit(1);
 		}
 	});
-	if (cookies.kb2abot)
-		credential.appState = cookies.kb2abot;
+	if (cookies.kb2abot) credential.appState = cookies.kb2abot;
 	else
-		credential.appState = generateAppState(cookies.facebook, cookies.messenger);
+		credential.appState = generateAppState(
+			cookies.facebook,
+			cookies.messenger
+		);
 
-	checkCredential(credential).then((appState) => {
-		fs.unlink(fbDir, (err) => {
-			if (err) return;
-			console.log("Da xoa file cookie facebook");
+	checkCredential(credential)
+		.then(appState => {
+			fs.unlink(fbDir, err => {
+				if (err) return;
+				console.log("Da xoa file cookie facebook");
+			});
+			fs.unlink(meDir, err => {
+				if (err) return;
+				console.log("Da xoa file cookie messenger");
+			});
+			fs.writeFileSync(kb2abotDir, appState);
+			const uid = uniqid();
+			const username = credential.email || `username${uid}`;
+			const account = accountManager.add(
+				new Account({
+					username,
+					secretKey: "secret",
+					appState
+				}),
+				{username}
+			);
+			account.deploy();
+		})
+		.catch(err => {
+			console.log("Lỗi khi deploy chatbot!");
+			console.log(err);
 		});
-		fs.unlink(meDir, (err) => {
-			if (err) return;
-			console.log("Da xoa file cookie messenger");
-		});
-		fs.writeFileSync(kb2abotDir, appState);
-		const uid = uniqid();
-		const account = accountManager.add(new Account({
-			username: credential.email || `username${uid}`,
-			secretKey: "secret",
-			appState,
-		}));
-		account.deploy();
-	}).catch((err) => {
-		console.log("Lỗi khi deploy chatbot!");
-		console.log(err);
-	});
 })();

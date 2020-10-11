@@ -16,28 +16,28 @@ class TicTacToe extends Game {
 	}
 
 	kiemTraDoc() {
-		for (let j = 0; j < 3; j++) { // kiem tra doc
+		for (let j = 0; j < 3; j++) {
+			// kiem tra doc
 			let chain = 0;
 			let node = this.table[0][j];
 			for (let i = 0; i < 3; i++) {
-				chain = (node != this.table[i][j]) ? 0 : chain + 1;
+				chain = node != this.table[i][j] ? 0 : chain + 1;
 				node = this.table[i][j];
-				if (chain == 3 && node != "⬜")
-					return true;
+				if (chain == 3 && node != "⬜") return true;
 			}
 		}
 		return false;
 	}
 
 	kiemTraNgang() {
-		for (let i = 0; i < 3; i++) { // kiem tra ngang
+		for (let i = 0; i < 3; i++) {
+			// kiem tra ngang
 			let chain = 0;
 			let node = this.table[i][0];
 			for (let j = 0; j < 3; j++) {
-				chain = (node != this.table[i][j]) ? 0 : chain + 1;
+				chain = node != this.table[i][j] ? 0 : chain + 1;
 				node = this.table[i][j];
-				if (chain == 3 && node != "⬜")
-					return true;
+				if (chain == 3 && node != "⬜") return true;
 			}
 		}
 		return false;
@@ -47,10 +47,9 @@ class TicTacToe extends Game {
 		let node = this.table[0][0];
 		let chain = 0;
 		for (let i = 0; i < 3; i++) {
-			chain = (node != this.table[i][i]) ? 0 : chain + 1;
+			chain = node != this.table[i][i] ? 0 : chain + 1;
 			node = this.table[i][i];
-			if (chain == 3 && node != "⬜")
-				return true;
+			if (chain == 3 && node != "⬜") return true;
 		}
 		return false;
 	}
@@ -60,10 +59,9 @@ class TicTacToe extends Game {
 		let chain = 0;
 		let j = 2;
 		for (let i = 0; i < 3; i++) {
-			chain = (node != this.table[i][j]) ? 0 : chain + 1;
+			chain = node != this.table[i][j] ? 0 : chain + 1;
 			node = this.table[i][j];
-			if (chain == 3 && node != "⬜")
-				return true;
+			if (chain == 3 && node != "⬜") return true;
 			j--;
 		}
 		return false;
@@ -72,15 +70,19 @@ class TicTacToe extends Game {
 	kiemTraFullBan() {
 		for (let i = 0; i < 3; i++) {
 			for (let j = 0; j < 3; j++) {
-				if (this.table[i][j] == "⬜")
-					return false;
+				if (this.table[i][j] == "⬜") return false;
 			}
 		}
 		return true;
 	}
 
 	isEnd() {
-		if (this.kiemTraDoc() || this.kiemTraNgang() || this.kiemTraCheoPhai() || this.kiemTraCheoTrai()) {
+		if (
+			this.kiemTraDoc() ||
+			this.kiemTraNgang() ||
+			this.kiemTraCheoPhai() ||
+			this.kiemTraCheoTrai()
+		) {
 			return this.turn;
 		}
 		if (this.kiemTraFullBan()) {
@@ -91,7 +93,7 @@ class TicTacToe extends Game {
 
 	add(y, x) {
 		let i, j;
-		if (typeof(y) == "object") {
+		if (typeof y == "object") {
 			i = y[0] - 1;
 			j = y[1] - 1;
 		} else {
@@ -104,14 +106,17 @@ class TicTacToe extends Game {
 	}
 
 	changeTurn() {
-		this.turn = (this.turn == "❌") ? "⭕" : "❌";
+		this.turn = this.turn == "❌" ? "⭕" : "❌";
 	}
 
 	getData() {
 		let data = `${os.EOL}1️⃣⬜⬜⬜${os.EOL}2️⃣⬜⬜⬜${os.EOL}3️⃣⬜⬜⬜${os.EOL}◼️1️⃣2️⃣3️⃣`;
 		for (let i = 0; i < 3; i++) {
 			for (let j = 0; j < 3; j++) {
-				data = data.replace("⬜", (this.table[i][j]) == "⬜" ? " " : this.table[i][j]);
+				data = data.replace(
+					"⬜",
+					this.table[i][j] == "⬜" ? " " : this.table[i][j]
+				);
 			}
 		}
 		return data.replace(/ /g, "⬜");
@@ -119,7 +124,10 @@ class TicTacToe extends Game {
 
 	update(body, api, parent, mssg, group) {
 		if (validNumber.indexOf(body) == -1) {
-			api.sendMessage(`Vui lòng nhập đúng tọa độ (${validNumber.toString()})`, mssg.threadID);
+			api.sendMessage(
+				`Vui lòng nhập đúng tọa độ (${validNumber.toString()})`,
+				mssg.threadID
+			);
 			return;
 		}
 		const numbers = body.split("");

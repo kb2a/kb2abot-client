@@ -1,19 +1,10 @@
 import os from "os";
-import {
-	exec
-} from "child_process";
-import {
-	symbols
-} from "../../../../helper/helperMaSoi.js";
-import {
-	handleGameOutput
-} from "../../../../helper/helperWerewolf.js";
+import {exec} from "child_process";
+import {symbols} from "../../../../helper/helperMaSoi.js";
+import {handleGameOutput} from "../../../../helper/helperWerewolf.js";
 
 class Cluster {
-	constructor({
-		threadID,
-		masterID
-	} = {}) {
+	constructor({threadID, masterID} = {}) {
 		this.threadID = threadID;
 		this.masterID = masterID;
 	}
@@ -28,7 +19,9 @@ class Cluster {
 			api.sendMessage(replyMsg, mssg.threadID);
 			return;
 		}
-		const query = `werewolf --caller ${masterGame.playerManager.find("id", mssg.senderID, true).index} --tag ${this.masterID} ${body}`;
+		const query = `werewolf --caller ${
+			masterGame.playerManager.find("id", mssg.senderID, true).index
+		} --tag ${this.masterID} ${body}`;
 		exec(query, (err, stdout) => {
 			handleGameOutput(api, mssg, masterGame, err, stdout);
 		});

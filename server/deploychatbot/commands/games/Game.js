@@ -1,7 +1,5 @@
 class Game {
-	constructor({
-		owner
-	} = {}) {
+	constructor({owner} = {}) {
 		this.owner = owner;
 	}
 

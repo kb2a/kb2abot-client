@@ -9,9 +9,12 @@ class PlayerManager extends Manager {
 	find(name, value, returnPlayer = false, autoAdd = false) {
 		let index = this.items.findIndex(e => e[name] == value);
 		if (index == -1 && autoAdd) {
-			this.add(new Player({
-				index: this.getLength() + 1
-			}), false);
+			this.add(
+				new Player({
+					index: this.getLength() + 1
+				}),
+				false
+			);
 			index = this.find(name, value);
 		}
 

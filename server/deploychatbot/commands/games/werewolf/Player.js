@@ -1,8 +1,5 @@
 class Player {
-	constructor({
-		id,
-		index
-	} = {}) {
+	constructor({id, index} = {}) {
 		this.id = id;
 		this.index = index;
 	}

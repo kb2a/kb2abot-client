@@ -1,12 +1,8 @@
 import os from "os";
 import Cluster from "./Cluster.js";
 // import PlayerManager from "../PlayerManager.js";
-import {
-	symbols
-} from "../../../../../helper/helperMaSoi.js";
-import {
-	Item
-} from "../poll";
+import {symbols} from "../../../../../helper/helperMaSoi.js";
+import {Item} from "../poll";
 
 class Werewolf extends Cluster {
 	constructor(config) {
@@ -19,7 +15,12 @@ class Werewolf extends Cluster {
 	}
 
 	update(body, api, parent, mssg, group, groupManager) {
-		const masterGame = groupManager.find(this.masterID, true).game;
+		const masterGame = groupManager.find({
+			id: this.masterID
+		}).game;
+		console.log(group);
+		console.log(groupManager);
+		debugger;
 		if (this.isDoingObligation) {
 			body = parseInt(body);
 			if (!isNaN(body) && body >= 0 && body <= this.poll.getLength()) {
@@ -28,16 +29,29 @@ class Werewolf extends Cluster {
 				} else {
 					const voteID = this.poll.items[body - 1].id;
 					this.poll.vote(voteID, mssg.senderID);
-					const voteItem = this.poll.find(voteID, true);
-					if (voteItem.getAmount() >= masterGame.playerManager.getPlayersByRole("Werewolf", true).length) {
-						api.sendMessage(`Vì tất cả mọi người đều đã bỏ phiếu nên tối nay ${voteItem.name} sẽ bị chết!`, mssg.threadID);
+					const voteItem = this.poll.find({
+						id: voteID
+					});
+					if (
+						voteItem.getAmount() >=
+						masterGame.playerManager.find({
+							role: "Werewolf",
+							dead: false
+						}).length
+					) {
+						api.sendMessage(
+							`Vì tất cả mọi người đều đã bỏ phiếu nên tối nay ${voteItem.name} sẽ bị chết!`,
+							mssg.threadID
+						);
 						this.commit(voteID);
 					}
 				}
 				let replyMsg = `Tình trạng cuộc bỏ phiếu: ${os.EOL}`;
 				let indexPlayer = 1;
 				for (const item of this.poll.items) {
-					replyMsg += `${symbols[indexPlayer++]}. ${item.name} - ${item.getAmount()}${os.EOL}`;
+					replyMsg += `${symbols[indexPlayer++]}. ${
+						item.name
+					} - ${item.getAmount()}${os.EOL}`;
 				}
 				api.sendMessage(replyMsg, mssg.threadID);
 			}
@@ -55,10 +69,16 @@ class Werewolf extends Cluster {
 					const finalItem = this.poll.getFinalValue();
 					if (finalItem) {
 						this.commit(finalItem.id);
-						api.sendMessage(`Đã hết thời gian, ${finalItem.name} sẽ bị giết >:(`, this.threadID);
+						api.sendMessage(
+							`Đã hết thời gian, ${finalItem.name} sẽ bị giết >:(`,
+							this.threadID
+						);
 					} else {
 						this.commit(0);
-						api.sendMessage("Đã hết thời gian, không ai sẽ bị giết trong đêm nay!", this.threadID);
+						api.sendMessage(
+							"Đã hết thời gian, không ai sẽ bị giết trong đêm nay!",
+							this.threadID
+						);
 					}
 				}
 				if (this.isCommitted()) {
@@ -70,11 +90,18 @@ class Werewolf extends Cluster {
 			let replyMsg = `Bạn muốn cắn ai ?${os.EOL}`;
 			let indexPlayer = 1;
 			for (const player of game.playerManager.getAlives()) {
-				replyMsg += `${symbols[indexPlayer++]}. ${player.name}(${player.id})${os.EOL}`;
-				this.poll.add(new Item({
-					id: player.id,
-					name: player.name
-				}));
+				replyMsg += `${symbols[indexPlayer++]}. ${player.name}(${
+					player.id
+				})${os.EOL}`;
+				this.poll.add(
+					new Item({
+						id: player.id,
+						name: player.name
+					}),
+					{
+						id: player.id
+					}
+				);
 			}
 			replyMsg += `Vui lòng nhập số từ (1 - ${this.poll.getLength()})`;
 			api.sendMessage(replyMsg, this.threadID);

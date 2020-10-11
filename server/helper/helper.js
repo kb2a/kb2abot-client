@@ -1,9 +1,5 @@
 class Log {
-	constructor({
-		text,
-		icon,
-		bg = "bg1"
-	} = {}) {
+	constructor({text, icon, bg = "bg1"} = {}) {
 		this.text = text;
 		this.icon = icon;
 		this.bg = bg;
@@ -16,8 +12,7 @@ class Log {
 }
 
 const log = function(logConfig, account) {
-	if (!account.groupManager.listen)
-		return;
+	if (!account.groupManager.listen) return;
 	let logs = account.chatbot.logs;
 	logs.push(new Log(logConfig));
 	account.decrypt();
@@ -54,10 +49,8 @@ const currencyFormat = function(number) {
 };
 
 const removeSpecialChar = function(str) {
-	if ((str === null) || (str === ""))
-		return false;
-	else
-		str = str.toString();
+	if (str === null || str === "") return false;
+	else str = str.toString();
 
 	return str.replace(/[^\x20-\x7E]/g, "");
 	// return str;

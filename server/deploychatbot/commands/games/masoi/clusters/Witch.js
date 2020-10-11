@@ -1,8 +1,6 @@
 import os from "os";
 import Cluster from "./Cluster.js";
-import {
-	symbols
-} from "../../../../../helper/helperMaSoi.js";
+import {symbols} from "../../../../../helper/helperMaSoi.js";
 
 class Witch extends Cluster {
 	constructor(config) {
@@ -14,15 +12,27 @@ class Witch extends Cluster {
 	}
 
 	update(body, api, parent, mssg, group, groupManager) {
-		const masterGame = groupManager.find(this.masterID, true).game;
+		const masterGame = groupManager.find({
+			id: this.masterID
+		}).game;
 		if (this.isDoingObligation || this.isDoingObligationOnDead) {
 			body = parseInt(body);
-			if (!isNaN(body) && body >= 1 && body <= masterGame.playerManager.getAlives(true)) {
+			if (
+				!isNaN(body) &&
+				body >= 1 &&
+				body <= masterGame.playerManager.getAlives(true)
+			) {
 				const player = masterGame.playerManager.getAlives()[body - 1];
 				if (player.id == this.threadID) {
-					api.sendMessage("Bạn không thể tự ghim chính mình được (mặc dù có thể idk :/)", this.threadID);
+					api.sendMessage(
+						"Bạn không thể tự ghim chính mình được (mặc dù có thể idk :/)",
+						this.threadID
+					);
 				} else {
-					api.sendMessage(`Bạn đã ghim ${player.name}!`, mssg.threadID);
+					api.sendMessage(
+						`Bạn đã ghim ${player.name}!`,
+						mssg.threadID
+					);
 					this.pinnedID = player.id;
 					this.commit(player.id);
 				}
@@ -37,7 +47,10 @@ class Witch extends Cluster {
 			let checkAnswer = setInterval(() => {
 				passedTime += 1000;
 				if (passedTime >= timeout) {
-					api.sendMessage("Đã hết thời gian, bạn không thể ghim ai được nữa!", this.threadID);
+					api.sendMessage(
+						"Đã hết thời gian, bạn không thể ghim ai được nữa!",
+						this.threadID
+					);
 					this.commit(0);
 				}
 				if (this.isCommitted()) {
@@ -49,9 +62,13 @@ class Witch extends Cluster {
 			let replyMsg = `Bạn muốn giết ai ${os.EOL}`;
 			let indexPlayer = 1;
 			for (const player of game.playerManager.getAlives()) {
-				replyMsg += `${symbols[indexPlayer++]}. ${player.name}(${player.id})${os.EOL}`;
+				replyMsg += `${symbols[indexPlayer++]}. ${player.name}(${
+					player.id
+				})${os.EOL}`;
 			}
-			replyMsg += `Vui lòng nhập số từ (1 - ${game.playerManager.getAlives(true)})`;
+			replyMsg += `Vui lòng nhập số từ (1 - ${game.playerManager.getAlives(
+				true
+			)})`;
 			api.sendMessage(replyMsg, this.threadID);
 		});
 	}

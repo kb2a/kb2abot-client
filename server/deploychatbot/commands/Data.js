@@ -1,14 +1,13 @@
 import os from "os";
 import Command from "./Command.js";
-import {
-	parseValue
-} from "../../helper/helperCommand.js";
+import {parseValue} from "../../helper/helperCommand.js";
 
 class Data extends Command {
 	constructor() {
 		super({
 			keywords: ["debug", "data"],
-			help: "[--item=<itemName> | -i <itemName>] [--global | -g | --all | -a]",
+			help:
+				"[--item=<itemName> | -i <itemName>] [--global | -g | --all | -a]",
 			description: "Cái này dành cho nhà phát triển :v"
 		});
 	}
@@ -18,12 +17,13 @@ class Data extends Command {
 		const item = parseValue(args, ["item", "i"]);
 		const all = parseValue(args, ["all", "global", "a", "g"]);
 
-		if (group.hasOwnProperty(item)) {
-			const replyMsg = `\`\`\`${os.EOL}${JSON.stringify(group[item])}${os.EOL}\`\`\``;
+		if (item && group.hasOwnProperty(item)) {
+			const replyMsg = JSON.stringify(group[item]);
 			api.sendMessage(replyMsg, mssg.threadID);
 		}
+
 		if (all) {
-			const replyMsg = `\`\`\`${os.EOL}${JSON.stringify(group)}${os.EOL}\`\`\``;
+			const replyMsg = JSON.stringify(group);
 			api.sendMessage(replyMsg, mssg.threadID);
 		}
 	}

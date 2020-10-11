@@ -1,7 +1,6 @@
 import os from "os";
-import {
-	parseValue
-} from "../../helper/helperCommand.js";
+import logger from "node-color-log";
+import {parseValue} from "../../helper/helperCommand.js";
 import * as BotEngines from "./botengines";
 import Command from "./Command.js";
 
@@ -12,7 +11,7 @@ class AutoReply extends Command {
 			help: "[--engine=<engineName> | -e <engineName>]",
 			description: `Dùng để bật auto-reply cho group, default là engine 'simsimi'.${os.EOL}Các engineName: simsimi, mitsuku.`
 		});
-		this.engine = "Simsimi";
+		this.engine = "Mitsuku";
 	}
 
 	fixEngineName(text) {
@@ -25,21 +24,34 @@ class AutoReply extends Command {
 		const engine = parseValue(args, ["e", "t"]);
 		if (engine) {
 			if (group.chat == false) {
-				api.sendMessage("Bạn chưa bật chat cho group, vui lòng sử dụng lệnh: /switch --chat on", mssg.threadID);
+				api.sendMessage(
+					"Bạn chưa bật chat cho group, vui lòng sử dụng lệnh: /switch --chat on",
+					mssg.threadID
+				);
 			} else {
 				const fixedEngineName = this.fixEngineName(engine);
 				if (BotEngines.hasOwnProperty(fixedEngineName)) {
 					this.engine = fixedEngineName;
-					api.sendMessage(`Đã chuyển xài engine: ${fixedEngineName}`, mssg.threadID);
+					api.sendMessage(
+						`Đã chuyển xài engine: ${fixedEngineName}`,
+						mssg.threadID
+					);
 				} else {
-					api.sendMessage(`Không tìm thấy engine nào có tên: ${fixedEngineName}`, mssg.threadID);
+					api.sendMessage(
+						`Không tìm thấy engine nào có tên: ${fixedEngineName}`,
+						mssg.threadID
+					);
 				}
 			}
 		}
 	}
 
 	reply(body, api, parent, mssg) {
-		BotEngines[this.engine](body, api, parent, mssg);
+		try {
+			BotEngines[this.engine](body, api, parent, mssg);
+		} catch (e) {
+			logger.error("ERROR WHILE PROCESSING THE BOTCHAT!");
+		}
 	}
 }
 

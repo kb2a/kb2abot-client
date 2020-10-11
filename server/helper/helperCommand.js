@@ -2,23 +2,26 @@ import request from "request";
 import path from "path";
 import fs from "fs";
 
-const round = function(number, amount) {
+const round = (number, amount) => {
 	return parseFloat(Number(number).toFixed(amount));
 };
 
-const getDownloadUrl = async function(id) {
+const getDownloadUrl = async id => {
 	return new Promise((resolve, reject) => {
-		request.get(`http://api.mp3.zing.vn/api/streaming/audio/${id}/128`, function(err, res, body) {
-			if (err || !body) {
-				reject();
-			} else {
-				resolve(res.request.uri.href);
+		request.get(
+			`http://api.mp3.zing.vn/api/streaming/audio/${id}/128`,
+			(err, res, body) => {
+				if (err || !body) {
+					reject();
+				} else {
+					resolve(res.request.uri.href);
+				}
 			}
-		});
+		);
 	});
 };
 
-const getFileSize = function(path) {
+const getFileSize = path => {
 	let fileSizeInBytes = fs.statSync(path)["size"];
 	//Convert the file size to megabytes (optional)
 	let fileSizeInMegabytes = fileSizeInBytes / 1000000.0;
@@ -29,7 +32,7 @@ const musicPath = path.join(__dirname, "/../../musics");
 
 const ffmpegPath = path.join(__dirname, "/../../ffmpeg-binary/bin/ffmpeg.exe");
 
-const parseBool = function(str) {
+const parseBool = str => {
 	if (["on", "true", "yes", "positive", "t"].indexOf(str) != -1) {
 		return true;
 	}
@@ -38,41 +41,49 @@ const parseBool = function(str) {
 	return Boolean(str);
 };
 
-const checkError = function(api, log, parent, mssg, err) {
+const checkError = (api, log, parent, mssg, err) => {
 	if (err) {
 		const replyMsg = `Đã gặp lỗi "${err.errorDescription}" khi đang gửi tin nhắn`;
 		api.sendMessage(replyMsg, mssg.threadID);
-		log({
-			text: replyMsg,
-			icon: "exclamation-triangle",
-			bg: "bg3"
-		}, parent);
+		log(
+			{
+				text: replyMsg,
+				icon: "exclamation-triangle",
+				bg: "bg3"
+			},
+			parent
+		);
 	}
 };
 
-const deleteFile = function(path) {
+const deleteFile = path => {
 	fs.unlink(path, err => {
 		if (err) throw err;
 	});
 };
 
-const parseValue = function(args, validList) {
+const parseValue = (args, validList) => {
 	for (const param in args) {
 		if (validList.indexOf(param) != -1) {
 			const value = args[param];
-			return (typeof(value) == "object") ? value[value.length - 1] : value;
+			return typeof value == "object" ? value[value.length - 1] : value;
 		}
 	}
 	return undefined;
 };
 
-const isNoParam = function(args) {
-	for (const param in args) {
-		if (param) {
-			return false;
-		}
+const hasHelpParam = args => {
+	if (parseValue(args, ["help", "h"])) {
+		return true;
 	}
-	return true;
+	return false;
+};
+
+const hasNoParam = args => {
+	if (parseValue(args, ["help", "h"])) {
+		return true;
+	}
+	return false;
 };
 
 export {
@@ -85,5 +96,6 @@ export {
 	checkError,
 	deleteFile,
 	parseValue,
-	isNoParam
+	hasHelpParam,
+	hasNoParam
 };

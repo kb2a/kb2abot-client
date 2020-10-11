@@ -1,14 +1,7 @@
-import {
-	Poll
-} from "../poll";
+import {Poll} from "../poll";
 
 class Cluster {
-	constructor({
-		role,
-		threadID,
-		masterID,
-		isWerewolfGroup = false
-	} = {}) {
+	constructor({role, threadID, masterID, isWerewolfGroup = false} = {}) {
 		this.role = role;
 		this.threadID = threadID;
 		this.masterID = masterID;

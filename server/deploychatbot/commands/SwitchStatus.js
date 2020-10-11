@@ -1,11 +1,6 @@
 import os from "os";
-import {
-	log
-} from "../../helper/helper.js";
-import {
-	parseBool,
-	parseValue
-} from "../../helper/helperCommand.js";
+import {log} from "../../helper/helper.js";
+import {parseBool, parseValue} from "../../helper/helperCommand.js";
 import Command from "./Command.js";
 
 class SwitchStatus extends Command {
@@ -31,11 +26,14 @@ class SwitchStatus extends Command {
 				const replyMsg = `${param.toUpperCase()} has changed to [${value}]`;
 				group[param] = value;
 				api.sendMessage(replyMsg, mssg.threadID);
-				log({
-					text: replyMsg,
-					icon: "language",
-					bg: "bg2"
-				}, parent);
+				log(
+					{
+						text: replyMsg,
+						icon: "language",
+						bg: "bg2"
+					},
+					parent
+				);
 			}
 		}
 	}

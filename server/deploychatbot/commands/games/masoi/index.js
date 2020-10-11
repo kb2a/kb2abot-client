@@ -121,8 +121,13 @@ class MaSoi extends Game {
 				this.playerManager.add(
 					new Player({
 						id: mssg.senderID,
-						name: group.memberManager.find(mssg.senderID, true).name
-					})
+						name: group.memberManager.find({
+							id: mssg.senderID
+						}).name
+					}),
+					{
+						id: mssg.senderID
+					}
 				);
 				api.sendMessage(
 					`Số người chơi sẵn sàng: ${this.playerManager.getLength()}/${this.getPlayingAmount()}`,
@@ -159,10 +164,11 @@ class MaSoi extends Game {
 								}`,
 								player.id
 							);
-							groupManager.delete(
-								groupManager.find(player.id, true)
-							);
+							groupManager.delete({
+								id: player.id
+							});
 							const fakeGroup = groupManager.add(
+								// tao cluster cac role ko phai werewolf
 								new Group(
 									Object.assign(cloneGroup, {
 										id: player.id,
@@ -172,7 +178,10 @@ class MaSoi extends Game {
 											masterID: group.id
 										})
 									})
-								)
+								),
+								{
+									id: player.id
+								}
 							);
 							clusters.push(fakeGroup.game);
 						}
@@ -189,7 +198,16 @@ class MaSoi extends Game {
 					});
 					// debugger;
 					for (const memberID of members) {
-						if (memberID == api.getCurrentUserID()) return;
+						const player = this.playerManager.find({
+							id: memberID
+						});
+						if (
+							memberID == api.getCurrentUserID() ||
+							!player ||
+							player.role == "Werewolf"
+						)
+							continue;
+						console.log(memberID);
 						await new Promise(resolve => {
 							setTimeout(() => {
 								api.removeUserFromGroup(memberID, wwID);
@@ -223,7 +241,9 @@ class MaSoi extends Game {
 					err => {
 						if (err) console.log(err);
 						api.sendMessage(data.Werewolf.Werewolf, wwID);
-						groupManager.delete(groupManager.find(wwID, true));
+						groupManager.delete({
+							id: wwID
+						});
 						const fakeGroup = groupManager.add(
 							new Group(
 								Object.assign(cloneGroup, {
@@ -234,7 +254,10 @@ class MaSoi extends Game {
 										masterID: group.id
 									})
 								})
-							)
+							),
+							{
+								id: wwID
+							}
 						);
 						// for (const player of this.playerManager.getPlayersByRole("Werewolf")) {
 						// 	fakeGroup.game.playerManager.add(player);
@@ -255,7 +278,9 @@ class MaSoi extends Game {
 								cluster.isAvailable("doObligation") &&
 								(cluster.isWerewolfGroup ||
 									this.playerManager
-										.find(cluster.threadID, true)
+										.find({
+											id: cluster.threadID
+										})
 										.isAlive())
 							) {
 								cluster.isDoingObligation = true;
@@ -277,12 +302,13 @@ class MaSoi extends Game {
 								WerewolfValue != 0 &&
 								GuardValue != WerewolfValue
 							) {
-								const player = this.playerManager.find(
-									WerewolfValue,
-									true
-								);
+								const player = this.playerManager.find({
+									id: WerewolfValue
+								});
 								player.die();
-								deathManager.add(player);
+								deathManager.add(player, {
+									id: player.id
+								});
 							}
 							let replyMsg = `Đêm thứ ${this.day}. . .${os.EOL}`;
 							if (
@@ -290,18 +316,18 @@ class MaSoi extends Game {
 								WerewolfValue != 0
 							)
 								replyMsg += `${
-									this.playerManager.find(GuardValue, true)
-										.name
+									this.playerManager.find({
+										id: GuardValue
+									}).name
 								} đã được cứu sống bởi BẢO VỆ!${os.EOL}`;
 							const deathAmount = deathManager.getLength();
 							if (deathAmount > 0) {
 								replyMsg += `Có ${deathAmount} người chết: `;
 								for (let i = 0; i < deathAmount; i++) {
 									const deathID = deathManager.items[i].id;
-									const name = this.playerManager.find(
-										deathID,
-										true
-									).name;
+									const name = this.playerManager.find({
+										id: deathID
+									}).name;
 									if (deathAmount > 1) {
 										// nhieu nguoi chet
 										if (i == deathAmount - 1)
@@ -329,7 +355,9 @@ class MaSoi extends Game {
 							if (
 								cluster.isAvailable("doObligationOnDead") &&
 								cluster.role != "Werewolf" &&
-								deathManager.find(cluster.threadID) != -1
+								deathManager.find({
+									id: cluster.threadID
+								})
 							) {
 								// khuc nay can xem lai death manager items
 								cluster.isDoingObligationOnDead = true;
@@ -357,10 +385,13 @@ class MaSoi extends Game {
 										err => {
 											if (err) console.log(err);
 											const player = this.playerManager.find(
-												HunterValue,
-												true
+												{
+													id: HunterValue
+												}
 											);
-											deathManager.add(player);
+											deathManager.add(player, {
+												id: player.id
+											});
 											let replyMsg = `${player.name} đã bị bắn bởi THỢ SĂN`;
 											player.die();
 											api.sendMessage(
@@ -398,7 +429,10 @@ class MaSoi extends Game {
 							new Item({
 								id: player.id,
 								name: player.name
-							})
+							}),
+							{
+								id: player.id
+							}
 						);
 					}
 					this.isVotingKill = true;
@@ -410,7 +444,9 @@ class MaSoi extends Game {
 								replyMsg += `${symbols[indexPlayer++]}. ${
 									player.name
 								} (${this.pollVoteKill
-									.find(player.id, true)
+									.find({
+										id: player.id
+									})
 									.getAmount()}) ${os.EOL}`;
 							}
 							api.sendMessage(replyMsg, mssg.threadID);
@@ -428,10 +464,9 @@ class MaSoi extends Game {
 									finalItem.getAmount() /
 										this.playerManager.getAlives(true)
 								);
-								const player = this.playerManager.find(
-									finalItem.id,
-									true
-								);
+								const player = this.playerManager.find({
+									id: finalItem.id
+								});
 								api.sendMessage(
 									`${player.name} đã bị treo cổ >:(`,
 									mssg.threadID
@@ -480,7 +515,9 @@ class MaSoi extends Game {
 		if (this.prepairs[0] == "start") {
 			if (this.isVotingKill) {
 				const num = Number(body);
-				const voter = this.playerManager.find(mssg.senderID, true);
+				const voter = this.playerManager.find({
+					id: mssg.senderID
+				});
 				if (
 					!isNaN(num) &&
 					num >= 0 &&
@@ -501,7 +538,9 @@ class MaSoi extends Game {
 						replyMsg += `${symbols[indexPlayer++]}. ${
 							player.name
 						} - ${this.pollVoteKill
-							.find(player.id, true)
+							.find({
+								id: player.id
+							})
 							.getAmount()}${os.EOL}`;
 					}
 					api.sendMessage(replyMsg, mssg.threadID);

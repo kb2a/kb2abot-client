@@ -6,46 +6,31 @@ class Poll extends Manager {
 		super();
 	}
 
-	find(id, returnItem = false, autoAdd = false) {
-		let index = this.items.findIndex(e => e.id == id);
-		if (index == -1 && autoAdd) {
-			this.add(new Item({
-				id
-			}), false);
-			index = this.find(id);
-		}
-
-		if (returnItem) {
-			return this.items[index];
-		}
-		return index;
-	}
-
-	add(item, duplicateCheck = true) {
-		if (duplicateCheck) {
-			const index = this.find(item.id);
-			if (index == -1) {
-				this.items.push(item);
-				return this.bottom();
-			}
-			return this.items[index];
-		}
-		this.items.push(item);
-		return this.bottom();
-	}
-
 	vote(itemID, senderID) {
 		for (const item of this.items) {
-			if (item.find(senderID) != -1) {
-				item.delete(item.find(senderID, true));
+			const voter = item.find({
+				id: senderID
+			});
+			if (voter) {
+				item.delete(voter);
 			}
 		}
-		this.find(itemID, true).add(senderID);
+		const item = this.find({
+			id: itemID
+		});
+		const query = {
+			id: senderID
+		};
+		item.add(query, query);
 	}
 
 	unVoteAll(voterID) {
 		for (const item of this.items) {
-			item.delete(item.find(voterID, true));
+			item.delete(
+				item.find({
+					id: voterID
+				})
+			);
 		}
 	}
 
