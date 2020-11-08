@@ -1,4 +1,4 @@
-const COMMAND = require("./commands");
+const fs = require("fs");
 const Manager = require("../roles/Manager.js");
 const logger = require("node-color-log");
 
@@ -8,12 +8,16 @@ module.exports = class CommandManager extends Manager {
 	}
 
 	importCommands() {
-		for (const commandName in COMMAND) {
+		const packageNames = fs
+			.readdirSync(__dirname + "/commands")
+			.filter(name => name.indexOf(".js") != -1);
+		for (const packageName of packageNames) {
 			try {
-				this.add(new COMMAND[commandName]());
-				logger.info("LOADED: " + commandName);
+				const Package = require(__dirname + "/commands/" + packageName);
+				this.add(new Package());
+				logger.info("LOADED: " + packageName);
 			} catch (e) {
-				logger.error("COULD NOT LOADED: " + commandName);
+				logger.error("COULD NOT LOADED: " + packageName);
 			}
 		}
 	}
