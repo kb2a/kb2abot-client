@@ -15,5 +15,3 @@ module.exports = {
 	MemberManager,
 	Member
 };
-
-console.log(module.exports);

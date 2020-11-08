@@ -1,9 +1,28 @@
 const path = require("path");
 const childProcess = require("child_process");
+const bots = [];
+const isRunning = require("is-running");
+const os = require("os");
 
-function delay(time) {
-	return new Promise(resolve => setTimeout(resolve(), time));
-}
+const showStatusBots = () => {
+	const lives = [],
+		dies = [];
+	for (const bot of bots) {
+		if (isRunning(bot.pid)) {
+			lives.push(bot);
+		} else {
+			dies.push(bot);
+		}
+	}
+	let logMessage = "";
+	for (const live of lives) {
+		logMessage += `${live.pid} ${live.name} >> live${os.EOL}`;
+	}
+	for (const die of dies) {
+		logMessage += `| ${die.pid} ${die.name} >> die${os.EOL}`;
+	}
+	console.log(logMessage);
+};
 
 const spawn = (cmd, arg) => {
 	return new Promise(resolve => {
@@ -11,6 +30,10 @@ const spawn = (cmd, arg) => {
 			shell: true,
 			stdio: "inherit",
 			cwd: __dirname
+		});
+		bots.push({
+			pid: npmProcess.pid,
+			name: /bots\\(.*).json/.exec(arg[1])[1]
 		});
 		npmProcess.on("close", code => {
 			resolve(code);
@@ -30,9 +53,8 @@ const checkNode = async () => {
 				process.version +
 				")"
 		);
-		process.exit(1);
+		process.exit(0);
 	}
-	await delay(1000);
 };
 
 const checkUpdate = async () => {
@@ -43,7 +65,6 @@ const checkUpdate = async () => {
 		await git.fetch("origin", "master"); //git fetch origin master
 	}
 	await git.reset(["origin/master", "--hard"]); //git reset origin/master --hard
-	await delay(1000);
 };
 
 const foolHeroku = async () => {
@@ -51,13 +72,10 @@ const foolHeroku = async () => {
 		res.writeHead(200, "OK", {
 			"Content-Type": "text/plain"
 		});
-		res.write(
-			"This is just a dummy HTTP server to fool Heroku. https://i.imgur.com/KgsYleA.png \r\nC3CBot - https://github.com/lequanglam/c3c"
-		);
+		res.write("This is just a dummy HTTP server to fool Heroku.");
 		res.end();
 	});
 	await server.listen(process.env.PORT || 0, "0.0.0.0");
-	await delay(1000);
 };
 
 const promptMultiple = async (question, choices) => {
@@ -74,7 +92,7 @@ const promptMultiple = async (question, choices) => {
 		return answer;
 	} catch (err) {
 		prompt.ui.close();
-		process.exit(1);
+		process.exit();
 	}
 	return await prompt.run();
 };
@@ -92,7 +110,7 @@ const chooseBot = async () => {
 
 	if (botFiles.length == 0) {
 		console.log("You do not have any cookie(s) in your /bots");
-		process.exit(1);
+		process.exit();
 	}
 
 	const loadBotList =
@@ -107,8 +125,28 @@ const chooseBot = async () => {
 		process.exit();
 	}
 	for (const botFileName of loadBotList) {
-		await loadBot(botFileName, `Starting kb2abot used [${botFileName}]`);
+		loadBot(botFileName, `Starting kb2abot used [${botFileName}]`);
 	}
+	const readline = require("readline");
+	const rl = readline.createInterface({
+		input: process.stdin,
+		output: process.stdout
+	});
+
+	const readInput = () => {
+		rl.question("", function(data) {
+			switch (data) {
+				case "status":
+					showStatusBots();
+					break;
+				case "cls":
+					console.clear();
+					break;
+			}
+			readInput();
+		});
+	};
+	readInput();
 };
 
 const loadBot = async (botFileName, message) => {
@@ -141,7 +179,7 @@ const ora = require("ora");
 const tasks = [
 	{fn: checkNode, des: "checking node verion . . ."},
 	{fn: checkUpdate, des: "checking updates . . ."},
-	{fn: foolHeroku, des: "fooling heroku . . ."}
+	{fn: foolHeroku, des: "fooling Heroku . . ."}
 ];
 
 (async () => {

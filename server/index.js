@@ -1,10 +1,7 @@
-const path = require("path");
 const fs = require("fs");
 const login = require("facebook-chat-api");
-const uniqid = require("uniqid");
 const {Account} = require("./roles");
 // const {generateAppState} = require("./helper/helper.js");
-const GroupManager = require("./roles/GroupManager.js");
 const deployKb2abot = require("./deployKb2abot");
 
 // fs.readdir("musics", (err, files) => { // delete all music files before start

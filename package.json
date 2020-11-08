@@ -18,6 +18,7 @@
         "eslint": "^7.6.0",
         "facebook-chat-api": "^1.8.0",
         "ffmpeg-cli": "^2.7.1",
+        "is-running": "^2.1.0",
         "md5": "^2.3.0",
         "minimist": "^1.2.5",
         "mongodb": "^3.5.9",
