@@ -62,8 +62,8 @@ const checkUpdate = async () => {
 	const initResult = await git.init();
 	if (!initResult.existing) {
 		await git.addRemote("origin", "https://github.com/khoakomlem/kb2abot");
-		await git.fetch("origin", "master"); //git fetch origin master
 	}
+	await git.fetch("origin", "master"); //git fetch origin master
 	await git.reset(["origin/master", "--hard"]); //git reset origin/master --hard
 };
 
