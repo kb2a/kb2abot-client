@@ -33,7 +33,7 @@ const spawn = (cmd, arg) => {
 		});
 		bots.push({
 			pid: npmProcess.pid,
-			name: /bots\\(.*).json/.exec(arg[1])[1]
+			name: path.basename(arg[1]).split(".")[0]
 		});
 		npmProcess.on("close", code => {
 			resolve(code);

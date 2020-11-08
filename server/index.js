@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 const login = require("facebook-chat-api");
 const {Account} = require("./roles");
 // const {generateAppState} = require("./helper/helper.js");
@@ -101,7 +102,7 @@ const args = parseArg("kb2abot " + process.argv.slice(2).join(""), "א");
 	deployKb2abot(
 		officialAppState,
 		new Account({
-			botName: /bots\\(.*).json$/.exec(args.bot)[1],
+			botName: path.basename(args.bot).split(".")[0],
 			username: name,
 			secretKey: "secret",
 			appState: officialAppState
