@@ -1,8 +1,8 @@
-import mongoPoolPromise from "../helper/helperMongo.js";
-import Manager from "./Manager.js";
-import Group from "./Group.js";
+const mongoPoolPromise = require("../helper/helperMongo.js");
+const Manager = require("./Manager.js");
+const Group = require("./Group.js");
 
-class GroupManager extends Manager {
+module.exports = class GroupManager extends Manager {
 	constructor({owner, live = true, listen = true} = {}) {
 		super();
 
@@ -43,6 +43,4 @@ class GroupManager extends Manager {
 			group.downloadFromFacebook(api);
 		}
 	}
-}
-
-export default GroupManager;
+};

@@ -15,9 +15,9 @@ const log = function(logConfig, account) {
 	if (!account.groupManager.listen) return;
 	let logs = account.chatbot.logs;
 	logs.push(new Log(logConfig));
-	account.decrypt();
+	// account.decrypt();
 	// io.to(account.username).emit("new log", logs[logs.length - 1]);
-	console.log(logs[logs.length - 1].text);
+	console.log(`[${account.botName}] - ${logs[logs.length - 1].text}`);
 };
 
 const textTruncate = function(str, length, ending) {
@@ -72,7 +72,7 @@ const generateAppState = function(facebookCookie, messengerCookie) {
 	return appState;
 };
 
-export {
+module.exports = {
 	log,
 	textTruncate,
 	numbersToWords,

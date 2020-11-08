@@ -1,6 +1,6 @@
-import mongoPoolPromise from "../helper/helperMongo.js";
+const mongoPoolPromise = require("../helper/helperMongo.js");
 
-class Member {
+module.exports = class Member {
 	constructor({id, owner, messagesCount = 0, name = "Unknown"}) {
 		this.id = id;
 		this.name = name;
@@ -47,6 +47,4 @@ class Member {
 				});
 		});
 	}
-}
-
-export default Member;
+};

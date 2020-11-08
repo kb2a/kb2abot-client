@@ -1,16 +1,17 @@
-import vigenere from "vigenere";
-import mongoPoolPromise from "../helper/helperMongo.js";
-import GroupManager from "./GroupManager.js";
-import deployChatbot from "../deploychatbot";
+const vigenere = require("vigenere");
+const mongoPoolPromise = require("../helper/helperMongo.js");
+const GroupManager = require("./GroupManager.js");
 
-class Account {
+module.exports = class Account {
 	constructor({
 		dateCreated = Date.now(),
+		botName,
 		username,
 		secretKey,
 		appState,
 		encrypted = false
 	} = {}) {
+		this.botName = botName;
 		this.dateCreated = dateCreated;
 		this.username = username;
 		this.secretKey = secretKey;
@@ -28,11 +29,6 @@ class Account {
 			owner: this.username
 		});
 		// this.groupManager.downloadFromDtb().then(() => {});
-	}
-
-	deploy() {
-		this.decrypt();
-		deployChatbot(this.appState, this);
 	}
 
 	logout() {
@@ -99,6 +95,4 @@ class Account {
 				});
 		});
 	}
-}
-
-export default Account;
+};

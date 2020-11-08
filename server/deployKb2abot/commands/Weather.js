@@ -1,10 +1,10 @@
-import axios from "axios";
-import os from "os";
-import {log} from "../../helper/helper.js";
-import {parseValue, isNoParam} from "../../helper/helperCommand.js";
-import Command from "./Command.js";
+const axios = require("axios");
+const os = require("os");
+const {log} = require("../../helper/helper.js");
+const {parseValue, isNoParam} = require("../../helper/helperCommand.js");
+const Command = require("./Command.js");
 
-class Weather extends Command {
+module.exports = class Weather extends Command {
 	constructor() {
 		super({
 			keywords: ["weather", "wea", "w"],
@@ -96,6 +96,4 @@ class Weather extends Command {
 				});
 		}
 	}
-}
-
-export default Weather;
+};

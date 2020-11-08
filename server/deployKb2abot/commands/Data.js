@@ -1,8 +1,8 @@
-import os from "os";
-import Command from "./Command.js";
-import {parseValue} from "../../helper/helperCommand.js";
+const os = require("os");
+const Command = require("./Command.js");
+const {parseValue} = require("../../helper/helperCommand.js");
 
-class Data extends Command {
+module.exports = class Data extends Command {
 	constructor() {
 		super({
 			keywords: ["debug", "data"],
@@ -27,6 +27,4 @@ class Data extends Command {
 			api.sendMessage(replyMsg, mssg.threadID);
 		}
 	}
-}
-
-export default Data;
+};

@@ -1,9 +1,9 @@
-import os from "os";
-import {log} from "../../helper/helper.js";
-import {parseBool, parseValue} from "../../helper/helperCommand.js";
-import Command from "./Command.js";
+const os = require("os");
+const {log} = require("../../helper/helper.js");
+const {parseBool, parseValue} = require("../../helper/helperCommand.js");
+const Command = require("./Command.js");
 
-class SwitchStatus extends Command {
+module.exports = class SwitchStatus extends Command {
 	constructor() {
 		super({
 			keywords: "switch",
@@ -37,6 +37,4 @@ class SwitchStatus extends Command {
 			}
 		}
 	}
-}
-
-export default SwitchStatus;
+};

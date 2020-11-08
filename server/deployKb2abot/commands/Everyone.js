@@ -1,7 +1,7 @@
-import Command from "./Command.js";
-import {hasHelpParam, parseValue} from "../../helper/helperCommand.js";
+const Command = require("./Command.js");
+const {hasHelpParam, parseValue} = require("../../helper/helperCommand.js");
 
-class Everyone extends Command {
+module.exports = class Everyone extends Command {
 	constructor() {
 		super({
 			keywords: ["all", "everyone", "everybody"],
@@ -37,6 +37,4 @@ class Everyone extends Command {
 			mssg.threadID
 		);
 	}
-}
-
-export default Everyone;
+};

@@ -1,22 +1,22 @@
-import YoutubeMp3Downloader from "youtube-mp3-downloader";
-import ytSearch from "yt-search";
-import uniqid from "uniqid";
-import path from "path";
-import os from "os";
-import fs from "fs";
-import {log} from "../../helper/helper.js";
-import {
+const YoutubeMp3Downloader = require("youtube-mp3-downloader");
+const ytSearch = require("yt-search");
+const ffmpeg = require("ffmpeg-cli");
+const uniqid = require("uniqid");
+const path = require("path");
+const os = require("os");
+const fs = require("fs");
+const {log} = require("../../helper/helper.js");
+const {
 	round,
 	musicPath,
-	ffmpegPath,
 	parseValue,
 	deleteFile,
 	checkError,
 	parseBool
-} from "../../helper/helperCommand.js";
-import Command from "./Command.js";
+} = require("../../helper/helperCommand.js");
+const Command = require("./Command.js");
 
-class Youtube extends Command {
+module.exports = class Youtube extends Command {
 	constructor() {
 		super({
 			keywords: ["yt", "youtube"],
@@ -38,8 +38,12 @@ class Youtube extends Command {
 		const filename = `${uniqid()}.mp3`;
 
 		if (id) {
+			if (!/^[a-zA-Z0-9-_]{11}$/.test(id)) {
+				api.sendMessage("ID không hợp lệ!", mssg.threadID);
+				return;
+			}
 			const YD = new YoutubeMp3Downloader({
-				ffmpegPath: ffmpegPath, // FFmpeg binary location
+				ffmpegPath: ffmpeg.path, // FFmpeg binary location
 				outputPath: musicPath, // Output file location (default: the home directory)
 				youtubeVideoQuality: "highestaudio", // Desired video quality (default: highestaudio)
 				queueParallelism: 3 // Download parallelism (default: 1)
@@ -175,6 +179,4 @@ class Youtube extends Command {
 			}
 		}); */
 	}
-}
-
-export default Youtube;
+};

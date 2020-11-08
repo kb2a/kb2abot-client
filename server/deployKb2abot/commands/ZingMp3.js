@@ -1,12 +1,12 @@
-import request from "request";
-import uniqid from "uniqid";
-import axios from "axios";
-import path from "path";
-import os from "os";
-import fs from "fs";
-import Command from "./Command.js";
-import {log} from "../../helper/helper.js";
-import {
+const request = require("request");
+const uniqid = require("uniqid");
+const axios = require("axios");
+const path = require("path");
+const os = require("os");
+const fs = require("fs");
+const Command = require("./Command.js");
+const {log} = require("../../helper/helper.js");
+const {
 	getDownloadUrl,
 	getFileSize,
 	musicPath,
@@ -14,9 +14,9 @@ import {
 	deleteFile,
 	checkError,
 	parseBool
-} from "../../helper/helperCommand.js";
+} = require("../../helper/helperCommand.js");
 
-class ZingMp3 extends Command {
+module.exports = class ZingMp3 extends Command {
 	constructor() {
 		super({
 			keywords: ["zingmp3", "zing", "z"],
@@ -213,6 +213,4 @@ class ZingMp3 extends Command {
 			api.sendMessage(replyMsg, mssg.threadID);
 		}
 	}
-}
-
-export default ZingMp3;
+};

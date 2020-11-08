@@ -1,15 +1,15 @@
-import login from "facebook-chat-api";
-import {parseArg} from "../helper/helperDeploy.js";
-import {Group, Member} from "../roles/";
-import CommandManager from "./CommandManager.js";
+const login = require("facebook-chat-api");
+const {parseArg} = require("../helper/helperDeploy.js");
+const {Group, Member} = require("../roles/");
+const CommandManager = require("./CommandManager.js");
 const commandManager = new CommandManager();
-commandManager.importCommands(); // import all commands
+commandManager.importCommands(); // const all commands
 const whiteListGroup = [
 	// phần này để loại bỏ những group mà bạn không muốn bot hoạt động (tránh gây phiền hà)
 	// 'whitelist id'
 ];
 
-function deployChatbot(appState, parent) {
+module.exports = (appState, parent) => {
 	login(
 		{
 			appState: JSON.parse(appState)
@@ -120,6 +120,4 @@ function deployChatbot(appState, parent) {
 			});
 		}
 	);
-}
-
-export default deployChatbot;
+};

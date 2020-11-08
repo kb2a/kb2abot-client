@@ -1,6 +1,6 @@
-import request from "request";
-import path from "path";
-import fs from "fs";
+const request = require("request");
+const path = require("path");
+const fs = require("fs");
 
 const round = (number, amount) => {
 	return parseFloat(Number(number).toFixed(amount));
@@ -86,7 +86,7 @@ const hasNoParam = args => {
 	return false;
 };
 
-export {
+module.exports = {
 	round,
 	getDownloadUrl,
 	getFileSize,

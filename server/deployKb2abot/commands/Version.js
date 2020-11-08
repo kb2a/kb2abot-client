@@ -1,9 +1,9 @@
-import {exec} from "child_process";
-import os from "os";
-import Command from "./Command.js";
-import {round, hasHelpParam} from "../../helper/helperCommand.js";
+const {exec} = require("child_process");
+const os = require("os");
+const Command = require("./Command.js");
+const {round, hasHelpParam} = require("../../helper/helperCommand.js");
 
-class Version extends Command {
+module.exports = class Version extends Command {
 	constructor() {
 		super({
 			keywords: ["version", "v"],
@@ -49,6 +49,4 @@ class Version extends Command {
 		});
 		// const replyMsg = ;
 	}
-}
-
-export default Version;
+};

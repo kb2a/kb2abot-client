@@ -1,8 +1,8 @@
-import mongoPoolPromise from "../helper/helperMongo.js";
-import Manager from "./Manager.js";
-import Account from "./Account.js";
+const mongoPoolPromise = require("../helper/helperMongo.js");
+const Manager = require("./Manager.js");
+const Account = require("./Account.js");
 
-class AccountManager extends Manager {
+module.exports = class AccountManager extends Manager {
 	constructor() {
 		super();
 	}
@@ -34,6 +34,4 @@ class AccountManager extends Manager {
 				});
 		});
 	}
-}
-
-export default AccountManager;
+};

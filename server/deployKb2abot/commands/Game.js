@@ -1,9 +1,9 @@
-import os from "os";
-import * as Games from "./games";
-import {parseValue} from "../../helper/helperCommand.js";
-import Command from "./Command.js";
+const os = require("os");
+const Games = require("./games");
+const {parseValue} = require("../../helper/helperCommand.js");
+const Command = require("./Command.js");
 
-class Game extends Command {
+module.exports = class Game extends Command {
 	constructor() {
 		super({
 			keywords: ["game", "g"],
@@ -66,6 +66,4 @@ class Game extends Command {
 			);
 		}
 	}
-}
-
-export default Game;
+};

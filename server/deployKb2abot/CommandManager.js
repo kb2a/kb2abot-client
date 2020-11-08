@@ -1,8 +1,8 @@
-import * as COMMAND from "./commands";
-import Manager from "../roles/Manager.js";
-import logger from "node-color-log";
+const COMMAND = require("./commands");
+const Manager = require("../roles/Manager.js");
+const logger = require("node-color-log");
 
-class CommandManager extends Manager {
+module.exports = class CommandManager extends Manager {
 	constructor() {
 		super();
 	}
@@ -25,6 +25,4 @@ class CommandManager extends Manager {
 		});
 		return this.items[index];
 	}
-}
-
-export default CommandManager;
+};

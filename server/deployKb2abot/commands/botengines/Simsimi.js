@@ -1,7 +1,7 @@
-import axios from "axios";
-import {log} from "../../../helper/helper.js";
+const axios = require("axios");
+const {log} = require("../../../helper/helper.js");
 
-function Simsimi(body, api, parent, mssg) {
+module.exports = (body, api, parent, mssg) => {
 	log(
 		{
 			text: `USER: "${body}"`,
@@ -28,6 +28,4 @@ function Simsimi(body, api, parent, mssg) {
 			);
 		}
 	});
-}
-
-export default Simsimi;
+};

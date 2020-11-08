@@ -1,8 +1,8 @@
-import mongoPoolPromise from "../helper/helperMongo.js";
-import MemberManager from "./MemberManager.js";
-import Member from "./Member.js";
+const mongoPoolPromise = require("../helper/helperMongo.js");
+const MemberManager = require("./MemberManager.js");
+const Member = require("./Member.js");
 
-class Group {
+module.exports = class Group {
 	constructor({
 		id,
 		owner,
@@ -142,6 +142,4 @@ class Group {
 				});
 		});
 	}
-}
-
-export default Group;
+};

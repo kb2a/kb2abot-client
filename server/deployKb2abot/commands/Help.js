@@ -1,8 +1,8 @@
-import os from "os";
-import Command from "./Command.js";
-import {hasHelpParam} from "../../helper/helperCommand.js";
+const os = require("os");
+const Command = require("./Command.js");
+const {hasHelpParam} = require("../../helper/helperCommand.js");
 
-class Help extends Command {
+module.exports = class Help extends Command {
 	constructor() {
 		super({
 			keywords: ["help"],
@@ -23,6 +23,4 @@ class Help extends Command {
 		replyMsg += `Nhớ thêm dấu / đằng trước và xài param --help hoặc -h để xem hướng dẫn sử dụng lệnh (vd: /rank --help | /rank -h)${os.EOL}Một số lệnh đặc biệt: ${os.EOL}/switch --chat on: Mở bot autoreply lên${os.EOL}`;
 		api.sendMessage(replyMsg, mssg.threadID);
 	}
-}
-
-export default Help;
+};

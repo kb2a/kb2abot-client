@@ -6,4 +6,4 @@ const asyncWait = async time => {
 	});
 };
 
-export {asyncWait};
+module.exports = {asyncWait};

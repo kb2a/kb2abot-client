@@ -1,9 +1,9 @@
-import {MongoClient} from "mongodb";
+const {MongoClient} = require("mongodb");
 const uri = "your mongoURI";
 
 let connPoolPromise = null;
 
-const mongoPoolPromise = () => {
+module.exports = () => {
 	if (connPoolPromise) return connPoolPromise;
 
 	connPoolPromise = new Promise((resolve, reject) => {
@@ -27,5 +27,3 @@ const mongoPoolPromise = () => {
 
 	return connPoolPromise;
 };
-
-export default mongoPoolPromise;

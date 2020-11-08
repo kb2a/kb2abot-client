@@ -1,4 +1,4 @@
-import minimist from "minimist";
+const minimist = require("minimist");
 
 const parseArg = (str, specialChar) => {
 	const quotes = ['"', "'", "`"];
@@ -19,4 +19,4 @@ const parseArg = (str, specialChar) => {
 	return minimist(output);
 };
 
-export {parseArg};
+module.exports = {parseArg};

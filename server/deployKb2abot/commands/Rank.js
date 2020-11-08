@@ -1,9 +1,9 @@
-import {log} from "../../helper/helper.js";
-import {parseValue} from "../../helper/helperCommand.js";
-import os from "os";
-import Command from "./Command.js";
+const {log} = require("../../helper/helper.js");
+const {parseValue} = require("../../helper/helperCommand.js");
+const os = require("os");
+const Command = require("./Command.js");
 
-class Rank extends Command {
+module.exports = class Rank extends Command {
 	constructor() {
 		super({
 			keywords: "rank",
@@ -70,6 +70,4 @@ class Rank extends Command {
 			);
 		}
 	}
-}
-
-export default Rank;
+};

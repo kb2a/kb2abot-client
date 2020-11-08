@@ -1,7 +1,7 @@
-import os from "os";
-import {parseValue} from "../../helper/helperCommand.js";
+const os = require("os");
+const {parseValue} = require("../../helper/helperCommand.js");
 
-class Command {
+module.exports = class Command {
 	constructor({keywords, help, description} = {}) {
 		this.keywords = typeof keywords == "object" ? keywords : [keywords];
 		this.help = help;
@@ -19,6 +19,4 @@ class Command {
 		}
 		delete args["_"]; // no need toz use arg._
 	}
-}
-
-export default Command;
+};

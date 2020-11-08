@@ -1,4 +1,4 @@
-import {asyncWait} from "./helperHelper.js";
+const {asyncWait} = require("./helperHelper.js");
 
 const handleGameOutput = async (api, mssg, game, err, stdout) => {
 	if (err) {
@@ -21,4 +21,4 @@ const handleGameOutput = async (api, mssg, game, err, stdout) => {
 	}
 };
 
-export {handleGameOutput};
+module.exports = {handleGameOutput};

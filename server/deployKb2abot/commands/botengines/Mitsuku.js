@@ -1,13 +1,13 @@
-import os from "os";
-import axios from "axios";
-import {log} from "../../../helper/helper.js";
-import translate from "translate";
+const os = require("os");
+const axios = require("axios");
+const {log} = require("../../../helper/helper.js");
+const translate = require("translate");
 
 // const MITSUKU_THREADID = "47719737069";
 // const TRANS_KEY = "trnsl.1.1.20200421T120324Z.a5209d29ad08ae85.7328dad8e46f00dad4a4cdb9a911868d8ace112b"; // you can use your own yandex translate API KEY
 // const emotes = ":3 🙂 😀 😞 😢 😛 😇 😈 o.O 😉 😮 😑  😠 😗 ❤ 😊 😎 😠 ♒ 😕 ♊ ☺ 󰀀 💩 ☀ ☁ ☔ ⚡ ✨ ⭐ ✳ ⛄ ☕ ♨ ⛵ ⛽ ✈ ⛲ ⛺ ⛪ ☎ ✉ ✂ 🚽 🛀 👙 👙 👕 👘 👗 👢 👠 👡 💼 👜 👔 🎩 👒 👑 💍 🚭 ⚽   ⚾ ⚾ ⛳ 🏈 🏀 🎾 🎱 🎯 🎿 🎌 🏁 🏆".split(" ");
 
-function Mitsuku(body, api, parent, mssg) {
+module.exports = (body, api, parent, mssg) => {
 	log(
 		{
 			text: `USER: "${body}"`,
@@ -46,6 +46,4 @@ function Mitsuku(body, api, parent, mssg) {
 			parent
 		);
 	});
-}
-
-export default Mitsuku;
+};

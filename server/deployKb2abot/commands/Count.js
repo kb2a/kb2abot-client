@@ -1,8 +1,8 @@
-import {log} from "../../helper/helper.js";
-import {parseValue} from "../../helper/helperCommand.js";
-import Command from "./Command.js";
+const {log} = require("../../helper/helper.js");
+const {parseValue} = require("../../helper/helperCommand.js");
+const Command = require("./Command.js");
 
-class Count extends Command {
+module.exports = class Count extends Command {
 	constructor() {
 		super({
 			keywords: ["count", "dem"],
@@ -46,6 +46,4 @@ class Count extends Command {
 			}
 		}
 	}
-}
-
-export default Count;
+};

@@ -1,4 +1,4 @@
-import fs from "fs";
+const fs = require("fs");
 
 const shuffle = arr => {
 	// thuật toán bogo-sort
@@ -52,4 +52,4 @@ for (let i = 10; i <= 100; i++) {
 	for (let j = 0; j < node.length; j++) symbols[i] += symbols[node.charAt(j)];
 }
 
-export {shuffle, cloneObject, data, getParty, symbols};
+module.exports = {shuffle, cloneObject, data, getParty, symbols};

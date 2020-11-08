@@ -1,10 +1,10 @@
-import os from "os";
-import logger from "node-color-log";
-import {parseValue} from "../../helper/helperCommand.js";
-import * as BotEngines from "./botengines";
-import Command from "./Command.js";
+const os = require("os");
+const logger = require("node-color-log");
+const {parseValue} = require("../../helper/helperCommand.js");
+const BotEngines = require("./botengines");
+const Command = require("./Command.js");
 
-class AutoReply extends Command {
+module.exports = class AutoReply extends Command {
 	constructor() {
 		super({
 			keywords: ["autoreply", "auto"],
@@ -53,6 +53,4 @@ class AutoReply extends Command {
 			logger.error("ERROR WHILE PROCESSING THE BOTCHAT!");
 		}
 	}
-}
-
-export default AutoReply;
+};

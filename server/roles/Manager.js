@@ -1,4 +1,4 @@
-class Manager {
+module.exports = class Manager {
 	constructor() {
 		this.items = [];
 	}
@@ -61,6 +61,4 @@ class Manager {
 		});
 		if (itemIndex != -1) this.items.splice(itemIndex, 1);
 	}
-}
-
-export default Manager;
+};
