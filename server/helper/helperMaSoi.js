@@ -1,8 +1,10 @@
-import fs from "fs";
+const fs = require("fs");
 
-const shuffle = function(arr) { // thuật toán bogo-sort
+const shuffle = arr => {
+	// thuật toán bogo-sort
 	let count = arr.length,
-		temp, index;
+		temp,
+		index;
 
 	while (count > 0) {
 		index = Math.floor(Math.random() * count);
@@ -15,16 +17,19 @@ const shuffle = function(arr) { // thuật toán bogo-sort
 	return arr; //Bogosort with no điều kiện dừng
 };
 
-const cloneObject = function(obj) {
+const cloneObject = obj => {
 	return JSON.parse(JSON.stringify(obj));
 };
 
-const data = JSON.parse(fs.readFileSync(`${__dirname}/../deploychatbot/commands/games/masoi/data.json`));
+const data = JSON.parse(
+	fs.readFileSync(
+		`${__dirname}/../deploychatbot/commands/games/masoi/data.json`
+	)
+);
 
 const getParty = role => {
 	for (const party in data) {
-		if (data[party][role])
-			return party;
+		if (data[party][role]) return party;
 	}
 };
 
@@ -44,14 +49,7 @@ const symbols = {
 for (let i = 10; i <= 100; i++) {
 	const node = i.toString();
 	symbols[i] = "";
-	for (let j = 0; j < node.length; j++)
-		symbols[i] += symbols[node.charAt(j)];
+	for (let j = 0; j < node.length; j++) symbols[i] += symbols[node.charAt(j)];
 }
 
-export {
-	shuffle,
-	cloneObject,
-	data,
-	getParty,
-	symbols
-};
+module.exports = {shuffle, cloneObject, data, getParty, symbols};

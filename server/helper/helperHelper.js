@@ -1,4 +1,4 @@
-const asyncWait = async function(time) {
+const asyncWait = async time => {
 	return new Promise(resolve => {
 		setTimeout(() => {
 			resolve();
@@ -6,6 +6,4 @@ const asyncWait = async function(time) {
 	});
 };
 
-export {
-	asyncWait
-};
+module.exports = {asyncWait};

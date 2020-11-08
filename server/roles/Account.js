@@ -1,16 +1,17 @@
-import vigenere from "vigenere";
-import mongoPoolPromise from "../helper/helperMongo.js";
-import GroupManager from "./GroupManager.js";
-import deployChatbot from "../deploychatbot";
+const vigenere = require("vigenere");
+const mongoPoolPromise = require("../helper/helperMongo.js");
+const GroupManager = require("./GroupManager.js");
 
-class Account {
+module.exports = class Account {
 	constructor({
 		dateCreated = Date.now(),
+		botName,
 		username,
 		secretKey,
 		appState,
 		encrypted = false
 	} = {}) {
+		this.botName = botName;
 		this.dateCreated = dateCreated;
 		this.username = username;
 		this.secretKey = secretKey;
@@ -28,11 +29,6 @@ class Account {
 			owner: this.username
 		});
 		// this.groupManager.downloadFromDtb().then(() => {});
-	}
-
-	deploy() {
-		this.decrypt();
-		deployChatbot(this.appState, this);
 	}
 
 	logout() {
@@ -63,36 +59,40 @@ class Account {
 		this.encrypt();
 
 		const dtb = await mongoPoolPromise();
-		dtb.collection("account").updateOne({
-			username: this.username
-		}, {
-			$set: {
-				username: this.username,
-				appState: this.appState,
-				secretKey: this.secretKey,
-				dateCreated: this.dateCreated
+		dtb.collection("account").updateOne(
+			{
+				username: this.username
+			},
+			{
+				$set: {
+					username: this.username,
+					appState: this.appState,
+					secretKey: this.secretKey,
+					dateCreated: this.dateCreated
+				}
+			},
+			{
+				upsert: true
 			}
-		}, {
-			upsert: true
-		});
+		);
 	}
 
 	getData() {
 		this.encrypt();
 		return new Promise(async (resolve, reject) => {
 			const dtb = await mongoPoolPromise();
-			dtb.collection("account").find({
-				username: this.username
-			}).toArray((error, data) => {
-				if (error) throw error;
-				if (data.length == 1) {
-					resolve(data[0]);
-				} else {
-					reject();
-				}
-			});
+			dtb.collection("account")
+				.find({
+					username: this.username
+				})
+				.toArray((error, data) => {
+					if (error) throw error;
+					if (data.length == 1) {
+						resolve(data[0]);
+					} else {
+						reject();
+					}
+				});
 		});
 	}
-}
-
-export default Account;
+};

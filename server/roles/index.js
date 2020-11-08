@@ -1,12 +1,12 @@
-import Manager from "./Manager.js";
-import AccountManager from "./AccountManager.js";
-import Account from "./Account.js";
-import GroupManager from "./GroupManager.js";
-import Group from "./Group.js";
-import MemberManager from "./MemberManager.js";
-import Member from "./Member.js";
+const Manager = require("./Manager.js");
+const AccountManager = require("./AccountManager.js");
+const Account = require("./Account.js");
+const GroupManager = require("./GroupManager.js");
+const Group = require("./Group.js");
+const MemberManager = require("./MemberManager.js");
+const Member = require("./Member.js");
 
-export {
+module.exports = {
 	Manager,
 	AccountManager,
 	Account,
@@ -15,3 +15,5 @@ export {
 	MemberManager,
 	Member
 };
+
+console.log(module.exports);

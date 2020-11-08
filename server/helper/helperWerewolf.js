@@ -1,6 +1,4 @@
-import {
-	asyncWait
-} from "./helperHelper.js";
+const {asyncWait} = require("./helperHelper.js");
 
 const handleGameOutput = async (api, mssg, game, err, stdout) => {
 	if (err) {
@@ -10,15 +8,17 @@ const handleGameOutput = async (api, mssg, game, err, stdout) => {
 	}
 	const output = JSON.parse(stdout.toString().trim());
 	for (const data of output.messages) {
-		if (!data.to)
-			api.sendMessage(data.message, mssg.threadID);
+		if (!data.to) api.sendMessage(data.message, mssg.threadID);
 		else {
-			api.sendMessage(data.message, game.playerManager.find("index", data.to, true).id);
+			api.sendMessage(
+				data.message,
+				game.playerManager.find({
+					id: data.to
+				}).id
+			);
 		}
 		await asyncWait(3000);
 	}
 };
 
-export {
-	handleGameOutput
-};
+module.exports = {handleGameOutput};

@@ -1,18 +1,15 @@
-import {
-	MongoClient
-} from "mongodb";
+const {MongoClient} = require("mongodb");
 const uri = "your mongoURI";
 
 let connPoolPromise = null;
 
-const mongoPoolPromise = () => {
-	if (connPoolPromise)
-		return connPoolPromise;
+module.exports = () => {
+	if (connPoolPromise) return connPoolPromise;
 
 	connPoolPromise = new Promise((resolve, reject) => {
 		const conn = new MongoClient(uri, {
 			useNewUrlParser: true,
-			useUnifiedTopology: true,
+			useUnifiedTopology: true
 		});
 		if (conn.isConnected()) {
 			return resolve(conn);
@@ -30,5 +27,3 @@ const mongoPoolPromise = () => {
 
 	return connPoolPromise;
 };
-
-export default mongoPoolPromise;

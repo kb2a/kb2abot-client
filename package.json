@@ -5,40 +5,36 @@
     "main": "index.js",
     "scripts": {
         "update": "git fetch origin master && git reset --hard origin/master && cd ffmpeg-binary && git fetch origin master && git reset --hard origin/master",
-        "setup": "git init && git remote add origin https://github.com/MrKhoaBean/kb2abot && git clone https://github.com/MrKhoaBean/ffmpeg-binary && npm install",
-		"mobile-setup": "git clone https://github.com/MrKhoaBean/ffmpeg-binary && npm install",
-        "start": "babel-node server",
-        "test": "babel-node test",
-        "dev": "nodemon --exec babel-node server",
-        "debug": "nodemon --exec babel-node --inspect server"
+        "setup": "npm install",
+        "mobile-setup": "npm install",
+        "start": "node index.js",
+        "dev": "nodemon index.js",
+        "debug": "nodemon --inspect index.js"
     },
-    "author": "khoabean@kb2ateam",
+    "author": "KhoaKoMlem",
     "license": "ISC",
     "dependencies": {
         "axios": "^0.19.2",
         "eslint": "^7.6.0",
         "facebook-chat-api": "^1.8.0",
-        "ffmpeg-static": "^4.2.7",
-        "jquery": "^3.5.1",
-        "jsdom": "^16.3.0",
+        "ffmpeg-cli": "^2.7.1",
         "md5": "^2.3.0",
         "minimist": "^1.2.5",
         "mongodb": "^3.5.9",
+        "nedb": "^1.8.0",
+        "node-color-log": "^5.1.0",
+        "ora": "^5.1.0",
         "os": "^0.1.1",
-        "package": "^1.0.1",
+        "prompt-checkbox": "^2.2.0",
         "random": "^2.2.0",
         "request": "^2.88.2",
-        "translate-google": "^1.4.3",
+        "simple-git": "^2.21.0",
         "uniqid": "^5.2.0",
         "vigenere": "^1.0.2",
         "youtube-mp3-downloader": "^0.7.2",
-        "yt-search": "^2.1.8"
+        "yt-search": "^2.3.1"
     },
     "devDependencies": {
-        "@babel/cli": "^7.8.4",
-        "@babel/core": "^7.8.4",
-        "@babel/node": "^7.8.4",
-        "@babel/preset-env": "^7.8.4",
         "nodemon": "^2.0.4"
     }
 }
