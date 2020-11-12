@@ -24,6 +24,18 @@ const showStatusBots = () => {
 	console.log(logMessage);
 };
 
+const execShellCommand = cmd => {
+	return new Promise(resolve => {
+		childProcess.exec(cmd, (error, stdout, stderr) => {
+			if (error) {
+				console.warn(error);
+				resolve();
+			}
+			resolve(stdout ? stdout : stderr);
+		});
+	});
+};
+
 const spawn = (cmd, arg) => {
 	return new Promise(resolve => {
 		const npmProcess = childProcess.spawn(cmd, arg, {
@@ -63,8 +75,17 @@ const checkUpdate = async () => {
 	if (!initResult.existing) {
 		await git.addRemote("origin", "https://github.com/khoakomlem/kb2abot");
 	}
+
 	await git.fetch("origin", "master"); //git fetch origin master
 	await git.reset(["origin/master", "--hard"]); //git reset origin/master --hard
+	try {
+		const installChanged = require("install-changed");
+		installChanged.watchPackage();
+	} catch (e) {
+		console.log();
+		console.log("Installing new module(s)");
+		await execShellCommand("npm install");
+	}
 };
 
 const foolHeroku = async () => {

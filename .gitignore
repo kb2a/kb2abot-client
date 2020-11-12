@@ -2,3 +2,4 @@ node_modules/
 ffmpeg-binary/
 bots/
 credentials/
+packagehash.txt

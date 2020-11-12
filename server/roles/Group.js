@@ -14,21 +14,23 @@ module.exports = class Group {
 		messagesCount = 0,
 		live = true,
 		listen = true,
-		gaming = false
+		gaming = false,
+		prefix = "/"
 	} = {}) {
 		this.id = id;
+		this.owner = owner;
+		this.location = location;
+		this.game = game;
 		this.language = language;
 		this.chat = chat;
 		this.emote = emote;
 		this.messagesCount = messagesCount;
-		this.location = location;
-		this.updating = false; // no database structure
 		this.live = live;
 		this.listen = listen;
 		this.gaming = gaming;
-		this.game = game;
+		this.prefix = prefix;
 
-		this.owner = owner;
+		this.updating = false; // no database structure
 
 		this.memberManager = new MemberManager({
 			owner: this.id

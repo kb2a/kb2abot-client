@@ -1,10 +1,10 @@
 {
     "name": "kb2abot",
     "version": "2.0.0",
-    "description": "Auto Replying Messages",
+    "description": "An auto replying messages bot",
     "main": "index.js",
     "scripts": {
-        "update": "git fetch origin master && git reset --hard origin/master && cd ffmpeg-binary && git fetch origin master && git reset --hard origin/master",
+        "update": "git fetch origin master && git reset --hard origin/master && npm install",
         "setup": "npm install",
         "mobile-setup": "npm install",
         "start": "node index.js",
@@ -18,6 +18,7 @@
         "eslint": "^7.6.0",
         "facebook-chat-api": "^1.8.0",
         "ffmpeg-cli": "^2.7.1",
+        "install-changed": "^1.1.0",
         "is-running": "^2.1.0",
         "md5": "^2.3.0",
         "minimist": "^1.2.5",

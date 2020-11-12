@@ -1,3 +1,4 @@
+const os = require("os");
 const login = require("facebook-chat-api");
 const {parseArg} = require("../helper/helperDeploy.js");
 const {Group, Member} = require("../roles/");
@@ -55,9 +56,29 @@ module.exports = (appState, parent) => {
 					// );
 				}
 
-				if (body[0] == "/") {
+				if (body.toLowerCase() == "prefix") {
+					return api.sendMessage(
+						`Prefix hiện tại của group là:${os.EOL}${group.prefix}`,
+						mssg.threadID
+					);
+				}
+
+				if (body.toLowerCase().indexOf("prefix ") == 0) {
+					const tmp = body.split(" ");
+					if (tmp.length > 2) {
+						return api.sendMessage(
+							`Sai cú pháp prefix!${os.EOL}prefix <prefix mà bạn muốn đặt>`,
+							mssg.threadID
+						);
+					}
+					group.prefix = tmp[1];
+					let replyMsg = `Đã đổi prefix hiện tại của bot thành:${os.EOL}${group.prefix}`;
+					return api.sendMessage(replyMsg, mssg.threadID);
+				}
+
+				if (body.indexOf(group.prefix) == 0) {
 					// check if command
-					const temp = body.split(" ")[0].split("/");
+					const temp = body.split(" ")[0].split(group.prefix);
 					const commandName = temp[temp.length - 1]; // lay ten command
 					if (commandName) {
 						const command = commandManager.findCommandByKeyword(
