@@ -1,3 +1,5 @@
+![GitHub All Releases](https://img.shields.io/github/downloads/khoakomlem/kb2abot/total)
+
 # Auto Reply Bot
 
 An automatically replying messages bot using MITSUKU intelligent.
