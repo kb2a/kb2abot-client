@@ -11,7 +11,7 @@ module.exports = class AutoReply extends Command {
 			help: "[--engine=<engineName> | -e <engineName>]",
 			description: `Dùng để bật auto-reply cho group, default là engine 'simsimi'.${os.EOL}Các engineName: simsimi, mitsuku.`
 		});
-		this.engine = "Mitsuku";
+		this.engine = "Simsimi";
 	}
 
 	fixEngineName(text) {
