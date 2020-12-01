@@ -1,5 +1,5 @@
-node_modules/
+bots/*
 ffmpeg-binary/
-bots/
-credentials/
+logs/
+node_modules/
 packagehash.txt

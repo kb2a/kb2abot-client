@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 
 const shuffle = arr => {
 	// thuật toán bogo-sort
@@ -21,11 +22,12 @@ const cloneObject = obj => {
 	return JSON.parse(JSON.stringify(obj));
 };
 
-const data = JSON.parse(
-	fs.readFileSync(
-		`${__dirname}/../deploychatbot/commands/games/masoi/data.json`
-	)
-);
+const data = {};
+// const data = JSON.parse(
+// 	fs.readFileSync(path.join(__dirname, "../plugins/`")
+// 		`${__dirname}/../deploychatbot/commands/games/masoi/data.json`
+// 	)
+// );
 
 const getParty = role => {
 	for (const party in data) {

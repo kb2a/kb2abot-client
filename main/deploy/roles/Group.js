@@ -1,6 +1,5 @@
-const mongoPoolPromise = require("../helper/helperMongo.js");
 const MemberManager = require("./MemberManager.js");
-const Member = require("./Member.js");
+const { mongoPoolPromise } = kb2abot.helpers;
 
 module.exports = class Group {
 	constructor({
@@ -30,35 +29,12 @@ module.exports = class Group {
 		this.gaming = gaming;
 		this.prefix = prefix;
 
-		this.updating = false; // no database structure
+		this.updating = false;
 
 		this.memberManager = new MemberManager({
 			owner: this.id
 		});
 		// this.memberManager.downloadFromDtb().then(() => {});
-	}
-
-	async downloadFromFacebook(api) {
-		this.updating = true;
-		const memberIDs = await new Promise(resolve => {
-			api.getThreadInfo(this.id, (err, arr) => {
-				resolve(arr.participantIDs);
-			});
-		});
-		api.getUserInfo(memberIDs, (error, ret) => {
-			this.updating = false;
-			if (error) throw error;
-			for (let memberID in ret) {
-				const member = this.memberManager.add(
-					new Member({
-						id: memberID,
-						owner: this.id
-					}),
-					{id: memberID}
-				);
-				Object.assign(member, ret[memberID]);
-			}
-		});
 	}
 
 	sortRank(dependent, growing) {
@@ -74,7 +50,6 @@ module.exports = class Group {
 	}
 
 	checkRank(api, memberID) {
-		// eslint-disable-next-line no-async-promise-executor
 		return new Promise(async resolve => {
 			this.sortRank("messagesCount", false);
 
@@ -127,21 +102,21 @@ module.exports = class Group {
 		);
 	}
 
-	getData() {
-		return new Promise(async (resolve, reject) => {
-			const dtb = await mongoPoolPromise();
-			dtb.collection("group")
-				.find({
-					id: this.id
-				})
-				.toArray((error, data) => {
-					if (error) throw error;
-					if (data.length == 1) {
-						resolve(data[0]);
-					} else {
-						reject();
-					}
-				});
-		});
-	}
+	// getData() {
+	// 	return new Promise(async (resolve, reject) => {
+	// 		const dtb = await mongoPoolPromise();
+	// 		dtb.collection("group")
+	// 			.find({
+	// 				id: this.id
+	// 			})
+	// 			.toArray((error, data) => {
+	// 				if (error) throw error;
+	// 				if (data.length == 1) {
+	// 					resolve(data[0]);
+	// 				} else {
+	// 					reject();
+	// 				}
+	// 			});
+	// 	});
+	// }
 };

@@ -1,4 +1,4 @@
-const {asyncWait} = require("./helperHelper.js");
+const {asyncWait} = require("./asyncWait.js");
 
 const handleGameOutput = async (api, mssg, game, err, stdout) => {
 	if (err) {

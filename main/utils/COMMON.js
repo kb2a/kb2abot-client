@@ -1,3 +1,5 @@
+const minimist = require("minimist");
+
 class Log {
 	constructor({text, icon, bg = "bg1"} = {}) {
 		this.text = text;
@@ -18,6 +20,42 @@ const log = function(logConfig, account) {
 	// account.decrypt();
 	// io.to(account.username).emit("new log", logs[logs.length - 1]);
 	console.log(`[${account.botName}] - ${logs[logs.length - 1].text}`);
+};
+
+const parseArg = (str, specialChar) => {
+	const quotes = ['"', "'", "`"];
+	for (let quote of quotes) {
+		let tmp = str.split(quote);
+		for (let i = 1; i < tmp.length; i += 2) {
+			str = str.replace(
+				`${quote}${tmp[i]}`,
+				`${tmp[i].replace(/ /g, specialChar)}`
+			);
+			str = str.replace(quote, "");
+		}
+	}
+	const output = [];
+	str.split(" ").forEach(word => {
+		output.push(word.replace(new RegExp(specialChar, "g"), " "));
+	});
+	return minimist(output);
+};
+
+const parseJSON = text => {
+	return new Promise((resolve, reject) => {
+		let out;
+		try {
+			out = JSON.parse(text);
+		} catch (err) {
+			reject();
+		} finally {
+			resolve(out);
+		}
+	});
+};
+
+const subname = text => {
+	return text.split(".").slice(0, -1).join(".");
 };
 
 const textTruncate = function(str, length, ending) {
@@ -56,27 +94,13 @@ const removeSpecialChar = function(str) {
 	// return str;
 };
 
-const generateAppState = function(facebookCookie, messengerCookie) {
-	const combine = facebookCookie.concat(messengerCookie);
-
-	const appState = [];
-	for (let cookieElement of combine) {
-		appState.push({
-			key: cookieElement.name,
-			value: cookieElement.value,
-			expires: cookieElement.expirationDate || "",
-			domain: cookieElement.domain.replace(".", ""),
-			path: cookieElement.path
-		});
-	}
-	return appState;
-};
-
 module.exports = {
 	log,
+	subname,
+	parseArg,
+	parseJSON,
 	textTruncate,
 	numbersToWords,
 	currencyFormat,
 	removeSpecialChar,
-	generateAppState
 };

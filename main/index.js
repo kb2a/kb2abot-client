@@ -1,8 +1,34 @@
-const path = require("path");
-const childProcess = require("child_process");
-const bots = [];
-const isRunning = require("is-running");
+const fs = require("fs");
 const os = require("os");
+const ora = require("ora");
+const http = require("http");
+const path = require("path");
+const semver = require("semver");
+const git = require("simple-git")();
+const readline = require("readline");
+const isRunning = require("is-running");
+const Prompt = require("prompt-checkbox");
+const childProcess = require("child_process");
+const workerThreads = require('worker_threads');
+const installChanged = require("install-changed");
+
+/////////////////////////////////////////////////////
+// =============== GLOBAL VARIABLE =============== //
+/////////////////////////////////////////////////////
+const helpers = require("./helpers");
+globalThis.kb2abot = {
+	id: 0, // *later
+	utils: {}, // load all ultilities in silent mode
+	plugins: {}, // load all plugins in silent mode
+	helpers,
+}
+/////////////////////////////////////////////////////
+// ============ END OF GOBAL VARIBALE ============ //
+/////////////////////////////////////////////////////
+
+const bots = [];
+const botsDir = path.join(__dirname, "..", "bots");
+const deployDir = path.join(__dirname, "deploy", "index.js");
 
 const showStatusBots = () => {
 	const lives = [],
@@ -54,7 +80,6 @@ const spawn = (cmd, arg) => {
 };
 
 const checkNode = async () => {
-	const semver = require("semver");
 	const nodeVersion = semver.parse(process.version);
 	if (
 		nodeVersion.major < 12 ||
@@ -70,7 +95,6 @@ const checkNode = async () => {
 };
 
 const checkUpdate = async () => {
-	const git = require("simple-git")();
 	const initResult = await git.init();
 	if (!initResult.existing) {
 		await git.addRemote("origin", "https://github.com/khoakomlem/kb2abot");
@@ -79,7 +103,6 @@ const checkUpdate = async () => {
 	await git.fetch("origin", "master"); //git fetch origin master
 	await git.reset(["origin/master", "--hard"]); //git reset origin/master --hard
 	try {
-		const installChanged = require("install-changed");
 		installChanged.watchPackage();
 	} catch (e) {
 		console.log();
@@ -89,7 +112,7 @@ const checkUpdate = async () => {
 };
 
 const foolHeroku = async () => {
-	const server = require("http").createServer((req, res) => {
+	const server = http.createServer((req, res) => {
 		res.writeHead(200, "OK", {
 			"Content-Type": "text/plain"
 		});
@@ -100,7 +123,6 @@ const foolHeroku = async () => {
 };
 
 const promptMultiple = async (question, choices) => {
-	const Prompt = require("prompt-checkbox");
 	const prompt = new Prompt({
 		name: "multiplechoice",
 		message: question,
@@ -118,37 +140,7 @@ const promptMultiple = async (question, choices) => {
 	return await prompt.run();
 };
 
-const chooseBot = async () => {
-	const fs = require("fs");
-
-	if (!fs.existsSync("bots")) {
-		fs.mkdirSync("bots");
-	}
-
-	const botFiles = fs
-		.readdirSync(__dirname + "/bots")
-		.filter(name => name.indexOf(".json") != -1);
-
-	if (botFiles.length == 0) {
-		console.log("You do not have any cookie(s) in your /bots");
-		process.exit();
-	}
-
-	const loadBotList =
-		botFiles.length > 1
-			? await promptMultiple(
-					"Which cookie(s) do you want to load?",
-					botFiles
-			  )
-			: botFiles;
-	if (loadBotList.length == 0) {
-		console.log("Nothing to do!");
-		process.exit();
-	}
-	for (const botFileName of loadBotList) {
-		loadBot(botFileName, `Starting kb2abot used [${botFileName}]`);
-	}
-	const readline = require("readline");
+const assignCmdHelper = () => {
 	const rl = readline.createInterface({
 		input: process.stdin,
 		output: process.stdout
@@ -168,48 +160,77 @@ const chooseBot = async () => {
 		});
 	};
 	readInput();
+}
+
+const chooseBot = async () => {
+
+	if (!fs.existsSync("bots")) {
+		fs.mkdirSync("bots");
+	}
+
+	const botFiles = fs
+		.readdirSync(botsDir)
+		.filter(name => name.indexOf(".json") != -1);
+
+	if (botFiles.length == 0) {
+		console.log("You do not have any cookie(s) in your /bots");
+		process.exit();
+	}
+
+	const loadBotList =
+		botFiles.length > 1
+			? await promptMultiple(
+					"Which cookie(s) do you want to load? (space = choose, enter = submit)",
+					botFiles
+			  )
+			: botFiles;
+	if (loadBotList.length == 0) {
+		console.log("Nothing to do!");
+		process.exit();
+	}
+	// for (const botFileName of loadBotList) {
+	// 	loadBot(botFileName, `Starting kb2abot used [${botFileName}]`);
+	// }
+	return loadBotList;
 };
 
 const loadBot = async (botFileName, message) => {
-	console.log(message);
+	console.log("BOOTLOADER: " + message);
 	let timeStart = Date.now();
-	const cookieDir = path.join(__dirname, "bots", botFileName);
-	const code =
-		(await spawn("node", ["./server/index.js", `--bot="'${cookieDir}'"`])) %
-		256;
-	switch (code) {
-		case 134:
-			console.log("SIGABRT detected! Aborting all bots . . .");
-			process.exit();
-			break;
-		default:
-			if (Date.now() - timeStart < 10000) {
-				console.log(
-					`[${botFileName}] dies too frequently, please check your code and your cookie!`
-				);
-				process.exit();
-			}
-			loadBot(
-				botFileName,
-				`Restarting kb2abot used [${botFileName}]. . .`
-			);
-	}
+	const cookieDir = path.join(botsDir, botFileName);
+	kb2abot.utils = helpers.loader("utils", false); // preload
+	kb2abot.plugins = helpers.loader("plugins", false); // preload
+	const worker = new workerThreads.Worker(deployDir, {
+		workerData: {
+			botDir: cookieDir,
+			botName: kb2abot.utils.subname(path.basename(cookieDir))
+		}
+	});
 };
 
-const ora = require("ora");
-const tasks = [
-	{fn: checkNode, des: "checking node verion . . ."},
-	{fn: checkUpdate, des: "checking updates . . ."},
-	{fn: foolHeroku, des: "fooling Heroku . . ."}
-];
+const tasks = [];
+const isDev = process.argv.slice(2)[0] == "dev";
+tasks.push({fn: checkNode, des: "checking node verion . . ."});
+!isDev && tasks.push({fn: checkUpdate, des: "checking updates . . ."});
+tasks.push({fn: foolHeroku, des: "fooling Heroku . . ."});
+// tasks.push({fn: foolHeroku, des: "loading plugins . . ."});
 
-(async () => {
-	for (const task of tasks) {
+const bootloader = async () => {
+	for (let i = 0; i < tasks.length; i++) {
+		const task = tasks[i];
 		const spinner = ora(task.des).start();
 		await task.fn();
 		spinner.succeed();
-		if (tasks.indexOf(task) >= tasks.length - 1) {
-			chooseBot();
+		if (i >= tasks.length - 1) {
+			const loadBotList = await chooseBot();
+			assignCmdHelper();
+			for (const botFileName of loadBotList) {
+				loadBot(botFileName, `Starting kb2abot using [${botFileName}]`);
+			}
 		}
 	}
-})();
+}
+
+bootloader();
+
+module.exports = bootloader;
