@@ -1,5 +1,16 @@
 bots/*
+!bots/README.txt
+
+datastores/*
+!datastores/README.txt
+
 ffmpeg-binary/
-logs/
+
+logs/*
+!logs/README.txt
+
+musics/*
+!musics/README.txt
+
 node_modules/
 packagehash.txt
