@@ -1,31 +1,27 @@
-const { mongoPoolPromise } = kb2abot.helpers;
-
 module.exports = class Member {
 	constructor({id, owner, messagesCount = 0, name = "Unknown"} = {}) {
 		this.id = id;
-		this.name = name;
-		this.messagesCount = messagesCount;
-
 		this.owner = owner;
+		this.messagesCount = messagesCount;
+		this.name = name;
 	}
 
 	async uploadToDtb() {
-		const dtb = await mongoPoolPromise();
-		dtb.collection("member").updateOne(
+		kb2abot.datastore.updateOne(
 			{
 				id: this.id,
-				owner: this.owner
+				owner: this.owner,
 			},
 			{
 				$set: {
 					id: this.id,
-					name: this.name,
+					owner: this.owner,
 					messagesCount: this.messagesCount,
-					owner: this.owner
+					name: this.name,
 				}
 			},
 			{
-				upsert: true
+				upsert: true,
 			}
 		);
 	}

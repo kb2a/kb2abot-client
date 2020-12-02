@@ -18,10 +18,18 @@ const installChanged = require("install-changed");
 const helpers = require("./helpers");
 globalThis.kb2abot = {
 	id: 0, // *later
-	utils: {}, // load all ultilities in silent mode
-	plugins: {}, // load all plugins in silent mode
+	utils: {}, // *later
+	plugins: {}, // *later
 	helpers,
 }
+// *later có nghĩa là sẽ load sau
+// Tại sao bootloader cũng có global kb2abot?
+// Vì bootloader là nơi test lỗi của các utils, plugins 
+// bởi 2 cái đó do người dùng chỉnh sửa, thêm bớt nên 
+// sẽ ko đáng tin lắm, có thể phát sinh lỗi nên cần preload
+// để check tất cả lỗi. 
+// (khi loadBot sẽ load lại utils, plugins, helpers thêm lần nữa)
+// Hiện tại chỉ cần properties: id, utils, plugins và helpers thôi!
 /////////////////////////////////////////////////////
 // ============ END OF GOBAL VARIBALE ============ //
 /////////////////////////////////////////////////////

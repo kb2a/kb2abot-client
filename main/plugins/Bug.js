@@ -14,11 +14,11 @@ module.exports = {
 	},
 	fn: async function (args, api, message) {
 		// this.group ở đây
-		// groupManager ở global (kb2abot.groupManager)
-		const text = message.body.split(" ").slice(0, 1).join(" ");
+		const text = message.body.split(" ").slice(1).join(" ");
 		if (text != 0) {
-			console.log(this.group)
-			const member = this.group.memberManager.find({
+			const member = this.group.add({
+				id: message.senderID
+			}, {
 				id: message.senderID
 			});// lam2 function download form facebook nua
 			api.sendMessage(

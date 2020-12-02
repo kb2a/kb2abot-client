@@ -1,11 +1,9 @@
-const GroupManager = require("./GroupManager.js");
+const Account = require("./Account.js");
 const Group = require("./Group.js");
-const MemberManager = require("./MemberManager.js");
 const Member = require("./Member.js");
 
 module.exports = {
-	GroupManager,
+	Account,
 	Group,
-	MemberManager,
 	Member,
 };

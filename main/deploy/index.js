@@ -8,21 +8,17 @@ const workerThreads = require("worker_threads");
 // =============== GLOBAL VARIABLE =============== //
 /////////////////////////////////////////////////////
 const helpers = require("../helpers");
-globalThis.kb2abot = {
-	id: 0, // *later
-	utils: {}, // *later
-	plugins: {}, // *later
+globalThis.kb2abot = require("../kb2abot-global.js").apply({
 	helpers,
-	groupManager: {} // *later
-}
-kb2abot.utils = helpers.loader("utils", true); // load all utilities in silent mode
-kb2abot.plugins = helpers.loader("plugins", true); // load all plugins in silent mode
+	utils: helpers.loader("utils", true), // true means "in silent mode(no log)"
+});
+kb2abot.plugins = helpers.loader("plugins", true);
+// plugins load sau vì plugin cần các hàm utils
 /////////////////////////////////////////////////////
 // ============ END OF GOBAL VARIBALE ============ //
 /////////////////////////////////////////////////////
 
-const GroupManager = require("./roles/GroupManager.js");
-const deployKb2abot = require("./kb2abot.js");
+
 const { parseJSON } = kb2abot.utils;
 const { 
 	isJ2teamCookie,
@@ -41,13 +37,16 @@ const deploy = async data => {
 	const {id, name, appState: officialAppState} = await checkCredential({
 		appState: unofficialAppState
 	});
-	fs.writeFileSync(data.botDir, officialAppState);
+	fs.writeFileSync(data.botDir, JSON.stringify(officialAppState));
 	Object.assign(kb2abot, {
 		id,
-		groupManager: new GroupManager({owner: id})
 	});
-	deployKb2abot(officialAppState, {});
-	console.log(`kb2abot has started for username ${name} (${id})!`);
+
+	console.log("Dang tai datastore . . .");
+	kb2abot.datastore = await kb2abot.helpers.loadDatastore(id);
+	require("./kb2abot.js")(officialAppState); 
+	// require init ở đây bởi vì nếu init sớm hơn thì global kb2abot.id chưa sẵn sàng => error
+	console.log(`kb2abot da cai vao tai khoan ${name} (${id})!`);
 };
 deploy(workerData);
 

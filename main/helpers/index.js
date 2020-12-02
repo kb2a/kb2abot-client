@@ -1,10 +1,10 @@
-const nedb = require("./nedb.js");
+const loadDatastore = require("./loadDatastore.js");
 const loader = require("./loader.js");
 const Manager = require("./Manager.js");
 const PluginManager = require("./PluginManager.js");
 
 module.exports = {
-	nedb,
+	loadDatastore,
 	loader,
 	Manager,
 	PluginManager,

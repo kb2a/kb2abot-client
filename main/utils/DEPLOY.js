@@ -33,7 +33,7 @@ const checkCredential = credential => {
 				resolve({
 					id: userID,
 					name: ret[userID].name,
-					appState: JSON.stringify(api.getAppState())
+					appState: api.getAppState()
 				});
 			});
 		});
