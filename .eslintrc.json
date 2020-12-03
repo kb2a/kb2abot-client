@@ -25,5 +25,8 @@
             "error",
             "always"
         ]
+    },
+    "globals": {
+      "kb2abot": "writeable"
     }
 }
