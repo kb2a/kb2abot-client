@@ -1,6 +1,3 @@
-const fs = require("fs");
-const path = require("path");
-
 const shuffle = arr => {
 	// thuật toán bogo-sort
 	let count = arr.length,

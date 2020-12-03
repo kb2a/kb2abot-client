@@ -1,4 +1,3 @@
-const os = require("os");
 const Command = require("./Command.js");
 const {parseValue} = require("../../helper/helperCommand.js");
 
@@ -6,8 +5,7 @@ module.exports = class Data extends Command {
 	constructor() {
 		super({
 			keywords: ["debug", "data"],
-			help:
-				"[--item=<itemName> | -i <itemName>] [--global | -g | --all | -a]",
+			help: "[--item=<itemName> | -i <itemName>] [--global | -g | --all | -a]",
 			description: "Cái này dành cho nhà phát triển :v"
 		});
 	}
@@ -17,7 +15,7 @@ module.exports = class Data extends Command {
 		const item = parseValue(args, ["item", "i"]);
 		const all = parseValue(args, ["all", "global", "a", "g"]);
 
-		if (item && group.hasOwnProperty(item)) {
+		if (item && group[item]) {
 			const replyMsg = JSON.stringify(group[item]);
 			api.sendMessage(replyMsg, mssg.threadID);
 		}

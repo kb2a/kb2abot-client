@@ -1,24 +1,15 @@
 const os = require("os");
 const axios = require("axios");
-const {log} = require("../../../helper/helper.js");
 
 // const MITSUKU_THREADID = "47719737069";
 // const TRANS_KEY = "trnsl.1.1.20200421T120324Z.a5209d29ad08ae85.7328dad8e46f00dad4a4cdb9a911868d8ace112b"; // you can use your own yandex translate API KEY
 // const emotes = ":3 🙂 😀 😞 😢 😛 😇 😈 o.O 😉 😮 😑  😠 😗 ❤ 😊 😎 😠 ♒ 😕 ♊ ☺ 󰀀 💩 ☀ ☁ ☔ ⚡ ✨ ⭐ ✳ ⛄ ☕ ♨ ⛵ ⛽ ✈ ⛲ ⛺ ⛪ ☎ ✉ ✂ 🚽 🛀 👙 👙 👕 👘 👗 👢 👠 👡 💼 👜 👔 🎩 👒 👑 💍 🚭 ⚽   ⚾ ⚾ ⛳ 🏈 🏀 🎾 🎱 🎯 🎿 🎌 🏁 🏆".split(" ");
 
-module.exports = (body, api, parent, mssg) => {
-	log(
-		{
-			text: `USER: "${body}"`,
-			icon: "reply",
-			bg: "bg1"
-		},
-		parent
-	);
+module.exports = (api, message) => {
 	axios({
 		url: "https://kakko.pandorabots.com/pandora/talk-xml",
-		data: `input=${encodeURI(body)}&botid=9fa364f2fe345a10&custid=${
-			mssg.threadID
+		data: `input=${encodeURI(message.body)}&botid=9fa364f2fe345a10&custid=${
+			message.threadID
 		}`,
 		method: "POST",
 		mode: "no-cors"
@@ -35,14 +26,6 @@ module.exports = (body, api, parent, mssg) => {
 		// }).then(text => {
 		// 	console.log(text); // Hola mundo
 		// });
-		api.sendMessage(replyMsg, mssg.threadID);
-		log(
-			{
-				text: `MITSUKU: "${replyMsg}"`,
-				icon: "robot",
-				bg: "bg1"
-			},
-			parent
-		);
+		api.sendMessage(replyMsg, message.threadID);
 	});
 };

@@ -1,12 +1,7 @@
 const Member = require("./Member.js");
 
 module.exports = class Group extends kb2abot.helpers.Manager {
-	constructor({
-		id,
-		owner,
-		prefix = "/",
-		messagesCount = 0,
-	} = {}) {
+	constructor({id, owner, prefix = "/", messagesCount = 0} = {}) {
 		super();
 		this.id = id;
 		this.owner = owner;
@@ -17,10 +12,13 @@ module.exports = class Group extends kb2abot.helpers.Manager {
 	}
 
 	addMember(id, owner) {
-		return this.add(new Member({
-			id,
-			owner
-		}), { id });
+		return this.add(
+			new Member({
+				id,
+				owner
+			}),
+			{id}
+		);
 	}
 
 	// sortRank(dependent, growing) {

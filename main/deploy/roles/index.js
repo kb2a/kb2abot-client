@@ -5,5 +5,5 @@ const Member = require("./Member.js");
 module.exports = {
 	Account,
 	Group,
-	Member,
+	Member
 };

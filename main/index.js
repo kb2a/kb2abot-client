@@ -7,9 +7,10 @@ const semver = require("semver");
 const git = require("simple-git")();
 const readline = require("readline");
 const isRunning = require("is-running");
+const logger = require("node-color-log");
 const Prompt = require("prompt-checkbox");
 const childProcess = require("child_process");
-const workerThreads = require('worker_threads');
+const workerThreads = require("worker_threads");
 const installChanged = require("install-changed");
 
 /////////////////////////////////////////////////////
@@ -20,14 +21,14 @@ globalThis.kb2abot = {
 	id: 0, // *later
 	utils: {}, // *later
 	plugins: {}, // *later
-	helpers,
-}
+	helpers
+};
 // *later có nghĩa là sẽ load sau
-// Tại sao bootloader cũng có global kb2abot?
-// Vì bootloader là nơi test lỗi của các utils, plugins 
-// bởi 2 cái đó do người dùng chỉnh sửa, thêm bớt nên 
+// Tại sao file bootloader này cũng có global kb2abot?
+// Vì bootloader là nơi test lỗi của các utils, plugins
+// bởi 2 cái đó do người dùng chỉnh sửa, thêm bớt nên
 // sẽ ko đáng tin lắm, có thể phát sinh lỗi nên cần preload
-// để check tất cả lỗi. 
+// để check tất cả lỗi.
 // (khi loadBot sẽ load lại utils, plugins, helpers thêm lần nữa)
 // Hiện tại chỉ cần properties: id, utils, plugins và helpers thôi!
 /////////////////////////////////////////////////////
@@ -70,23 +71,6 @@ const execShellCommand = cmd => {
 	});
 };
 
-const spawn = (cmd, arg) => {
-	return new Promise(resolve => {
-		const npmProcess = childProcess.spawn(cmd, arg, {
-			shell: true,
-			stdio: "inherit",
-			cwd: __dirname
-		});
-		bots.push({
-			pid: npmProcess.pid,
-			name: path.basename(arg[1]).split(".")[0]
-		});
-		npmProcess.on("close", code => {
-			resolve(code);
-		});
-	});
-};
-
 const checkNode = async () => {
 	const nodeVersion = semver.parse(process.version);
 	if (
@@ -114,7 +98,7 @@ const checkUpdate = async () => {
 		installChanged.watchPackage();
 	} catch (e) {
 		console.log();
-		console.log("Installing new module(s)");
+		console.log("Dang cai package moi . . .");
 		await execShellCommand("npm install");
 	}
 };
@@ -168,10 +152,9 @@ const assignCmdHelper = () => {
 		});
 	};
 	readInput();
-}
+};
 
 const chooseBot = async () => {
-
 	if (!fs.existsSync("bots")) {
 		fs.mkdirSync("bots");
 	}
@@ -181,19 +164,19 @@ const chooseBot = async () => {
 		.filter(name => name.indexOf(".json") != -1);
 
 	if (botFiles.length == 0) {
-		console.log("You do not have any cookie(s) in your /bots");
+		console.log("Ban chua dat cookie vo trong thu muc /bots");
 		process.exit();
 	}
 
 	const loadBotList =
 		botFiles.length > 1
 			? await promptMultiple(
-					"Which cookie(s) do you want to load? (space = choose, enter = submit)",
+					"Ban muon load nhung cookie nao? (space = chon, enter = xac nhan)",
 					botFiles
 			  )
 			: botFiles;
 	if (loadBotList.length == 0) {
-		console.log("Nothing to do!");
+		console.log("Hay chon cookie de chay!");
 		process.exit();
 	}
 	// for (const botFileName of loadBotList) {
@@ -204,11 +187,12 @@ const chooseBot = async () => {
 
 const loadBot = async (botFileName, message) => {
 	console.log("BOOTLOADER: " + message);
-	let timeStart = Date.now();
+	const timeStart = Date.now();
 	const cookieDir = path.join(botsDir, botFileName);
 	kb2abot.utils = helpers.loader("utils", false); // preload
 	kb2abot.plugins = helpers.loader("plugins", false); // preload
-	const worker = new workerThreads.Worker(deployDir, {
+	logger.info(`====== DONE(${Date.now() - timeStart}ms!) ======`);
+	new workerThreads.Worker(deployDir, {
 		workerData: {
 			botDir: cookieDir,
 			botName: kb2abot.utils.subname(path.basename(cookieDir))
@@ -218,10 +202,9 @@ const loadBot = async (botFileName, message) => {
 
 const tasks = [];
 const isDev = process.argv.slice(2)[0] == "dev";
-tasks.push({fn: checkNode, des: "checking node verion . . ."});
-!isDev && tasks.push({fn: checkUpdate, des: "checking updates . . ."});
-tasks.push({fn: foolHeroku, des: "fooling Heroku . . ."});
-// tasks.push({fn: foolHeroku, des: "loading plugins . . ."});
+tasks.push({fn: checkNode, des: "Kiem tra phien ban nodejs . . ."});
+!isDev && tasks.push({fn: checkUpdate, des: "Kiem tra cap nhat . . ."});
+tasks.push({fn: foolHeroku, des: "Tao server http gia cho heroku . . ."});
 
 const bootloader = async () => {
 	for (let i = 0; i < tasks.length; i++) {
@@ -233,11 +216,11 @@ const bootloader = async () => {
 			const loadBotList = await chooseBot();
 			assignCmdHelper();
 			for (const botFileName of loadBotList) {
-				loadBot(botFileName, `Starting kb2abot using [${botFileName}]`);
+				loadBot(botFileName, `Dang chay kb2abot su dung [${botFileName}]`);
 			}
 		}
 	}
-}
+};
 
 bootloader();
 

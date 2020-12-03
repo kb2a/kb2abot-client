@@ -1,8 +1,5 @@
 const fs = require("fs");
-const path = require("path");
-const login = require("facebook-chat-api");
 const workerThreads = require("worker_threads");
-
 
 /////////////////////////////////////////////////////
 // =============== GLOBAL VARIABLE =============== //
@@ -10,7 +7,7 @@ const workerThreads = require("worker_threads");
 const helpers = require("../helpers");
 globalThis.kb2abot = require("../kb2abot-global.js").apply({
 	helpers,
-	utils: helpers.loader("utils", true), // true means "in silent mode(no log)"
+	utils: helpers.loader("utils", true) // true means "in silent mode(no log)"
 });
 kb2abot.plugins = helpers.loader("plugins", true);
 // plugins load sau vì plugin cần các hàm utils
@@ -18,15 +15,14 @@ kb2abot.plugins = helpers.loader("plugins", true);
 // ============ END OF GOBAL VARIBALE ============ //
 /////////////////////////////////////////////////////
 
-
-const { parseJSON } = kb2abot.utils;
-const { 
+const {parseJSON} = kb2abot.utils;
+const {
 	isJ2teamCookie,
-	truncateMusics,
+	// truncateMusics,
 	checkCredential,
-	generateAppState,
+	generateAppState
 } = kb2abot.utils.DEPLOY;
-const { workerData } = workerThreads;
+const {workerData} = workerThreads;
 
 const deploy = async data => {
 	// truncateMusics();
@@ -39,12 +35,12 @@ const deploy = async data => {
 	});
 	fs.writeFileSync(data.botDir, JSON.stringify(officialAppState));
 	Object.assign(kb2abot, {
-		id,
+		id
 	});
 
 	console.log("Dang tai datastore . . .");
 	kb2abot.datastore = await kb2abot.helpers.loadDatastore(id);
-	require("./kb2abot.js")(officialAppState); 
+	require("./kb2abot.js")(officialAppState);
 	// require init ở đây bởi vì nếu init sớm hơn thì global kb2abot.id chưa sẵn sàng => error
 	console.log(`kb2abot da cai vao tai khoan ${name} (${id})!`);
 };

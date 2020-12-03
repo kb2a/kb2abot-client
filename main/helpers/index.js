@@ -7,5 +7,5 @@ module.exports = {
 	loadDatastore,
 	loader,
 	Manager,
-	PluginManager,
+	PluginManager
 };

@@ -1,26 +1,29 @@
 const os = require("os");
-const { parseValue } = kb2abot.utils.plugin;
 
 module.exports = {
+	type: "normal",
 	friendlyName: "Báo lỗi",
 	keywords: ["report", "bug"],
 	description: "Dùng gửi góp ý, báo lỗi tới Khoa Ko Mlem",
 	extendedDescription: "/bug <text>",
 	test: {
 		input: {
-			body: "/bug kb2abot thật tuyệt vời!",
+			body: "/bug kb2abot thật tuyệt vời!"
 		},
-		output: true,
+		output: true
 	},
-	fn: async function (args, api, message) {
+	fn: async function(api, message) {
 		// this.group ở đây
-		const text = message.body.split(" ").slice(1).join(" ");
+		const text = kb2abot.utils.slicePluginName(message.body);
 		if (text != 0) {
-			const member = this.group.add({
-				id: message.senderID
-			}, {
-				id: message.senderID
-			});// lam2 function download form facebook nua
+			const member = this.group.add(
+				{
+					id: message.senderID
+				},
+				{
+					id: message.senderID
+				}
+			); // lam2 function download form facebook nua
 			api.sendMessage(
 				`Tôi có góp ý: ${text}${os.EOL}Tin nhắn này được gửi bởi ${member.name}, id: ${member.id}`,
 				"100007723935647"
@@ -35,5 +38,6 @@ module.exports = {
 				message.threadID
 			);
 		}
+		return true;
 	}
 };

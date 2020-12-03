@@ -10,18 +10,18 @@ module.exports = class Member {
 		kb2abot.datastore.updateOne(
 			{
 				id: this.id,
-				owner: this.owner,
+				owner: this.owner
 			},
 			{
 				$set: {
 					id: this.id,
 					owner: this.owner,
 					messagesCount: this.messagesCount,
-					name: this.name,
+					name: this.name
 				}
 			},
 			{
-				upsert: true,
+				upsert: true
 			}
 		);
 	}

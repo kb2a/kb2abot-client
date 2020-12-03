@@ -4,7 +4,7 @@ const form = {
 	plugins: {}, 		// các plugins trong ./plugins
 	helpers: {}, 		// các helpers trong ./helpers
 	datastore: {},		// datastore (sử dụng nedb)
-	groupManager: {}, 	// quản lí các role Group
+	pluginStorage: {},	// lưu trữ các data của plugin (ví dụ engineName của plugin autoReply)
 };
 
 const apply = data => {

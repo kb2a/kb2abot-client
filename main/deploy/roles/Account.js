@@ -1,21 +1,21 @@
 const Group = require("./Group.js");
 
 module.exports = class Account extends kb2abot.helpers.Manager {
-	constructor({
-		id,
-	} = {}) {
+	constructor({id} = {}) {
 		super();
 		this.id = id;
 	}
 
 	addGroup(id, owner) {
-		return this.add(new Group({
-			id,
-			owner
-		}), { id });
+		return this.add(
+			new Group({
+				id,
+				owner
+			}),
+			{id}
+		);
 	}
 
-	
 	// async uploadToDtb() {
 	// 	await kb2abot.datastore.updateOne(
 	// 		{

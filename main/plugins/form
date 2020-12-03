@@ -1,0 +1,9 @@
+module.exports = {
+	type: "",
+	friendlyName: "",
+	keywords: ["", ""],
+	description: "",
+	extendedDescription: "",
+	fn: async function (api, message) {
+	}
+};
