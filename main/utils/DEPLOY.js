@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const login = require("facebook-chat-api");
 
 const isJ2teamCookie = json => {
@@ -8,20 +10,21 @@ const isJ2teamCookie = json => {
 };
 
 const truncateMusics = () => {
-	fs.readdir("musics", (err, files) => { // delete all music files before start
+	fs.readdir("musics", (err, files) => {
+		// delete all music files before start
 		if (err) throw err;
 
 		for (const file of files) {
-			fs.unlink(path.join("musics", file), (error) => {
+			fs.unlink(path.join("musics", file), error => {
 				if (error) throw error;
 			});
 		}
 	});
-}
+};
 
 const checkCredential = credential => {
 	return new Promise((resolve, reject) => {
-		login(credential, { logLevel: "silent" }, (err, api) => {
+		login(credential, {logLevel: "silent"}, (err, api) => {
 			if (err) {
 				console.log("Wrong/expired cookie!");
 				reject(err);
@@ -38,7 +41,7 @@ const checkCredential = credential => {
 			});
 		});
 	});
-}
+};
 
 const generateAppState = j2teamCookie => {
 	const unofficialAppState = [];
@@ -58,5 +61,5 @@ module.exports = {
 	isJ2teamCookie,
 	truncateMusics,
 	checkCredential,
-	generateAppState,
-}
+	generateAppState
+};
