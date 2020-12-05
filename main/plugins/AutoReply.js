@@ -4,7 +4,7 @@ const BotEngines = require("./botengines");
 module.exports = {
 	type: "continuous",
 	friendlyName: "Tự động trả lời tin nhắn",
-	keywords: ["autoreply", "auto"],
+	keywords: ["autoreply", "auto", "bug"],
 	description:
 		"Dùng để bật chức năng tự động trả lời cho bot, default là xài engine 'simsimi'",
 	extendedDescription: `/autoreply <engineName>${os.EOL}Các engineName: simsimi, mitsuku.`,
@@ -16,7 +16,7 @@ module.exports = {
 				message.threadID
 			);
 		} else {
-			const fixedEngineName = kb2abot.utils.AutoReply.fixEngineName(message.body);
+			const fixedEngineName = kb2abot.utils.autoreply.fixEngineName(message.body);
 			if (BotEngines[fixedEngineName]) {
 				this.engine = fixedEngineName;
 				api.sendMessage(

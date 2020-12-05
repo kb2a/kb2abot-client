@@ -2,7 +2,7 @@ const {exec} = require("child_process");
 const os = require("os");
 
 module.exports = {
-	type: "normal",
+	type: "continuous",
 	friendlyName: "Xem version, log update",
 	keywords: ["version", "v"],
 	description: "Tra cứu phiên bản của chatbot và xem update log",

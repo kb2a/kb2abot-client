@@ -1,6 +1,6 @@
 <%if (hasUtil) {%>const { /*get somthing*/ } = kb2abot.utils["<%=name%>"];
-<%}%>
-module.exports = {
+
+<%}%>module.exports = {
 	type: "normal",
 	// gồm 2 type: "normal" và "continuous"
 	// normal là gọi lệnh và thực hiện lệnh đó 1 cách bình thường
@@ -10,7 +10,7 @@ module.exports = {
 	// tên thân thiện của plugin (để hiển thị trong danh sách câu lệnh)
 
 	keywords: ["<%=name%>"],
-	// Là các từ khóa để gọi plugin này (có thể có nhiều)
+	// Là các từ khóa để gọi plugin <%=name%> (có thể có nhiều cái)
 
 	description: "This plugin is awesome!",
 	// Là nội dung của plugin (dùng để hiển thị trong hướng dẫn chi tiết)
@@ -18,7 +18,7 @@ module.exports = {
 	extendedDescription: "/<%=name%> ",
 	// Là hướng dẫn sử dụng của plugin (dùng để hiển thị trong hướng dẫn chi tiết)
 
-	fn: async function (api, message) {
+	fn: async function(api, message) {
 		// Code của bạn ở đây . . .
 	}
 	// function chính của plugin

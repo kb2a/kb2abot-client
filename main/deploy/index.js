@@ -1,6 +1,6 @@
 const fs = require("fs");
 const workerThreads = require("worker_threads");
-
+const logger = require("node-color-log");
 /////////////////////////////////////////////////////
 // =============== GLOBAL VARIABLE =============== //
 /////////////////////////////////////////////////////
@@ -42,7 +42,7 @@ const deploy = async data => {
 	kb2abot.datastore = await kb2abot.helpers.loadDatastore(id);
 	require("./kb2abot.js")(officialAppState);
 	// require init ở đây bởi vì nếu init sớm hơn thì global kb2abot.id chưa sẵn sàng => error
-	console.log(`kb2abot da cai vao tai khoan ${name} (${id})!`);
+	logger.fontColorLog("green", `kb2abot da cai vao tai khoan ${name} (${id})!`);
 };
 deploy(workerData);
 
