@@ -4,7 +4,7 @@ const BotEngines = require("./botengines");
 module.exports = {
 	type: "continuous",
 	friendlyName: "Tự động trả lời tin nhắn",
-	keywords: ["autoreply", "auto", "bug"],
+	keywords: ["autoreply", "auto"],
 	description:
 		"Dùng để bật chức năng tự động trả lời cho bot, default là xài engine 'simsimi'",
 	extendedDescription: `/autoreply <engineName>${os.EOL}Các engineName: simsimi, mitsuku.`,
