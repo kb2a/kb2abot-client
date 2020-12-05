@@ -1,0 +1,25 @@
+<%if (hasUtil) {%>const { /*get somthing*/ } = kb2abot.utils["<%=name%>"];
+<%}%>
+module.exports = {
+	type: "normal",
+	// gồm 2 type: "normal" và "continuous"
+	// normal là gọi lệnh và thực hiện lệnh đó 1 cách bình thường
+	// continuous là gọi lệnh đó xong, lệnh vẫn tiếp tục thực hiện mà không cần prefix!
+
+	friendlyName: "Plugin that do awesome things",
+	// tên thân thiện của plugin (để hiển thị trong danh sách câu lệnh)
+
+	keywords: ["<%=name%>"],
+	// Là các từ khóa để gọi plugin này (có thể có nhiều)
+
+	description: "This plugin is awesome!",
+	// Là nội dung của plugin (dùng để hiển thị trong hướng dẫn chi tiết)
+
+	extendedDescription: "/<%=name%> ",
+	// Là hướng dẫn sử dụng của plugin (dùng để hiển thị trong hướng dẫn chi tiết)
+
+	fn: async function (api, message) {
+		// Code của bạn ở đây . . .
+	}
+	// function chính của plugin
+};

@@ -9,7 +9,7 @@ const API_SIG =
 	"b92dd121d84c5597d770896c7a93e60f03247b50828bdf1012b5da052951c74c22f9db6072ec5b942546114dbd3a773d79d675f9e668cf1e9a31af37c9aa2efa";
 const API_KEY = "38e8643fb0dc04e8d65b99994d3dafff";
 const {parseValue, parseArg, deleteFile, getFileSize} = kb2abot.utils;
-const {getDownloadUrl, addMusicInfo, getMusicInfo} = kb2abot.utils.zingmp3;
+const {getDownloadUrl, addMusicInfo, getMusicInfo} = kb2abot.utils.ZingMp3;
 const musicPath = path.join(__dirname, "../../musics");
 const store = [];
 
