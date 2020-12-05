@@ -16,7 +16,7 @@ module.exports = {
 				message.threadID
 			);
 		} else {
-			const fixedEngineName = kb2abot.utils.AutoReply.fixEngineName(message.body);
+			const fixedEngineName = kb2abot.utils.autoreply.fixEngineName(message.body);
 			if (BotEngines[fixedEngineName]) {
 				this.engine = fixedEngineName;
 				api.sendMessage(

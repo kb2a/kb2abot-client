@@ -7,8 +7,8 @@ module.exports = class Group extends kb2abot.helpers.Manager {
 		this.owner = owner;
 		this.prefix = prefix;
 		this.messagesCount = messagesCount;
-
 		this.updating = false;
+		this.continuousPluginManager = new kb2abot.helpers.Manager();
 	}
 
 	addMember(id, owner) {

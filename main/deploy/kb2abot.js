@@ -59,6 +59,11 @@ const fn = async function(err, message) {
 				} catch (e) {
 					api.sendMessage(e.message, message.threadID);
 				}
+				if (plugin.type == "continuous") {
+					group.continuousPluginManager.add(plugin, {
+						name: plugin.name
+					});
+				}
 			} else {
 				api.sendMessage("Lệnh không xác định!", message.threadID);
 			}
@@ -66,26 +71,23 @@ const fn = async function(err, message) {
 		return;
 	} else {
 		// not a plugin
+		for (const continuousPlugin of group.continuousPluginManager.items) {
+			try {
+				await continuousPlugin.fn.call(
+					{
+						group,
+						account
+					},
+					api,
+					message
+				);
+			} catch (e) {
+				api.sendMessage(e.message, message.threadID);
+			}
+		}
 		group.messagesCount++;
 		const member = group.addMember(message.senderID, message.threadID);
 		member.messagesCount++;
-		// group.uploadToDtb();
-		// group.memberManager.find(message.senderID, true, true).uploadToDtb();
-		// if (group.gaming) {
-		// 	group.game.update(
-		// 		message.body,
-		// 		api,
-		// 		message,
-		// 		group,
-		// 		account
-		// 	);
-		// } else {
-		// 	if (group.chat)
-		// 		// bot autoreply is on?
-		// 		pluginManager
-		// 			.findpluginByKeyword("autoreply")
-		// 			.reply(message.body, api, message);
-		// }
 	}
 };
 
