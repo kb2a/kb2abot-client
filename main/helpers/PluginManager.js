@@ -12,9 +12,7 @@ module.exports = class CommandManager extends Manager {
 		for (const name in plugins) {
 			for (const keyword of plugins[name].keywords) {
 				if (checkKeyword[keyword]) {
-					logger.warn(
-						`Vui long kiem tra lai keyword cua plugin: ${name}.js va ${checkKeyword[keyword]}.js, bi trung keyword: ${keyword}`
-					);
+					logger.warn(`Vui long kiem tra lai keyword cua plugin: ${name}.js va ${checkKeyword[keyword]}.js, bi trung keyword: ${keyword}`);
 				}
 				checkKeyword[keyword] = name;
 			}
