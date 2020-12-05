@@ -5,7 +5,7 @@ const workerThreads = require("worker_threads");
 // =============== GLOBAL VARIABLE =============== //
 /////////////////////////////////////////////////////
 const helpers = require("../helpers");
-globalThis.kb2abot = require("../kb2abot-global.js").apply({
+globalThis.kb2abot = require("../kb2abot-global.js").extend({
 	helpers,
 	utils: helpers.loader("utils", true) // true means "in silent mode(no log)"
 });
@@ -38,7 +38,7 @@ const deploy = async data => {
 		id
 	});
 
-	console.log("Dang tai datastore . . .");
+	console.log(`Dang tai database ${id}.db . . .`);
 	kb2abot.datastore = await kb2abot.helpers.loadDatastore(id);
 	require("./kb2abot.js")(officialAppState);
 	// require init ở đây bởi vì nếu init sớm hơn thì global kb2abot.id chưa sẵn sàng => error

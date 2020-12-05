@@ -7,11 +7,11 @@ const form = {
 	pluginStorage: {} // lưu trữ các data của plugin (ví dụ engineName của plugin autoReply)
 };
 
-const apply = data => {
+const extend = data => {
 	return Object.assign(form, data);
 };
 
 module.exports = {
 	form,
-	apply
+	extend
 };
