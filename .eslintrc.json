@@ -11,7 +11,8 @@
     "rules": {
         "indent": [
             "error",
-            "tab"
+            "tab",
+            { "SwitchCase": 1 }
         ],
         "linebreak-style": [
             "error",
@@ -25,5 +26,8 @@
             "error",
             "always"
         ]
+    },
+    "globals": {
+      "kb2abot": "writeable"
     }
 }
