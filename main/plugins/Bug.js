@@ -14,7 +14,7 @@ module.exports = {
 	},
 	fn: async function(api, message) {
 		// this.group ở đây
-		const text = kb2abot.utils.slicePluginName(message.body);
+		const text = kb2abot.utils.getParam(message.body);
 		if (text != 0) {
 			const member = this.group.add(
 				{
@@ -25,7 +25,7 @@ module.exports = {
 				}
 			); // lam2 function download form facebook nua
 			api.sendMessage(
-				`Tôi có góp ý: ${text}${os.EOL}Tin nhắn này được gửi bởi ${member.name}, id: ${member.id}`,
+				`Tôi có góp ý: ${text}${os.EOL}Tin nhắn này được gửi bởi id: ${member.id}`,
 				"100007723935647"
 			);
 			api.sendMessage(
