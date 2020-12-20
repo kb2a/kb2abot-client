@@ -12,12 +12,13 @@ const Prompt = require("prompt-checkbox");
 const childProcess = require("child_process");
 const workerThreads = require("worker_threads");
 const installChanged = require("install-changed");
+const checkInternetConnected = require("check-internet-connected");
 
 /////////////////////////////////////////////////////
 // =============== GLOBAL VARIABLE =============== //
 /////////////////////////////////////////////////////
 const helpers = require("./helpers");
-globalThis.kb2abot = require("./kb2abot-global.js").extend({
+globalThis.kb2abot = Object.assign(require("./kb2abot-global.js"), {
 	helpers
 });
 const timeStart = Date.now();
@@ -95,6 +96,19 @@ const checkNode = async () => {
 };
 
 const checkUpdate = async () => {
+	const config = {
+		timeout: 5000, //timeout connecting to each server, each try
+		retries: 5, //number of retries to do before failing
+		domain: "https://github.com" //the domain to check DNS record of
+	};
+	try {
+		await checkInternetConnected(config);
+	} catch (e) {
+		console.log();
+		console.log(e.message);
+		console.log("Vui long kiem tra lai ket noi internet!");
+		process.exit();
+	}
 	const initResult = await git.init();
 	if (!initResult.existing) {
 		await git.addRemote("origin", "https://github.com/kb2abot/kb2abot");
