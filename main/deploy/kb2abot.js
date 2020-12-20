@@ -12,7 +12,6 @@ kb2abot.utils.DATASTORE.load();
 setInterval(kb2abot.utils.DATASTORE.save, 5000);
 
 const fn = async function(err, message) {
-	if (!group.storage.prefix) group.storage.prefix = "/";
 	const api = this.api; // binded {api: api}
 	if (!message || message.threadID == undefined) return;
 	if (!message.body) return;
@@ -20,6 +19,8 @@ const fn = async function(err, message) {
 
 	const group = kb2abot.account.addGroup(message.threadID, kb2abot.id);
 	const member = group.addMember(message.senderID, message.threadID);
+
+	if (!group.storage.prefix) group.storage.prefix = "/";
 
 	if (message.body.toLowerCase() == "prefix") {
 		return api.sendMessage(
