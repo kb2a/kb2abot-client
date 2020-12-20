@@ -1,40 +1,63 @@
+/**
+ * Chứa các function thông thường được sử dụng nhiều<br>
+ * Hướng dẫn import:<br>
+ * const {<tên hàm 1>, <tên hàm 2>} = kb2abot.utils;<br>
+ * Ví dụ:
+ * <code>const {asyncWait, round, extend} = kb2abot.utils;</code>
+ * @module COMMON
+ */
 const fs = require("fs");
 const minimist = require("minimist");
 
-class Log {
-	constructor({text, icon, bg = "bg1"} = {}) {
-		this.text = text;
-		this.icon = icon;
-		this.bg = bg;
-		this.dateCreated = Date.now();
-	}
-
-	toLocaleString() {
-		return new Date(this.dateCreated).toLocaleString("en-GB");
-	}
-}
-
-const log = function(logConfig, account) {
-	if (!account.groupManager.listen) return;
-	let logs = account.chatbot.logs;
-	logs.push(new Log(logConfig));
-	// account.decrypt();
-	// io.to(account.username).emit("new log", logs[logs.length - 1]);
-	console.log(`[${account.botName}] - ${logs[logs.length - 1].text}`);
+/**
+ * Hàm dừng chương trình async
+ * @async
+ * @param  {Number} time Thời gian bạn muốn dừng (milisecond)
+ * @example
+ * console.log("Loi! Vui long gui lai sau 5 giay")
+ * kb2abot.utils.asyncWait(5000).then(() => {
+ * 	console.log("Ban co the gui lai duoc roi!");
+ * });
+ */
+const asyncWait = async time => {
+	return new Promise(resolve => {
+		setTimeout(() => {
+			resolve();
+		}, time);
+	});
 };
-
-const lower = text => {
-	return text.toLowCase();
-};
-
-const upper = text => {
-	return text.toUpperCase();
-};
-
+/**
+ * Làm tròn đến chữ số thập phân x
+ * @param  {Number} number Số bạn muốn làm tròn
+ * @param  {Number} amount Số lượng chữ số thập phân (x)
+ * @return {Number}        Số được làm tròn chữ số thập phân x
+ * @example
+ * kb2abot.utils.round(Math.PI, 2);
+ * // 3.14
+ */
 const round = (number, amount) => {
 	return parseFloat(Number(number).toFixed(amount));
 };
-
+/**
+ * Kế thừa các thuộc tính của 1 object sâu (khác với Object.assign)
+ * @param  {Object} object Object kế thừa
+ * @param  {Object} deep Object bị kế thừa
+ * @return {Object}        Object đã kế thừa
+ * @example
+ * const obj1 = {
+ * 	a: {
+ * 		b: true
+ * 	}
+ * };
+ * const obj2 = {
+ * 	a: {
+ * 		c: "kb2abot"
+ * 	}
+ * }
+ * kb2abot.utils.extend(a, b);
+ * // { a: { b: "kb2abot", c: true } }
+ * }
+ */
 const extend = (obj, deep) => {
 	let argsStart, deepClone;
 
@@ -47,7 +70,7 @@ const extend = (obj, deep) => {
 	}
 
 	for (let i = argsStart; i < arguments.length; i++) {
-		let source = arguments[i];
+		const source = arguments[i];
 
 		if (source) {
 			for (let prop in source) {
@@ -67,8 +90,15 @@ const extend = (obj, deep) => {
 
 	return obj;
 };
-
-const parseArg = (str, specialChar) => {
+/**
+ * Dịch 1 đoạn văn bản thành các arguments (xài minimist để dịch)
+ * @param  {String} text         Đoạn văn bản nào đó
+ * @param  {String} [specialChar=א] Kí tự đặc biệt để xử lí quote
+ * @return {Object}             Arguments
+ * @example
+ * //Xem ở đây: {@link https://www.npmjs.com/package/minimist} (nhớ CTRL + CLICK)
+ */
+const parseArgs = (str, specialChar) => {
 	const quotes = ['"', "'", "`"];
 	for (let quote of quotes) {
 		let tmp = str.split(quote);
@@ -86,34 +116,18 @@ const parseArg = (str, specialChar) => {
 	});
 	return minimist(output);
 };
-
-const parseBool = str => {
-	if (["on", "true", "yes", "positive", "t"].indexOf(str) != -1) {
-		return true;
-	}
-	if (["off", "false", "no", "negative", "n"].indexOf(str) != -1) return false;
-	return Boolean(str);
-};
-
-const parseJSON = text => {
-	return new Promise((resolve, reject) => {
-		let out;
-		try {
-			out = JSON.parse(text);
-		} catch (err) {
-			reject();
-		} finally {
-			resolve(out);
-		}
-	});
-};
-
-const deleteFile = path => {
-	fs.unlink(path, err => {
-		if (err) throw err;
-	});
-};
-
+/**
+ * Lấy giá trị trong minimist arguments (Dùng chung với hàm parseArg)
+ * @param  {Object} args           Args của minimist
+ * @param  {Array} validList       Các trường mà bạn cần lấy giá trị
+ * @return {Boolean|String|Number} Giá trị của trường đó
+ * @example
+ * const args = kb2abot.utils.parseArg("kb2abot --version -s");
+ * kb2abot.utils.parseValue(args, ["version", "v"]);
+ * // 1
+ * kb2abot.utils.parseValue(args, ["s"]);
+ * // TRUE
+ */
 const parseValue = (args, validList) => {
 	for (const param in args) {
 		if (validList.indexOf(param) != -1) {
@@ -123,71 +137,135 @@ const parseValue = (args, validList) => {
 	}
 	return undefined;
 };
-
+/**
+ * Dịch json sang object
+ * @param  {String} json JSON
+ * @return {Promise}     Promise với JSON được dịch
+ * @example
+ * kb2abot.utils.parseJSON('{"kb2abot": true}').then(result => {
+ * 	console.log(result);
+ * })
+ * // {kb2abot: true}
+ */
+const parseJSON = text => {
+	return new Promise((resolve, reject) => {
+		try {
+			resolve(JSON.parse(text));
+		} catch (e) {
+			reject(e);
+		}
+	});
+};
+/**
+ * Xóa 1 file theo đường dẫn
+ * @param  {String} path Đường dẫn tới file
+ * @example
+ * kb2abot.utils.deleteFile(__dirname + "/test.txt");
+ * // *File test.txt sẽ bị xóa*
+ */
+const deleteFile = path => {
+	return new Promise((resolve, reject) => {
+		try {
+			fs.unlinkSync(path);
+			resolve();
+		} catch (e) {
+			reject(e);
+		}
+	});
+};
+/**
+ * Lấy keyword của 1 đoạn tin nhắn
+ * @param  {String} text Đoạn tin nhắn của người dùng
+ * @return {String}      Keyword của lệnh đó
+ * @example
+ * kb2abot.utils.getKeyword("/help")
+ * // "help"
+ * kb2abot.utils.getKeyword("/ytmp3 -s 'Anh yeu em'")
+ * // "ytmp3"
+ */
+const getKeyword = text => {
+	return text
+		.split(" ")
+		.slice(0, 1)[0]
+		.slice(1);
+};
+/**
+ * Tính dung lượng của file (theo mb)
+ * @param  {String} path Đường dẫn tới file
+ * @return {Number}      Dung lượng của file (mb)
+ * @example
+ * // file test.txt có dung lượng 1024KB
+ * kb2abot.utils.getFileSize(__dirname + "/test.txt");
+ * // 1
+ */
 const getFileSize = path => {
 	let fileSizeInBytes = fs.statSync(path)["size"];
 	//Convert the file size to megabytes (optional)
 	let fileSizeInMegabytes = fileSizeInBytes / 1000000.0;
 	return Math.round(fileSizeInMegabytes);
 };
-
+/**
+ * Lấy tên file bỏ đuôi extension
+ * @param  {String} text Tên file
+ * @return {String}      Tên file không có đuôi
+ * @example
+ * kb2abot.utils.subname("test.txt");
+ * // "test"
+ */
 const subname = text => {
 	return text
 		.split(".")
 		.slice(0, -1)
 		.join(".");
 };
-
-const textTruncate = function(str, length, ending) {
-	if (length == null) {
-		length = 100;
-	}
-	if (ending == null) {
-		ending = "...";
-	}
-	if (str.length > length) {
-		return str.substring(0, length - ending.length) + ending;
-	} else {
-		return str;
-	}
-};
-
-const numbers = ["z", "o", "t", "h", "f", "i", "s", "e", "g", "n"];
-
-const numbersToWords = function(number) {
+/**
+ * Chuyển 1 số về dạng mật mã đặc biệt (theo bảng chữ cái tiếng anh)
+ * @param  {Number} number Số bạn muốn chuyển
+ * @return {String}        Mã đặc biệt 1 = "o", 2 = "t",...
+ * @example
+ * kb2abot.utils.numbersToWords(123);
+ * // "oth"
+ * kb2abot.utils.numbersToWords(18102004);
+ * // "ogoztzzf"
+ */
+const numberToPassword = function(number) {
+	const numbers = ["z", "o", "t", "h", "f", "i", "s", "e", "g", "n"];
 	let str = number.toString();
 	for (let i = 0; i < 10; i++) {
 		str = str.replace(new RegExp(i, "g"), numbers[i]);
 	}
 	return str;
 };
-
+/**
+ *
+ * @param  {String|Number} number Định dạng 1 string, number về dạng tiền tệ
+ * @return {String}               Tiền tệ
+ * @example
+ * kb2abot.utils.currencyFormat(1234567);
+ * // "1,234,567"
+ */
 const currencyFormat = function(number) {
 	return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
-
-const slicePluginName = text => {
+/**
+ * Lấy dữ liệu của tin nhắn câu lệnh
+ * @param  {String} text Lệnh người dùng nhập
+ * @return {String}      1 text với keyword đã bị bỏ
+ * @example
+ * kb2abot.utils.slicePluginName("/help hello, good morning!");
+ * // "hello, good morning!"
+ */
+const getParam = text => {
 	return text
 		.split(" ")
 		.slice(1)
 		.join(" ");
 };
-
-const apiErrorHandler = (api, log, parent, mssg, err) => {
-	if (err) {
-		const replyMsg = `Đã gặp lỗi "${err.errorDescription}" khi đang gửi tin nhắn`;
-		api.sendMessage(replyMsg, mssg.threadID);
-		log(
-			{
-				text: replyMsg,
-				icon: "exclamation-triangle",
-				bg: "bg3"
-			},
-			parent
-		);
-	}
-};
-
+/**
+ * Loại bỏ các kí tự lạ trong văn bản
+ * @param  {String} text Văn bản nào đó
+ * @return {String}      Văn bản sạch
+ */
 const removeSpecialChar = function(str) {
 	if (str === null || str === "") return false;
 	else str = str.toString();
@@ -197,22 +275,18 @@ const removeSpecialChar = function(str) {
 };
 
 module.exports = {
-	log,
-	lower,
-	upper,
 	round,
 	extend,
 	subname,
-	parseArg,
-	parseBool,
+	parseArgs,
 	parseJSON,
+	asyncWait,
 	deleteFile,
 	parseValue,
+	getKeyword,
 	getFileSize,
-	textTruncate,
-	numbersToWords,
+	numberToPassword,
 	currencyFormat,
-	slicePluginName,
-	apiErrorHandler,
+	getParam,
 	removeSpecialChar
 };
