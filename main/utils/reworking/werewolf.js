@@ -1,4 +1,4 @@
-const {asyncWait} = require("./asyncWait.js");
+const {asyncWait} = require("./COMMON.js");
 
 const handleGameOutput = async (api, mssg, game, err, stdout) => {
 	if (err) {
