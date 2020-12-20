@@ -5,7 +5,7 @@ const uniqid = require("uniqid");
 const path = require("path");
 const os = require("os");
 const fs = require("fs");
-const {round, parseValue, deleteFile, parseArg} = kb2abot.utils;
+const {round, parseValue, deleteFile, parseArgs} = kb2abot.utils;
 const musicPath = path.join(__dirname, "../../musics");
 
 module.exports = {
@@ -16,7 +16,7 @@ module.exports = {
 	extendedDescription:
 		"/ytmp3 [--play=<videoID> | -p <videoID>] [--search=<videoName> | -s <videoName>]",
 	fn: async function(api, message) {
-		const args = parseArg(message.body, "א");
+		const args = parseArgs(message.body, "א");
 		const id = parseValue(args, ["play", "p"]);
 		const search = parseValue(args, ["search", "s"]);
 
