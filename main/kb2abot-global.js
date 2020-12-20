@@ -1,17 +1,7 @@
-const form = {
+module.exports = {
 	id: 0, // id của người dùng facebook
 	utils: {}, // các ultilities trong ./utils
 	plugins: {}, // các plugins trong ./plugins
 	helpers: {}, // các helpers trong ./helpers
-	datastore: {}, // datastore (sử dụng nedb)
-	pluginStorage: {} // lưu trữ các data của plugin (ví dụ engineName của plugin autoReply)
-};
-
-const extend = data => {
-	return Object.assign(form, data);
-};
-
-module.exports = {
-	form,
-	extend
+	account: {} // Chứa mọi thông tin từ group đến member, ...
 };
