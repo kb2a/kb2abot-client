@@ -9,7 +9,7 @@ module.exports = {
 	description: "Cho thông tin về thời tiết hiện tại 1 địa chỉ nào đó",
 	extendedDescription: "/weather <location>",
 	fn: async function(api, message) {
-		const location = kb2abot.utils.slicePluginName(message.body);
+		const location = kb2abot.utils.getParam(message.body);
 		try {
 			const {weather, main, name} = (
 				await await axios.get(
