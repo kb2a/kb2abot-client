@@ -4,7 +4,7 @@
     "description": "An auto replying messages bot",
     "main": "bootloader.js",
     "scripts": {
-        "update": "git fetch origin master && git reset --hard origin/master",
+        "update": "git fetch origin main && git reset --hard origin/main",
         "start": "node main/bootloader.js",
         "dev": "node main/bootloader.js dev",
         "debug": "node --inspect main/bootloader.js dev"
