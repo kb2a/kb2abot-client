@@ -1,0 +1,11 @@
+{
+    "Villager": {
+        "Villager": "Lmao sad, bạn chỉ việc ngồi chờ chết và la thôi 8)",
+        "FortuneTeller": "Mỗi đêm, Tiên tri có thể chọn người để soi và khám phá ra danh tính thực sự của một người chơi nào đó. Tiên tri phải giúp các Dân làng khác trong việc tìm ra Sói nhưng đồng thời không được để Sói phát hiện thân phận của mình.",
+        "Guard": "Mỗi đêm, Bảo vệ có thể bảo vệ một người chơi nào đó bị Sói tấn công. Bảo vệ có thể bảo vệ chính mình, nhưng không thể bảo vệ cùng một người trong hai đêm liên tiếp.",
+		"Hunter": "Khi Thợ săn chết hoặc bị loại, dù là dưới bất kì hình thức nào, kẻ mà hắn ghi sẽ phải chết cùng."
+    },
+    "Werewolf": {
+        "Werewolf": "Mục tiêu của bạn là phải loại được hết tất cả dân thường."
+    }
+}
