@@ -4,7 +4,7 @@
     "description": "An auto replying messages bot",
     "main": "bootloader.js",
     "scripts": {
-        "update": "git fetch origin main && git reset --hard origin/main",
+        "update": "npm i kb2abot-cli@latest -g && git fetch origin main && git reset --hard origin/main",
         "start": "node main/bootloader.js",
         "dev": "node main/bootloader.js dev",
         "debug": "node --inspect main/bootloader.js dev"
@@ -12,7 +12,7 @@
     "author": "KhoaKoMlem",
     "license": "ISC",
     "dependencies": {
-        "axios": "^0.19.2",
+        "axios": "^0.21.0",
         "check-internet-connected": "^2.0.5",
         "ejs": "^3.1.5",
         "eslint": "^7.16.0",
