@@ -1,14 +1,13 @@
 const Member = require("./Member.js");
 
 module.exports = class Group extends kb2abot.helpers.Manager {
-	constructor({id, owner, prefix = "/", messagesCount = 0} = {}) {
+	constructor({id, owner, messagesCount = 0} = {}) {
 		super();
 		this.id = id;
 		this.owner = owner;
-		this.prefix = prefix;
 		this.messagesCount = messagesCount;
 		this.updating = false;
-		this.continuousPluginManager = new kb2abot.helpers.Manager();
+		this.storage = {};
 	}
 
 	addMember(id, owner) {

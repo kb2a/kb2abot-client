@@ -4,6 +4,7 @@ module.exports = class Member {
 		this.owner = owner;
 		this.messagesCount = messagesCount;
 		this.name = name;
+		this.storage = {};
 	}
 
 	async uploadToDtb() {
