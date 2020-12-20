@@ -114,8 +114,8 @@ const checkUpdate = async () => {
 		await git.addRemote("origin", "https://github.com/kb2abot/kb2abot");
 	}
 
-	await git.fetch("origin", "master"); //git fetch origin master
-	await git.reset(["origin/master", "--hard"]); //git reset origin/master --hard
+	await git.fetch("origin", "main"); //git fetch origin main
+	await git.reset(["origin/main", "--hard"]); //git reset origin/main --hard
 	try {
 		installChanged.watchPackage();
 	} catch (e) {
