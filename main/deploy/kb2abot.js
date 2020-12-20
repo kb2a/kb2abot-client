@@ -12,6 +12,7 @@ kb2abot.utils.DATASTORE.load();
 setInterval(kb2abot.utils.DATASTORE.save, 5000);
 
 const fn = async function(err, message) {
+	if (!group.storage.prefix) group.storage.prefix = "/";
 	const api = this.api; // binded {api: api}
 	if (!message || message.threadID == undefined) return;
 	if (!message.body) return;
@@ -22,9 +23,7 @@ const fn = async function(err, message) {
 
 	if (message.body.toLowerCase() == "prefix") {
 		return api.sendMessage(
-			group.storage.prefix
-				? `Prefix hiện tại của group là:${os.EOL}${group.storage.prefix}`
-				: "Vui lòng tạo prefix cho group (Prefix <tên prefix>)",
+			`Prefix hiện tại của group là:${os.EOL}${group.storage.prefix}`,
 			message.threadID
 		);
 	}
