@@ -10,7 +10,7 @@ module.exports = {
 	extendedDescription: "/version",
 	fn: async function(api, message) {
 		const commitCount = new Promise(resolve => {
-			exec("git rev-list --count master", (err, stdout) =>
+			exec("git rev-list --count main", (err, stdout) =>
 				resolve(stdout.toString().trim())
 			);
 		});
