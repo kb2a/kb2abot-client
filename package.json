@@ -1,6 +1,6 @@
 {
     "name": "kb2abot",
-    "version": "2.0.0",
+    "version": "1.0.0",
     "description": "An auto replying messages bot",
     "main": "bootloader.js",
     "scripts": {
@@ -13,9 +13,11 @@
     "license": "ISC",
     "dependencies": {
         "axios": "^0.19.2",
+        "check-internet-connected": "^2.0.5",
         "ejs": "^3.1.5",
-        "eslint": "^7.6.0",
+        "eslint": "^7.15.0",
         "facebook-chat-api": "^1.8.0",
+        "fast-safe-stringify": "^2.0.7",
         "ffmpeg-static": "^4.2.7",
         "install-changed": "^1.1.0",
         "is-running": "^2.1.0",
@@ -23,17 +25,17 @@
         "md5": "^2.3.0",
         "minimist": "^1.2.5",
         "nedb-promises": "^4.1.0",
-        "node-color-log": "^5.1.0",
+        "node-color-log": "^5.2.0",
         "ora": "^5.1.0",
         "os": "^0.1.1",
         "prompt-checkbox": "^2.2.0",
         "random": "^2.2.0",
         "semver": "^7.3.4",
-        "simple-git": "^2.21.0",
+        "simple-git": "^2.25.0",
         "uniqid": "^5.2.0",
         "vigenere": "^1.0.2",
-        "youtube-mp3-downloader": "^0.7.2",
-        "yt-search": "^2.3.1",
-        "ytdl-core": "^4.0.3"
+        "youtube-mp3-downloader": "^0.7.6",
+        "yt-search": "^2.5.1",
+        "ytdl-core": "^4.2.1"
     }
 }
