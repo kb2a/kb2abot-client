@@ -1,8 +1,12 @@
 const fixEngineName = text => {
-	let lower = text.toLowerCase();
+	text = String(text);
+	const lower = text.toLowerCase();
 	return lower.charAt(0).toUpperCase() + lower.slice(1);
 };
 
+const botengines = require("./botengines");
+
 module.exports = {
-	fixEngineName
+	fixEngineName,
+	botengines
 };
