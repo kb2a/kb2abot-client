@@ -1,8 +1,9 @@
 const {exec} = require("child_process");
 const os = require("os");
+const {round} = kb2abot.utils;
 
 module.exports = {
-	type: "continuous",
+	type: "normal",
 	friendlyName: "Xem version, log update",
 	keywords: ["version", "v"],
 	description: "Tra cứu phiên bản của chatbot và xem update log",
@@ -25,10 +26,10 @@ module.exports = {
 			});
 		});
 		Promise.all([commitCount, getAllCommits]).then(values => {
-			const versionNow = kb2abot.utils.round(values[0] / 100, 2);
+			const versionNow = round(values[0] / 100, 2);
 			let replyMsg = `Version hiện tại của bot: ${versionNow}${os.EOL}Lịch sử phiên bản:${os.EOL}`;
 			for (let i = 0; i < values[1].length; i++) {
-				const version = kb2abot.utils.round((values[0] - i) / 100, 2);
+				const version = round((values[0] - i) / 100, 2);
 				const commitMessage = values[1][i];
 				replyMsg += `Ver ${version}: ${commitMessage}${os.EOL}`;
 			}
