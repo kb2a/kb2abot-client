@@ -15,7 +15,7 @@ module.exports = {
 	description: "Dùng để gọi hồn tất cả mọi người trong group",
 	// Là nội dung của plugin (dùng để hiển thị trong hướng dẫn chi tiết)
 
-	extendedDescription: "/everyone <text>",
+	extendedDescription: "<text>",
 	// Là hướng dẫn sử dụng của plugin (dùng để hiển thị trong hướng dẫn chi tiết)
 
 	fn: async function(api, message) {

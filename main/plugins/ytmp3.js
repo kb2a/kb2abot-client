@@ -14,7 +14,7 @@ module.exports = {
 	keywords: ["ytmp3"],
 	description: "Tải hoặc tìm kiếm nhạc mp3 trên youtube",
 	extendedDescription:
-		"/ytmp3 [--play=<videoID> | -p <videoID>] [--search=<videoName> | -s <videoName>]",
+		"[--play=<videoID> | -p <videoID>] [--search=<videoName> | -s <videoName>]",
 	fn: async function(api, message) {
 		const args = parseArgs(message.body, "א");
 		const id = parseValue(args, ["play", "p"]);

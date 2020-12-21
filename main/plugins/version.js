@@ -1,21 +1,24 @@
 const {exec} = require("child_process");
 const os = require("os");
-const {round} = kb2abot.utils;
+const {round, getParam} = kb2abot.utils;
 
 module.exports = {
 	type: "normal",
 	friendlyName: "Xem version, log update",
 	keywords: ["version", "v"],
 	description: "Tra cứu phiên bản của chatbot và xem update log",
-	extendedDescription: "/version",
+	extendedDescription: "<count>",
 	fn: async function(api, message) {
+		let count = parseInt(getParam(message.body));
+		if (isNaN(count) || count <= 0) count = 5;
+		if (count > 50) count = 50;
 		const commitCount = new Promise(resolve => {
 			exec("git rev-list --count origin/main", (err, stdout) =>
 				resolve(stdout.toString().trim())
 			);
 		});
 		const getAllCommits = new Promise(resolve => {
-			exec("git log -5 --pretty=%B", (err, stdout) => {
+			exec(`git log -${count} --pretty=%B`, (err, stdout) => {
 				const out = stdout.toString().trim();
 				const tmp = encodeURI(out).split("%0A%0A");
 				const final = [];

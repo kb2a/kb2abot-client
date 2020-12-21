@@ -16,10 +16,11 @@ module.exports = {
 	description: "Hiển thị hướng dẫn",
 	// Là nội dung của plugin (dùng để hiển thị trong hướng dẫn chi tiết)
 
-	extendedDescription: "/help",
+	extendedDescription: "<tên plugin>",
 	// Là hướng dẫn sử dụng của plugin (dùng để hiển thị trong hướng dẫn chi tiết)
 
 	fn: async function(api, message) {
+		const prefix = this.group.storage.prefix;
 		const param = getParam(message.body);
 		if (param.length > 0) {
 			for (const pluginName in kb2abot.plugins) {
@@ -36,7 +37,7 @@ module.exports = {
 						}${os.EOL}`;
 						replyMsg += `Mô tả: ${plugin.description}${os.EOL}`;
 						replyMsg += `-----${os.EOL}`;
-						replyMsg += `Hướng dẫn sử dụng:${os.EOL}${plugin.extendedDescription}`;
+						replyMsg += `Hướng dẫn sử dụng:${os.EOL}${prefix}${plugin.keywords[0]} ${plugin.extendedDescription}`;
 						api.sendMessage(replyMsg, message.threadID);
 						return;
 					}
@@ -51,8 +52,7 @@ module.exports = {
 				index++;
 				replyMsg += `${index}. ${plugin.keywords[0]} - ${plugin.friendlyName}${os.EOL}`;
 			}
-			replyMsg +=
-				"/help <tên câu lệnh> để xem chi tiết và hướng dẫn sử dụng lệnh!";
+			replyMsg += `${prefix}help <tên câu lệnh> để xem chi tiết và hướng dẫn sử dụng lệnh!`;
 			api.sendMessage(replyMsg, message.threadID);
 		}
 	}

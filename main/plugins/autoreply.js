@@ -8,18 +8,21 @@ module.exports = {
 	friendlyName: "Tự động trả lời tin nhắn",
 	keywords,
 	description: "Dùng để bật chức năng tự động trả lời tin nhắn cho bot",
-	extendedDescription: `/autoreply <engineName>${os.EOL}Hiện tại gồm các engine: Simsimi, Mitsuku.${os.EOL}Để tắt bot thì dùng lệnh: /autoreply off`,
+	extendedDescription: `<engine>${os.EOL}Hiện tại gồm các engine: Simsimi, Mitsuku.${os.EOL}Để tắt bot thì dùng engine: off`,
 	fn: async function(api, message) {
-		if (getParam(message.body) == "off") {
-			api.sendMessage(
-				`${this.groupStorage.engine} chào tạm biệt ~~`,
-				message.threadID
-			);
-			delete this.groupStorage.engine;
-			return;
-		}
+		if (
+			keywords.includes(getKeyword(message.body)) &&
+			message.body[0] == this.group.storage.prefix
+		) {
+			if (getParam(message.body) == "off" && this.groupStorage.engine) {
+				api.sendMessage(
+					`${this.groupStorage.engine} chào tạm biệt ~~`,
+					message.threadID
+				);
+				delete this.groupStorage.engine;
+				return;
+			}
 
-		if (keywords.includes(getKeyword(message.body))) {
 			const fixedEngineName = fixEngineName(message.body.split(" ")[1]);
 			if (botengines[fixedEngineName]) {
 				this.groupStorage.engine = fixedEngineName;

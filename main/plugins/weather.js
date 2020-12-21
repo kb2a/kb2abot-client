@@ -7,7 +7,7 @@ module.exports = {
 	friendlyName: "Dự báo thời tiết",
 	keywords: ["weather", "wea"],
 	description: "Cho thông tin về thời tiết hiện tại 1 địa chỉ nào đó",
-	extendedDescription: "/weather <location>",
+	extendedDescription: "<location>",
 	fn: async function(api, message) {
 		const location = kb2abot.utils.getParam(message.body);
 		try {

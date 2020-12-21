@@ -5,13 +5,7 @@ module.exports = {
 	friendlyName: "Báo lỗi",
 	keywords: ["report", "bug"],
 	description: "Dùng gửi góp ý, báo lỗi tới Khoa Ko Mlem",
-	extendedDescription: "/bug <text>",
-	test: {
-		input: {
-			body: "/bug kb2abot thật tuyệt vời!"
-		},
-		output: true
-	},
+	extendedDescription: "<text>",
 	fn: async function(api, message) {
 		// this.group ở đây
 		const text = kb2abot.utils.getParam(message.body);
