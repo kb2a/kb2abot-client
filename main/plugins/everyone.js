@@ -1,6 +1,7 @@
 const {getParam} = kb2abot.utils;
 
 module.exports = {
+	author: "KhoaKoMlem",
 	type: "normal",
 	// gồm 2 type: "normal" và "continuous"
 	// normal là gọi lệnh và thực hiện lệnh đó 1 cách bình thường
