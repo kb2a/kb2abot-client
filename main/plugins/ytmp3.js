@@ -9,6 +9,7 @@ const {round, parseValue, deleteFile, parseArgs} = kb2abot.utils;
 const musicPath = path.join(__dirname, "../../musics");
 
 module.exports = {
+	author: "KhoaKoMlem",
 	type: "normal",
 	friendlyName: "mp3 youtube",
 	keywords: ["ytmp3"],
