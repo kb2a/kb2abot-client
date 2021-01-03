@@ -3,6 +3,7 @@ const os = require("os");
 const {round, getParam} = kb2abot.utils;
 
 module.exports = {
+	author: "KhoaKoMlem",
 	type: "normal",
 	friendlyName: "Xem version, log update",
 	keywords: ["version", "v"],
