@@ -2,6 +2,8 @@ const os = require("os");
 const {getParam} = kb2abot.utils;
 
 module.exports = {
+	author: "KhoaKoMlem",
+	
 	type: "normal",
 	// gồm 2 type: "normal" và "continuous"
 	// normal là gọi lệnh và thực hiện lệnh đó 1 cách bình thường
@@ -28,6 +30,7 @@ module.exports = {
 				for (const keyword of plugin.keywords) {
 					if (param == keyword) {
 						let replyMsg = `Lệnh: ${keyword}${os.EOL}`;
+						replyMsg += `tác giả: ${plugin.author}${os.EOL}`;
 						replyMsg += `Tên thân thiện: ${plugin.friendlyName}${os.EOL}`;
 						replyMsg += `Loại: ${plugin.type}${os.EOL}`;
 						replyMsg += `Keywords: ${
