@@ -4,6 +4,8 @@ const {getKeyword, getParam} = kb2abot.utils;
 const keywords = ["autoreply", "auto"];
 
 module.exports = {
+	author: "KhoaKoMlem",
+	
 	type: "continuous",
 	friendlyName: "Tự động trả lời tin nhắn",
 	keywords,
