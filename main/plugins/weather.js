@@ -3,6 +3,7 @@ const os = require("os");
 const WEATHER_KEY = "9e41bc31443314a1c5ad9695f2e9f9d1";
 
 module.exports = {
+	author: "KhoaKoMlem",
 	type: "normal",
 	friendlyName: "Dự báo thời tiết",
 	keywords: ["weather", "wea"],
