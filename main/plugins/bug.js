@@ -1,6 +1,7 @@
 const os = require("os");
 
 module.exports = {
+	author: "KhoaKoMlem",
 	type: "normal",
 	friendlyName: "Báo lỗi",
 	keywords: ["report", "bug"],
