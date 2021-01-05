@@ -64,6 +64,9 @@ const bootloader = async () => {
 	const botList = fs
 		.readdirSync(botsDir)
 		.filter(name => name.indexOf(".json") != -1); // array include extension *.json
+	if (botList.length == 0) {
+		console.newLogger.error("Ban chua dat cookie vao folder /bots");
+	}
 	for (const bot of botList) {
 		const cookiePath = path.join(botsDir, bot);
 		cluster.setupMaster({
