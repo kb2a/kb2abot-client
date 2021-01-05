@@ -2,8 +2,8 @@ const {getParam} = kb2abot.utils;
 
 module.exports = {
 	authorDetails: {
-		name: "xxx",
-		contact: "fb.com/xxx"
+		name: "khoakomlem",
+		contact: "fb.com/khoakomlem"
 	},
 
 	friendlyName: "Tag mọi người",
