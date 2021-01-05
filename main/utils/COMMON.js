@@ -1,6 +1,6 @@
 /**
  * Chứa các function thông thường được sử dụng nhiều<br>
- * Hướng dẫn import:<br>
+ * Hướng dẫn sử dụng:<br>
  * const {<tên hàm 1>, <tên hàm 2>} = kb2abot.utils;<br>
  * Ví dụ:
  * <code>const {asyncWait, round, extend} = kb2abot.utils;</code>
@@ -8,6 +8,7 @@
  */
 const fs = require("fs");
 const minimist = require("minimist");
+const childProcess = require("child_process");
 
 /**
  * Hàm dừng chương trình async
@@ -24,6 +25,26 @@ const asyncWait = async time => {
 		setTimeout(() => {
 			resolve();
 		}, time);
+	});
+};
+/**
+ * Hàm thực thi shell command
+ * @async
+ * @param  {String}  cmd shell command
+ * @return {Promise} stdout hoặc stderr (nếu bị lỗi)
+ * @example
+ * console.log(await kb2abot.utils.execShellCommand("echo Hello, world!"));
+ * // "Hello, world!"
+ */
+const execShellCommand = cmd => {
+	return new Promise(resolve => {
+		childProcess.exec(cmd, (error, stdout, stderr) => {
+			if (error) {
+				console.warn(error);
+				resolve();
+			}
+			resolve(stdout ? stdout : stderr);
+		});
 	});
 };
 /**
@@ -99,7 +120,7 @@ const extend = (obj, deep) => {
  * //Xem ở đây: {@link https://www.npmjs.com/package/minimist} (nhớ CTRL + CLICK)
  */
 const parseArgs = (str, specialChar) => {
-	const quotes = ['"', "'", "`"];
+	const quotes = ["\"", "'", "`"];
 	for (let quote of quotes) {
 		let tmp = str.split(quote);
 		for (let i = 1; i < tmp.length; i += 2) {
@@ -281,6 +302,7 @@ module.exports = {
 	parseArgs,
 	parseJSON,
 	asyncWait,
+	execShellCommand,
 	deleteFile,
 	parseValue,
 	getKeyword,

@@ -41,7 +41,7 @@ const checkCredential = credential => {
 	return new Promise((resolve, reject) => {
 		login(credential, {logLevel: "silent"}, (err, api) => {
 			if (err) {
-				console.log("Wrong/expired cookie!");
+				console.newLogger.error("Wrong/expired cookie!");
 				reject(err);
 				process.exit();
 			}
