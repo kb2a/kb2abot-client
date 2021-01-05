@@ -5,17 +5,22 @@
     "main": "bootloader.js",
     "scripts": {
         "update": "npm i kb2abot-cli@latest -g && git fetch origin main && git reset --hard origin/main",
-        "start": "node main/bootloader.js",
-        "dev": "node main/bootloader.js dev",
-        "debug": "node --inspect main/bootloader.js dev"
+        "start": "node main",
+        "dev": "node main dev",
+        "debug": "node --inspect main dev"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kb2abot/kb2abot.git"
     },
     "author": "KhoaKoMlem",
     "license": "ISC",
     "dependencies": {
-        "axios": "^0.21.0",
+        "axios": "^0.21.1",
+        "chalk": "^4.1.0",
         "check-internet-connected": "^2.0.5",
+        "detective": "^5.2.0",
         "ejs": "^3.1.5",
-        "eslint": "^7.16.0",
         "facebook-chat-api": "^1.8.0",
         "fast-safe-stringify": "^2.0.7",
         "ffmpeg-static": "^4.2.7",
@@ -26,16 +31,18 @@
         "minimist": "^1.2.5",
         "nedb-promises": "^4.1.0",
         "node-color-log": "^5.2.0",
+        "node-emoji": "^1.10.0",
         "ora": "^5.1.0",
-        "os": "^0.1.1",
-        "prompt-checkbox": "^2.2.0",
+        "p5collide": "^2.0.2",
         "random": "^2.2.0",
         "semver": "^7.3.4",
         "simple-git": "^2.31.0",
         "uniqid": "^5.2.0",
-        "vigenere": "^1.0.2",
         "youtube-mp3-downloader": "^0.7.6",
         "yt-search": "^2.5.1",
-        "ytdl-core": "^4.2.1"
+        "ytdl-core": "^4.3.0"
+    },
+    "devDependencies": {
+        "eslint": "^7.16.0"
     }
 }
