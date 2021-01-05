@@ -1,22 +1,21 @@
 {
     "env": {
-        "es2020": true,
+        "commonjs": true,
+        "es2021": true,
         "node": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
-        "ecmaVersion": 11,
-        "sourceType": "module"
+        "ecmaVersion": 12
     },
     "rules": {
         "indent": [
             "error",
-            "tab",
-            { "SwitchCase": 1 }
+            "tab"
         ],
         "linebreak-style": [
             "error",
-            "windows"
+            "unix"
         ],
         "quotes": [
             "error",
@@ -28,6 +27,6 @@
         ]
     },
     "globals": {
-      "kb2abot": "writeable"
+      "kb2abot": "writable"
     }
 }
