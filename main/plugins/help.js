@@ -40,6 +40,7 @@ module.exports = {
 								: plugin.keywords[0]
 						}\n`;
 						replyMsg += `Mô tả: ${plugin.description}\n`;
+						replyMsg += `Tác giả: ${plugin.authorDetails.name} (${plugin.authorDetails.contact})\n`;
 						replyMsg += "-----\n";
 						replyMsg += `Hướng dẫn sử dụng:\n${prefix}${plugin.keywords[0]} ${plugin.extendedDescription}`;
 						api.sendMessage(replyMsg, message.threadID);
