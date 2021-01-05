@@ -1,5 +1,5 @@
 module.exports = {
-	cli: require("./cli"),
+	// cli: require("./cli"),
 	checkInternet: require("./checkInternet"),
 	checkNode: require("./checkNode"),
 	foolHeroku: require("./foolHeroku"),

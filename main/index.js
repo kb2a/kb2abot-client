@@ -28,7 +28,7 @@ globalThis.kb2abot = Object.assign(k2babotGlobalModel, {
 
 
 const {
-	cli,
+	// cli,
 	checkInternet,
 	checkNode,
 	foolHeroku,
@@ -47,7 +47,7 @@ tasks.push(updateCli);
 tasks.push(foolHeroku);
 tasks.push(checkNode);
 tasks.push(preload);
-tasks.push(cli);
+// tasks.push(cli);
 
 cluster.on("exit", (worker, code, signal) => {
 	if (signal) {
@@ -65,7 +65,9 @@ const bootloader = async () => {
 			await task.fn();
 		}
 		catch(e) {
-			console.newLogger.error(e.message);
+			console.log();
+			console.newLogger.error(e);
+			spinner.stop();
 			process.exit();
 		}
 		spinner.succeed();

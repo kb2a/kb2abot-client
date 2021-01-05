@@ -11,7 +11,7 @@ module.exports = {
 		try {
 			await checkInternetConnected(config);
 		} catch (e) {
-			throw `Vui long kiem tra lai ket noi internet!\nmessage:${e.message}`;
+			throw `Vui long kiem tra lai ket noi internet! (${e.message})`;
 		}
 	}
 };
