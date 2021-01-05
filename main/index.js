@@ -27,7 +27,15 @@ globalThis.kb2abot = Object.assign(k2babotGlobalModel, {
 /////////////////////////////////////////////////////
 
 
-const {cli, checkInternet, checkNode, foolHeroku, preload, update} = require("./bootloader");
+const {
+	cli,
+	checkInternet,
+	checkNode,
+	foolHeroku,
+	preload,
+	update,
+	updateCli
+} = require("./bootloader");
 const botsDir = path.join(__dirname, "../bots");
 const deployPath = path.join(__dirname, "./deploy/index.js");
 
@@ -35,6 +43,7 @@ const tasks = [];
 const isDev = process.argv.slice(2)[0] == "dev";
 tasks.push(checkInternet);
 !isDev && tasks.push(update);
+tasks.push(updateCli);
 tasks.push(foolHeroku);
 tasks.push(checkNode);
 tasks.push(preload);

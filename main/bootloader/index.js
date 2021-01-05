@@ -5,4 +5,5 @@ module.exports = {
 	foolHeroku: require("./foolHeroku"),
 	preload: require("./preload"),
 	update: require("./update"),
+	updateCli: require("./updateCli"),
 };
