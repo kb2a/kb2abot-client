@@ -1,6 +1,6 @@
-const Account = require("./Account.js");
-const Group = require("./Group.js");
-const Member = require("./Member.js");
+const Account = require("./Account");
+const Group = require("./Group");
+const Member = require("./Member");
 
 module.exports = {
 	Account,

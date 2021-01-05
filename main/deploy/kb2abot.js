@@ -7,8 +7,8 @@ const {Account} = require("./roles");
 kb2abot.account = new Account({
 	id: kb2abot.id
 });
-console.log(`Dang tai datastore ${kb2abot.id}.json . . .`);
 kb2abot.utils.DATASTORE.load();
+console.newLogger.success(`Loaded datastore ${kb2abot.id}.json!`);
 setInterval(kb2abot.utils.DATASTORE.save, 5000);
 
 const fn = async function(err, message) {
@@ -22,14 +22,14 @@ const fn = async function(err, message) {
 
 	if (!group.storage.prefix) group.storage.prefix = "/";
 
-	if (message.body.toLowerCase() == "prefix") {
+	if (message.body.toLowerCase() == "prefix") { // kiem tra prefix
 		return api.sendMessage(
 			`Prefix hiện tại của group là:${os.EOL}${group.storage.prefix}`,
 			message.threadID
 		);
 	}
 
-	if (message.body.toLowerCase().indexOf("prefix ") == 0) {
+	if (message.body.toLowerCase().indexOf("prefix ") == 0) { // set prefix
 		const tmp = message.body.split(" ");
 		if (tmp.length > 2) {
 			return api.sendMessage(
@@ -42,14 +42,14 @@ const fn = async function(err, message) {
 		return api.sendMessage(replyMsg, message.threadID);
 	}
 
-	const executePlugin = async plugin => {
+	const executePlugin = async (type = "onCall", plugin) => {
 		try {
 			const pluginName = plugin.keywords[0];
 			if (!kb2abot.account.storage[pluginName])
 				kb2abot.account.storage[pluginName] = {};
 			if (!group.storage[pluginName]) group.storage[pluginName] = {};
 			if (!member.storage[pluginName]) member.storage[pluginName] = {};
-			await plugin.fn.call(
+			await plugin[type].call( // type hiện tại gồm 2 giá trị: onCall hoặc onMessage
 				{
 					group,
 					accountStorage: kb2abot.account.storage[pluginName],
@@ -60,36 +60,40 @@ const fn = async function(err, message) {
 				message
 			);
 		} catch (e) {
-			console.log(e);
+			console.newLogger.error(e);
 			api.sendMessage("Lỗi: " + e.message, message.threadID);
 		}
 	};
 
 	if (message.body.indexOf(group.storage.prefix) == 0) {
-		// check if plugin
-		const temp = message.body.split(" ")[0].split(group.storage.prefix);
-		const keyword = temp[temp.length - 1]; // lay ten plugin
+		// is using plugin ==>
+		const keyword = message.body.split(" ")[0].split(group.storage.prefix).slice(-1)[0];
+		// lay ten plugin
 		if (keyword) {
 			const plugin = pluginManager.findPluginByKeyword(keyword);
 			if (plugin) {
-				await executePlugin(plugin);
+				await executePlugin("onCall", plugin);
 			} else {
-				api.sendMessage("Lệnh không xác định!", message.threadID);
+				api.sendMessage(`Không tìm thấy lệnh nào có tên ${keyword}!`, message.threadID);
 			}
+		} else {
+			api.sendMessage(`Whut :V?\n${group.storage.prefix}<lệnh> <nội dung truyền vào lệnh>`, message.threadID);
 		}
 	} else {
-		for (const plugin of pluginManager.getContinuousPlugin()) {
-			await executePlugin(plugin);
-		}
+		// is not using plugin ==>
 		group.messagesCount++;
-		member.messagesCount++;
 	}
+
+	for (const plugin of pluginManager.items) {
+		await executePlugin("onMessage", plugin);
+	}
+	member.messagesCount++;
 };
 
 module.exports = appState => {
 	login({appState}, function(err, api) {
-		if (err) return console.log(err);
-		// kb2abot.account.downloadAllFromDtb();
+		if (err)
+			return console.newLogger.error(JSON.stringify(err));
 		api.listenMqtt(
 			fn.bind({
 				api

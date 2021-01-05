@@ -1,4 +1,4 @@
-const Group = require("./Group.js");
+const Group = require("./Group");
 
 module.exports = class Account extends kb2abot.helpers.Manager {
 	constructor({id} = {}) {
