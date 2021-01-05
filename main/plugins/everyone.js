@@ -1,24 +1,30 @@
 const {getParam} = kb2abot.utils;
 
 module.exports = {
-	type: "normal",
-	// gồm 2 type: "normal" và "continuous"
-	// normal là gọi lệnh và thực hiện lệnh đó 1 cách bình thường
-	// continuous là gọi lệnh đó xong, lệnh vẫn tiếp tục thực hiện mà không cần prefix!
+	authorDetails: {
+		name: "xxx",
+		contact: "fb.com/xxx"
+	},
 
 	friendlyName: "Tag mọi người",
-	// tên thân thiện của plugin (để hiển thị trong danh sách câu lệnh)
 
 	keywords: ["everyone", "all"],
-	// Là các từ khóa để gọi plugin everyone (có thể có nhiều cái)
 
 	description: "Dùng để gọi hồn tất cả mọi người trong group",
-	// Là nội dung của plugin (dùng để hiển thị trong hướng dẫn chi tiết)
 
-	extendedDescription: "<text>",
-	// Là hướng dẫn sử dụng của plugin (dùng để hiển thị trong hướng dẫn chi tiết)
+	extendedDescription: "[<text>]",
 
-	fn: async function(api, message) {
+	hideFromHelp: false,
+
+	disable: false,
+
+	onLoad: async function() {
+	},
+
+	onMessage: async function(api, message) {
+	},
+
+	onCall: async function(api, message) {
 		const text = getParam(message.body);
 		api.getThreadInfo(message.threadID, (err, arr) => {
 			if (err) console.log(err);
@@ -44,5 +50,4 @@ module.exports = {
 			);
 		});
 	}
-	// function chính của plugin
 };

@@ -1,14 +1,31 @@
 const axios = require("axios");
-const os = require("os");
 const WEATHER_KEY = "9e41bc31443314a1c5ad9695f2e9f9d1";
 
 module.exports = {
-	type: "normal",
-	friendlyName: "Dự báo thời tiết",
-	keywords: ["weather", "wea"],
+	authorDetails: {
+		name: "khoakomlem",
+		contact: "fb.com/khoakomlem"
+	},
+
+	friendlyName: "Xem thời tiết hiện tại",
+
+	keywords: ["weather", "wt"],
+
 	description: "Cho thông tin về thời tiết hiện tại 1 địa chỉ nào đó",
+
 	extendedDescription: "<location>",
-	fn: async function(api, message) {
+
+	hideFromHelp: false,
+
+	disable: false,
+
+	onLoad: async function() {
+	},
+
+	onMessage: async function(api, message) {
+	},
+
+	onCall: async function(api, message) {
 		const location = kb2abot.utils.getParam(message.body);
 		try {
 			const {weather, main, name} = (
@@ -18,9 +35,9 @@ module.exports = {
 					)}&APPID=${WEATHER_KEY}`
 				)
 			).data;
-			const replyMsg = `Name: ${name}${os.EOL}Weather: ${weather[0].main}(${
+			const replyMsg = `Name: ${name}\nWeather: ${weather[0].main}(${
 				weather[0].description
-			})${os.EOL}Temperature: ${Math.round(main.temp_min - 273)}°C ~ ${Math.round(
+			})\nTemperature: ${Math.round(main.temp_min - 273)}°C ~ ${Math.round(
 				main.temp_max - 273
 			)}°C`;
 			api.sendMessage(replyMsg, message.threadID);

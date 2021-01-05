@@ -3,19 +3,35 @@ const ytSearch = require("yt-search");
 const pathToFfmpeg = require("ffmpeg-static");
 const uniqid = require("uniqid");
 const path = require("path");
-const os = require("os");
 const fs = require("fs");
 const {round, parseValue, deleteFile, parseArgs} = kb2abot.utils;
 const musicPath = path.join(__dirname, "../../musics");
 
 module.exports = {
-	type: "normal",
-	friendlyName: "mp3 youtube",
+	authorDetails: {
+		name: "khoakomlem",
+		contact: "fb.com/khoakomlem"
+	},
+
+	friendlyName: "tải nhạc mp3 youtube",
+
 	keywords: ["ytmp3"],
+
 	description: "Tải hoặc tìm kiếm nhạc mp3 trên youtube",
-	extendedDescription:
-		"[--play=<videoID> | -p <videoID>] [--search=<videoName> | -s <videoName>]",
-	fn: async function(api, message) {
+
+	extendedDescription: "[--play=<id> | -p <id>] [--search=<tên bài> | -s <tên bài>]",
+
+	hideFromHelp: false,
+
+	disable: false,
+
+	onLoad: async function() {
+	},
+
+	onMessage: async function(api, message) {
+	},
+
+	onCall: async function(api, message) {
 		const args = parseArgs(message.body, "א");
 		const id = parseValue(args, ["play", "p"]);
 		const search = parseValue(args, ["search", "s"]);
@@ -43,12 +59,12 @@ module.exports = {
 					api.sendMessage(replymessage, message.threadID);
 				} else {
 					const timeGet = (Date.now() - start) / 1000;
-					const replymessage = `Tiêu đề: ${videoTitle}${os.EOL}Nhạc sĩ: ${artist}${
-						os.EOL
-					}Get nhạc trong ${timeGet}s${os.EOL}Dung lượng: ${round(
+					const replymessage = `Tiêu đề: ${videoTitle}\nNhạc sĩ: ${
+						artist
+					}\nGet nhạc trong ${timeGet}s\nDung lượng: ${round(
 						stats.transferredBytes / 1024 / 1024,
 						1
-					)}mb${os.EOL}Tốc độ tải: ${fileSize}mb/s`;
+					)}mb\nTốc độ tải: ${fileSize}mb/s`;
 					api.sendMessage(
 						{
 							body: replymessage,
@@ -81,7 +97,7 @@ module.exports = {
 				const length = videos.length > 10 ? 10 : videos.length;
 				for (let i = 0; i < length; i++) {
 					const {title, videoId} = videos[i];
-					replymessage += `${i + 1}. Tiêu đề: ${title}, id: ${videoId}${os.EOL}`;
+					replymessage += `${i + 1}. Tiêu đề: ${title}, id: ${videoId}\n`;
 				}
 				api.sendMessage(replymessage, message.threadID);
 			});
