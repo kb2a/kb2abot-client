@@ -1,4 +1,4 @@
-const Manager = require("./Manager.js");
+const Manager = require("./Manager");
 const logger = require("node-color-log");
 
 module.exports = class CommandManager extends Manager {
