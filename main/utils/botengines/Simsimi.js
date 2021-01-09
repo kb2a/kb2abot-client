@@ -2,11 +2,12 @@ const axios = require("axios");
 
 module.exports = (api, message) => {
 	axios({
-		url: `http://api.simsimi.net/v1/?text=${encodeURI(message.body)}&lang=vi`,
+		url: `https://sim.cunnobi.xyz/api?text=${encodeURI(message.body)}&format=JSON`,
 		method: "GET",
 		mode: "no-cors"
 	}).then(res => {
-		const replyMsg = res.data.messages[0].response;
-		api.sendMessage(replyMsg, message.threadID);
+		const replyMsg = /"text":"(.*?)"}/.exec(res.data)[1];
+		if (replyMsg)
+			api.sendMessage(replyMsg, message.threadID);
 	});
 };
