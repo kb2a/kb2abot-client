@@ -48,6 +48,21 @@ const execShellCommand = cmd => {
 	});
 };
 /**
+ * Ràng buộc 1 giá trị trong khoảng từ [left; right]
+ * @param  {Number} value Giá trị vào
+ * @param  {Number} left  ràng buộc trái
+ * @param  {Number} right ràng buộc phải
+ * @return {Number} Giá trị trong khoảng [left; right]
+ * @example
+ * console.log(kb2abot.utils.constrain(5, 1, 10);
+ * // 5
+ * console.log(kb2abot.utils.constrain(-1, 1, 10);
+ * // 1
+ */
+const constrain = (value, left, right) => {
+	return value >= left ? (value <= right ? value : right) : left;
+};
+/**
  * Làm tròn đến chữ số thập phân x
  * @param  {Number} number Số bạn muốn làm tròn
  * @param  {Number} amount Số lượng chữ số thập phân (x)
@@ -300,6 +315,7 @@ module.exports = {
 	extend,
 	subname,
 	parseArgs,
+	constrain,
 	parseJSON,
 	asyncWait,
 	execShellCommand,
