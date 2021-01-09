@@ -16,7 +16,7 @@ module.exports = {
 
 	hideFromHelp: true,
 
-	disable: false,
+	disable: true,
 
 	onLoad: async function() {
 	},
