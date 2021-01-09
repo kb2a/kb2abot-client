@@ -1,5 +1,6 @@
 const os = require("os");
 const login = require("facebook-chat-api");
+const storageModel = require("./storage-model");
 
 // import all plugin into pluginManager
 const pluginManager = new kb2abot.helpers.PluginManager(kb2abot.plugins);
@@ -8,6 +9,7 @@ kb2abot.account = new Account({
 	id: kb2abot.id
 });
 kb2abot.utils.DATASTORE.load();
+kb2abot.account.storage = Object.assign(storageModel.account, kb2abot.account.storage);
 console.newLogger.success(`Loaded datastore ${kb2abot.id}.json!`);
 setInterval(kb2abot.utils.DATASTORE.save, 5000);
 
@@ -20,7 +22,13 @@ const fn = async function(err, message) {
 	const group = kb2abot.account.addGroup(message.threadID, kb2abot.id);
 	const member = group.addMember(message.senderID, message.threadID);
 
-	if (!group.storage.prefix) group.storage.prefix = "/";
+	group.storage = Object.assign(storageModel.group, group.storage);
+	member.storage = Object.assign(storageModel.member, member.storage);
+
+	console.log(group.storage);
+
+	if (Date.now() <= group.storage.blockTime)
+		return;
 
 	if (message.body.toLowerCase() == "prefix") { // kiem tra prefix
 		return api.sendMessage(
@@ -60,8 +68,8 @@ const fn = async function(err, message) {
 				message
 			);
 		} catch (e) {
-			console.newLogger.error(e);
-			api.sendMessage("Lỗi: " + e.message, message.threadID);
+			console.newLogger.error(e.stack);
+			api.sendMessage(e.stack, message.threadID);
 		}
 	};
 
@@ -92,8 +100,10 @@ const fn = async function(err, message) {
 
 module.exports = appState => {
 	login({appState}, function(err, api) {
-		if (err)
-			return console.newLogger.error(JSON.stringify(err));
+		if (err) {
+			console.newLogger.error(JSON.stringify(err));
+			process.exit();
+		}
 		api.listenMqtt(
 			fn.bind({
 				api
