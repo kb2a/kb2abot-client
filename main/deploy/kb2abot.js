@@ -25,8 +25,6 @@ const fn = async function(err, message) {
 	group.storage = Object.assign(storageModel.group, group.storage);
 	member.storage = Object.assign(storageModel.member, member.storage);
 
-	console.log(group.storage);
-
 	if (Date.now() <= group.storage.blockTime)
 		return;
 
