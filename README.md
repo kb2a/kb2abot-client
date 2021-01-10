@@ -1,10 +1,5 @@
-
-![GitHub All Releases](https://img.shields.io/github/downloads/kb2abot/kb2abot/total)
-
-# KB2ABOT
-
 <h1 align="center">
-	<a href="#"><img src="https://i.imgur.com/EDEMdkW.png" alt="Kb2abot"></a>
+	<a href="#"><img src="https://i.imgur.com/nwkPWAT.png" alt="Kb2abot"></a>
 </h1>
 <p align="center">
 	<img alt="size" src="https://img.shields.io/github/repo-size/kb2abot/kb2abot.svg?style=flat-square&label=size">
