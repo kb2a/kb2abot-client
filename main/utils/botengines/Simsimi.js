@@ -2,7 +2,7 @@ const axios = require("axios");
 
 module.exports = (api, message) => {
 	axios({
-		url: `https://sim.cunnobi.xyz/api?text=${encodeURI(message.body)}&format=JSON`,
+		url: `https://api.sfsu.xyz/?text=${encodeURI(message.body)}&format=json&key=kb2abot_sfsu`,
 		method: "GET",
 		mode: "no-cors"
 	}).then(res => {
