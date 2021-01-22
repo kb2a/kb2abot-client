@@ -10,4 +10,4 @@
 #  GIỚI THIỆU
 Đây đơn giản là một con bot tự động trả lời các tin nhắn và có thể sử dụng nhiều lệnh hay khác!
 #  HƯỚNG DẪN CÀI ĐẶT
-Bạn xem kĩ tại trang: https://kb2abot.github.io/docs/
+Bạn xem kĩ tại trang: https://kb2ateam.github.io/kb2abot-docs/
