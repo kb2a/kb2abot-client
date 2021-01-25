@@ -4,7 +4,7 @@ module.exports = {
 	},
 	group: {
 		prefix: "/",
-  	blockTime: 0
+		blockTime: 0
 	},
 	member: {
 

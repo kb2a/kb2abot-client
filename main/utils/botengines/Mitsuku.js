@@ -1,4 +1,3 @@
-const os = require("os");
 const axios = require("axios");
 
 // const MITSUKU_THREADID = "47719737069";
