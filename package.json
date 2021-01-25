@@ -7,7 +7,7 @@
         "update": "npm i kb2abot-cli@latest -g && git fetch origin main && git reset --hard origin/main",
         "start": "node main",
         "dev": "node main dev",
-        "debug": "node --inspect main dev"
+        "debug": "node --inspect-brk main dev"
     },
     "repository": {
         "type": "git",

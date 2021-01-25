@@ -14,12 +14,12 @@ globalThis.kb2abot = Object.assign(require("../kb2abot-global"), {
 /////////////////////////////////////////////////////
 
 const {initLogger} = require("../utils/CONSOLE");
-const {parseJSON} = require("../utils/COMMON");
 const {
-	isJ2teamCookie,
+	convertJ2teamToAppstate,
+	convertAtpToAppstate,
 	// truncateMusics,
 	checkCredential,
-	generateAppState
+	getCookieType,
 } = require("../utils/DEPLOY");
 
 const deploy = async data => {
@@ -30,14 +30,24 @@ const deploy = async data => {
 		kb2abot.plugins = await helpers.loader("plugins", true);
 
 		// truncateMusics();
-		const parsedJSON = await parseJSON(fs.readFileSync(cookiePath));
-		const unofficialAppState = isJ2teamCookie(parsedJSON)
-			? generateAppState(parsedJSON)
-			: parsedJSON;
+		let unofficialAppState;
+		const cookieText = fs.readFileSync(cookiePath).toString();
+		const cookieType = getCookieType(cookieText);
+		switch (cookieType) {
+		case "j2team":
+			unofficialAppState = convertJ2teamToAppstate(cookieText);
+			break;
+		case "atp":
+			unofficialAppState = convertAtpToAppstate(cookieText);
+			break;
+		case -1:
+			console.newLogger.error(`Cookie ${cookiePath} không hợp lệ, vui lòng kiểm tra lại!`);
+			process.exit();
+			break;
+		}
 		const {id, name, appState: officialAppState} = await checkCredential({
 			appState: unofficialAppState
 		});
-		fs.writeFileSync(cookiePath, JSON.stringify(officialAppState));
 		Object.assign(kb2abot, {
 			id
 		});
