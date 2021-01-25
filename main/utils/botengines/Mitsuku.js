@@ -1,4 +1,3 @@
-const os = require("os");
 const axios = require("axios");
 
 // const MITSUKU_THREADID = "47719737069";
@@ -16,7 +15,7 @@ module.exports = (api, message) => {
 	}).then(res => {
 		const regexString = /<that>(.*?)<\/that>/.exec(res.data);
 		const responseChat = regexString ? regexString[1] : "...";
-		const replyMsg = responseChat.replace(/&quot;/g, '"');
+		const replyMsg = responseChat.replace(/&quot;/g, "\"");
 		// translate(replyMsg, {
 		// 	from: "en",
 		// 	to: "vi",
