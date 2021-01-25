@@ -54,7 +54,7 @@ cluster.on("exit", (worker, code, signal) => {
 		console.newLogger.warn(`Bot PID: ${worker.process.pid} da dung, SIGNAL: ${signal}`);
 	} else {
 		const func = code == 0 ? "warn" : "error";
-		console.newLogger[func](`BOt PID: ${worker.process.pid} da dung, ERROR_CODE: ${code}`);
+		console.newLogger[func](`Bot PID: ${worker.process.pid} da dung, ERROR_CODE: ${code}`);
 	}
 });
 
