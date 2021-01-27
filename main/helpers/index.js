@@ -1,6 +1,6 @@
-const loader = require("./loader");
-const Manager = require("./Manager");
-const PluginManager = require("./PluginManager");
+const loader = require("./loader.helper");
+const Manager = require("./Manager.helper");
+const PluginManager = require("./PluginManager.helper");
 
 module.exports = {
 	loader,

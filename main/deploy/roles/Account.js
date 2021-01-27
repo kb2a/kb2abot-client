@@ -1,4 +1,4 @@
-const Group = require("./Group");
+const Thread = require("./Thread");
 
 module.exports = class Account extends kb2abot.helpers.Manager {
 	constructor({id} = {}) {
@@ -7,49 +7,13 @@ module.exports = class Account extends kb2abot.helpers.Manager {
 		this.storage = {};
 	}
 
-	addGroup(id, owner) {
+	addThread(id) {
 		return this.add(
-			new Group({
+			new Thread({
 				id,
-				owner
+				owner: this.id
 			}),
 			{id}
 		);
 	}
-
-	// async uploadToDtb() {
-	// 	await kb2abot.datastore.updateOne(
-	// 		{
-	// 			id: this.id
-	// 		},
-	// 		{
-	// 			$set: {
-	// 				id: this.id,
-	// 				owner: this.owner,
-	// 				prefix: this.prefix
-	// 			}
-	// 		},
-	// 		{
-	// 			upsert: true
-	// 		}
-	// 	);
-	// }
-
-	// getData() {
-	// 	return new Promise(async (resolve, reject) => {
-	// 		const dtb = await mongoPoolPromise();
-	// 		dtb.collection("group")
-	// 			.find({
-	// 				id: this.id
-	// 			})
-	// 			.toArray((error, data) => {
-	// 				if (error) throw error;
-	// 				if (data.length == 1) {
-	// 					resolve(data[0]);
-	// 				} else {
-	// 					reject();
-	// 				}
-	// 			});
-	// 	});
-	// }
 };

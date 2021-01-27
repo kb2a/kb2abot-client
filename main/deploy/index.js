@@ -5,7 +5,7 @@ const minimist = require("minimist");
 // =============== GLOBAL VARIABLE =============== //
 /////////////////////////////////////////////////////
 const helpers = require("../helpers");
-globalThis.kb2abot = Object.assign(require("../kb2abot-global"), {
+globalThis.kb2abot = Object.assign(require("../models/kb2abot-global.model"), {
 	helpers
 });
 // plugins load sau vì plugin cần các hàm utils

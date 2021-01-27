@@ -1,4 +1,4 @@
-const Manager = require("./Manager");
+const Manager = require("./Manager.helper");
 
 module.exports = class CommandManager extends Manager {
 	constructor(plugins = {}) {

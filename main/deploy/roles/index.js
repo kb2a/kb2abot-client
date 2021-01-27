@@ -1,9 +1,7 @@
 const Account = require("./Account");
-const Group = require("./Group");
-const Member = require("./Member");
+const Thread = require("./Thread");
 
 module.exports = {
 	Account,
-	Group,
-	Member
+	Thread,
 };
