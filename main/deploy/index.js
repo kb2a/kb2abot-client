@@ -33,12 +33,9 @@ const deploy = async data => {
 		let unofficialAppState;
 		const cookieText = fs.readFileSync(cookiePath).toString();
 		const cookieType = getCookieType(cookieText);
-<<<<<<< HEAD
 		if (cookieType != -1) {
 			console.newLogger.log("Cookie type: " + cookieType);
 		}
-=======
->>>>>>> a59015452548cb7a3748396334e9128aa348b96e
 		switch (cookieType) {
 		case "j2team":
 			unofficialAppState = convertJ2teamToAppstate(cookieText);

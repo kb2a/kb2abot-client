@@ -16,11 +16,7 @@ const convertAtpToAppstate = atp => {
 	const items = atp.split(";|")[0].split(";");
 	if (items.length < 2)
 		throw "Not a atp cookie";
-<<<<<<< HEAD
 	const validItems = ["sb", "datr"];
-=======
-	const validItems = ["presence", "sb", "datr", "spin"];
->>>>>>> a59015452548cb7a3748396334e9128aa348b96e
 	let validCount = 0;
 	for (const item of items) {
 		const key = item.split("=")[0];
