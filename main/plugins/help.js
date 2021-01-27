@@ -25,7 +25,7 @@ module.exports = {
 	},
 
 	onCall: async function(api, message) {
-		const prefix = this.group.storage.prefix;
+		const prefix = this.storage.thread.global.prefix;
 		const param = getParam(message.body);
 		if (param.length > 0) {
 			for (const pluginName in kb2abot.plugins) {

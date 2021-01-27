@@ -7,7 +7,7 @@ const emoji = require("node-emoji");
 const {subname} = require("./utils/COMMON");
 const {initLogger} = require("./utils/CONSOLE");
 initLogger(emoji.emojify(":star: INTERNAL"));
-const k2babotGlobalModel = require("./kb2abot-global");
+const k2babotGlobalModel = require("./models/kb2abot-global.model");
 const helpers = require("./helpers");
 /////////////////////////////////////////////////////
 // =============== GLOBAL VARIABLE =============== //

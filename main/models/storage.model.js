@@ -1,12 +1,8 @@
 module.exports = {
 	account: {
-
 	},
-	group: {
+	thread: {
 		prefix: "/",
 		blockTime: 0
 	},
-	member: {
-
-	}
 };
