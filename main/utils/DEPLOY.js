@@ -7,15 +7,57 @@ const path = require("path");
 const login = require("facebook-chat-api");
 
 /**
- * Kiểm tra xem đây có phải là dạng j2team cookie hay không
- * @param  {String} json Văn bản json nào đó
- * @return {Boolean}     True hoặc False
+ * Hàm tạo appState từ ATP cookie
+ * @param  {String} atp ATP cookie (text)
+ * @return {Object}     appState dùng để login fca
  */
-const isJ2teamCookie = json => {
-	if (json.url && json.cookies) {
-		return true;
+const convertAtpToAppstate = atp => {
+	const unofficialAppState = [];
+	const items = atp.split(";|")[0].split(";");
+	if (items.length < 2)
+		throw "Not a atp cookie";
+	const validItems = ["sb", "datr"];
+	let validCount = 0;
+	for (const item of items) {
+		const key = item.split("=")[0];
+		const value = item.split("=")[1];
+		if (validItems.includes(key))
+			validCount++;
+		unofficialAppState.push({
+			key,
+			value,
+			domain: "facebook.com",
+			path: "/"
+		});
 	}
-	return false;
+	if (validCount >= validItems.length) {
+		return unofficialAppState;
+	} else {
+		throw "Not a atp cookie";
+	}
+};
+/**
+ * Kiểm tra loại cookie (j2team, atp, appstate)
+ * @param  {String} text Văn bản cookie nào đó
+ * @return {String}      "j2team" | "appstate" | "atp"
+ */
+const getCookieType = text => {
+	let parseTest;
+	try {
+		parseTest = JSON.parse(text);
+		if (parseTest.url && parseTest.cookies) {
+			return "j2team"; // cookie của ext j2team cookie
+		} else {
+			return "appstate"; // cookie appstate của facebook-chat-api
+		}
+	} catch(e) {
+		try {
+			convertAtpToAppstate(text);
+			return "atp"; // cookie của ext atp cookie
+		} catch(e) {
+			return -1; // Tào lao
+		}
+	}
 };
 /**
  * Xóa hết tất cả file trong folder /musics
@@ -58,13 +100,14 @@ const checkCredential = credential => {
 	});
 };
 /**
- * Hàm tạo appState dựa vào j2team cookie
- * @param  {Object} j2teamCookie J2TEAM cookie
- * @return {Object}              appState dùng để login fca
+ * Hàm tạo appState từ j2team cookie
+ * @param  {String} j2team J2TEAM cookie (text)
+ * @return {Object}        appState dùng để login fca
  */
-const generateAppState = j2teamCookie => {
+const convertJ2teamToAppstate = j2team => {
 	const unofficialAppState = [];
-	for (const cookieElement of j2teamCookie.cookies) {
+	j2team = JSON.parse(j2team);
+	for (const cookieElement of j2team.cookies) {
 		unofficialAppState.push({
 			key: cookieElement.name,
 			value: cookieElement.value,
@@ -77,8 +120,9 @@ const generateAppState = j2teamCookie => {
 };
 
 module.exports = {
-	isJ2teamCookie,
+	getCookieType,
 	truncateMusics,
 	checkCredential,
-	generateAppState
+	convertJ2teamToAppstate,
+	convertAtpToAppstate
 };
