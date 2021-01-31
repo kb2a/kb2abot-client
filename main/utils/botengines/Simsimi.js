@@ -1,13 +1,13 @@
-const axios = require("axios");
+ Nahh tôi đang muốn được cung cấp api cho bên bạn sử dụng, liệu có được không? Nếu được! Bên bạn có thể liên hệ mình qua Email,
+bên mình sẽ hỗ trợ nhanh nhất có thể, đem lại sự thoải mái nhất cho 2 bên. 
+ 
+ Mình sẽ đảm bảo uptime lên tới 99,98% trong gần như mọi trường hợp xấu nhất (ví dụ: DDoS, BlockIP, DownServer...)
+Email: copgamingtq@gmail.com
 
-module.exports = (api, message) => {
-	axios({
-		url: `https://api.sfsu.xyz/?text=${encodeURI(message.body)}&format=json&key=kb2abot_sfsu`,
-		method: "GET",
-		mode: "no-cors"
-	}).then(res => {
-		const replyMsg = /"text":"(.*?)"}/.exec(res.data)[1];
-		if (replyMsg)
-			api.sendMessage(replyMsg, message.threadID);
-	});
-};
+	KeyAPI: API-9nM7gKPuSWkefDLN-oDQgZ3zGVmKJuXyA
+	url: `http://api.simsimi.net/v1/?text=${encodeURI(message.body)}&lang=vi_VN&key=${key}`
+
+							Xin cảm ơn.
+							
+							 CopCute
+								
