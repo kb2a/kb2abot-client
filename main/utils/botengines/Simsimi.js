@@ -4,8 +4,8 @@ bên mình sẽ hỗ trợ nhanh nhất có thể, đem lại sự thoải mái 
  Mình sẽ đảm bảo uptime lên tới 99,98% trong gần như mọi trường hợp xấu nhất (ví dụ: DDoS, BlockIP, DownServer...)
 Email: copgamingtq@gmail.com
 
-	KeyAPI: API-9nM7gKPuSWkefDLN-oDQgZ3zGVmKJuXyA
-	url: `http://api.simsimi.net/v1/?text=${encodeURI(message.body)}&lang=vi_VN&key=${key}`
+	//KeyAPI: API-*********************************
+	url: `http://api.simsimi.net/v1/key/?text=${encodeURI(message.body)}&lang=vi_VN&key=${key}`
 
 							Xin cảm ơn.
 							
