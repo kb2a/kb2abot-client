@@ -14,12 +14,10 @@ globalThis.kb2abot = new schemas.Kb2abotGlobal({
 	schemas
 });
 kb2abot.plugins = loader.load(path.join(__dirname, "../plugins"));
-console.log(kb2abot);
 /////////////////////////////////////////////////////
 // ============ END OF GOBAL VARIBALE ============ //
 /////////////////////////////////////////////////////
 
-const {initLogger} = kb2abot.helpers.console;
 const {
 	convertJ2teamToAppstate,
 	convertAtpToAppstate,
@@ -31,6 +29,7 @@ const {
 const deploy = async data => {
 	try {
 		const {name: botName, cookiePath} = data;
+		const {initLogger} = kb2abot.helpers.console;
 		initLogger(emoji.emojify(`:robot_face: ${botName}`));
 
 		// truncateMusics();
