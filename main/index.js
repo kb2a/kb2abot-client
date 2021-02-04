@@ -4,50 +4,22 @@ const path = require("path");
 const cluster = require("cluster");
 const emoji = require("node-emoji");
 
-const {subname} = require("./utils/COMMON");
-const {initLogger} = require("./utils/CONSOLE");
+const {subname} = require("./helpers/common");
+const {initLogger} = require("./helpers/console");
 initLogger(emoji.emojify(":star: INTERNAL"));
-const k2babotGlobalModel = require("./models/kb2abot-global.model");
-const helpers = require("./helpers");
+
 /////////////////////////////////////////////////////
 // =============== GLOBAL VARIABLE =============== //
 /////////////////////////////////////////////////////
-globalThis.kb2abot = Object.assign(k2babotGlobalModel, {
-	helpers
-});
-
-// Tại sao file bootloader này cũng có global kb2abot?
-// Vì bootloader là nơi test lỗi của các utils, plugins
-// bởi 2 cái đó do người dùng chỉnh sửa, thêm bớt nên
-// sẽ ko đáng tin lắm, có thể phát sinh lỗi nên cần preload
-// để check tất cả lỗi.
-// (khi loadBot sẽ load lại utils, plugins, helpers thêm lần nữa)
+globalThis.loader = require("./loader");
+const schemas = loader.load(path.join(__dirname, "schemas"));
+globalThis.kb2abot = new schemas.Kb2abotGlobal();
 /////////////////////////////////////////////////////
 // ============ END OF GOBAL VARIBALE ============ //
 /////////////////////////////////////////////////////
 
-
-const {
-	// cli,
-	checkInternet,
-	checkNode,
-	foolHeroku,
-	preload,
-	update,
-	updateCli
-} = require("./bootloader");
 const botsDir = path.join(__dirname, "../bots");
 const deployPath = path.join(__dirname, "./deploy/index.js");
-
-const tasks = [];
-const isDev = process.argv.slice(2)[0] == "dev";
-tasks.push(checkInternet);
-!isDev && tasks.push(update);
-tasks.push(updateCli);
-tasks.push(foolHeroku);
-tasks.push(checkNode);
-tasks.push(preload);
-// tasks.push(cli);
 
 cluster.on("exit", (worker, code, signal) => {
 	if (signal) {
@@ -59,6 +31,45 @@ cluster.on("exit", (worker, code, signal) => {
 });
 
 const bootloader = async () => {
+	const timeStart = Date.now();
+	console.newLogger.log("Dang kiem tra cu phap code . . .\n");
+	try {
+		await loader.slowLoad("bootloader");
+		kb2abot.helpers = await loader.slowLoad("helpers");
+		kb2abot.schemas = await loader.slowLoad("schemas");
+		kb2abot.plugins = await loader.slowLoad("plugins");
+	}
+	catch(e) {
+		console.newLogger.error(e.stack);
+		console.newLogger.error("Vui long kiem tra lai file tren hoac lien he ho tro: fb.com/khoakomlem");
+		process.exit();
+	}
+	const latency = Date.now() - timeStart;
+	console.log(
+		"\n" +
+		"██  ███ █  █ ███\n" +
+		"█ █ █ █ ██ █ █_\n" +
+		`█ █ █ █ █ ██ █    ${latency}ms!\n` +
+		"██  ███ █  █ ███\n"
+	);
+
+	const {
+		// cli,
+		checkInternet,
+		update,
+		updateCli,
+		foolHeroku,
+		checkNode,
+	} = loader.load(path.join(__dirname, "bootloader"));
+	const tasks = [];
+	const isDev = process.argv.slice(2)[0] == "dev";
+	tasks.push(checkInternet);
+	!isDev && tasks.push(update);
+	tasks.push(updateCli);
+	tasks.push(foolHeroku);
+	tasks.push(checkNode);
+	// tasks.push(cli);
+
 	for (const task of tasks) {
 		const spinner = ora(task.des).start();
 		try {
@@ -90,5 +101,3 @@ const bootloader = async () => {
 };
 
 bootloader();
-
-module.exports = bootloader;

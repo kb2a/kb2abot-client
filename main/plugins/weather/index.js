@@ -26,7 +26,7 @@ module.exports = {
 	},
 
 	onCall: async function(api, message) {
-		const location = kb2abot.utils.getParam(message.body);
+		const location = kb2abot.helpers.getParam(message.body);
 		try {
 			const {weather, main, name} = (
 				await await axios.get(

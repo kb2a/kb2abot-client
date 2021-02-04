@@ -38,13 +38,9 @@ const asyncWait = async time => {
  */
 const execShellCommand = cmd => {
 	return new Promise(resolve => {
-		childProcess.exec(cmd, (error, stdout, stderr) => {
-			if (error) {
-				console.warn(error);
-				resolve();
-			}
-			resolve(stdout ? stdout : stderr);
-		});
+		childProcess.exec(cmd, (error, stdout, stderr) =>
+			resolve(stdout ? stdout : stderr)
+		);
 	});
 };
 /**

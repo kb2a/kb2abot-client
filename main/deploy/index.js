@@ -1,33 +1,37 @@
 const fs = require("fs");
 const emoji = require("node-emoji");
 const minimist = require("minimist");
+const path = require("path");
+
 /////////////////////////////////////////////////////
 // =============== GLOBAL VARIABLE =============== //
 /////////////////////////////////////////////////////
-const helpers = require("../helpers");
-globalThis.kb2abot = Object.assign(require("../models/kb2abot-global.model"), {
-	helpers
+globalThis.loader = require("../loader");
+const schemas = loader.load(path.join(__dirname, "../schemas"));
+const helpers = loader.load(path.join(__dirname, "../helpers"));
+globalThis.kb2abot = new schemas.Kb2abotGlobal({
+	helpers,
+	schemas
 });
-// plugins load sau vì plugin cần các hàm utils
+kb2abot.plugins = loader.load(path.join(__dirname, "../plugins"));
+console.log(kb2abot);
 /////////////////////////////////////////////////////
 // ============ END OF GOBAL VARIBALE ============ //
 /////////////////////////////////////////////////////
 
-const {initLogger} = require("../utils/CONSOLE");
+const {initLogger} = kb2abot.helpers.console;
 const {
 	convertJ2teamToAppstate,
 	convertAtpToAppstate,
 	// truncateMusics,
 	checkCredential,
 	getCookieType,
-} = require("../utils/DEPLOY");
+} = kb2abot.helpers.deploy;
 
 const deploy = async data => {
 	try {
 		const {name: botName, cookiePath} = data;
 		initLogger(emoji.emojify(`:robot_face: ${botName}`));
-		kb2abot.utils = await helpers.loader("utils", true);
-		kb2abot.plugins = await helpers.loader("plugins", true);
 
 		// truncateMusics();
 		let unofficialAppState;
@@ -55,7 +59,8 @@ const deploy = async data => {
 			id
 		});
 		require("./kb2abot")(officialAppState);
-		// require init ở đây bởi vì nếu init sớm hơn thì global kb2abot.id chưa sẵn sàng => error
+		// require kb2abot ở đây bởi vì nếu require sớm hơn thì global kb2abot.id
+		// chưa sẵn sàng cho kb2abot.js => error
 		console.newLogger.success(`${name} (${id}) UP !`);
 	}
 	catch (e) {
@@ -63,6 +68,8 @@ const deploy = async data => {
 		process.exit(e.code);
 	}
 };
-deploy(minimist(process.argv.slice(2)));
+
+if (process.argv.length > 2)
+	deploy(minimist(process.argv.slice(2)));
 
 module.exports = deploy;

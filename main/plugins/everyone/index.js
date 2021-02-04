@@ -1,4 +1,4 @@
-const {getParam} = kb2abot.utils;
+const {getParam} = kb2abot.helpers;
 
 module.exports = {
 	authorDetails: {

@@ -1,5 +1,5 @@
-const {botengines, fixEngineName} = kb2abot.utils.autoreply;
-const {getParam} = kb2abot.utils;
+const {botengines, fixEngineName} = require("./autoreply");
+const {getParam} = kb2abot.helpers;
 const keywords = ["autoreply", "auto"];
 
 module.exports = {

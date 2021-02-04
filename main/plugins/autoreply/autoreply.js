@@ -4,7 +4,7 @@ const fixEngineName = text => {
 	return lower.charAt(0).toUpperCase() + lower.slice(1);
 };
 
-const botengines = require("./botengines");
+const botengines = loader.load(__dirname+"/botengines");
 
 module.exports = {
 	fixEngineName,

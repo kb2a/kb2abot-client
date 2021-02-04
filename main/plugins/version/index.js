@@ -1,5 +1,5 @@
 const {exec} = require("child_process");
-const {round, getParam} = kb2abot.utils;
+const {round, getParam} = kb2abot.helpers;
 
 module.exports = {
 	authorDetails: {

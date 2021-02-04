@@ -4,8 +4,8 @@ const pathToFfmpeg = require("ffmpeg-static");
 const uniqid = require("uniqid");
 const path = require("path");
 const fs = require("fs");
-const {round, parseValue, deleteFile, parseArgs} = kb2abot.utils;
-const musicPath = path.join(__dirname, "../../musics");
+const {round, parseValue, deleteFile, parseArgs} = kb2abot.helpers;
+const musicPath = path.join(__dirname, "musics");
 
 module.exports = {
 	authorDetails: {

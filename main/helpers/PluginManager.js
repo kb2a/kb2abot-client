@@ -1,8 +1,9 @@
-const Manager = require("./Manager.helper");
+const Manager = require("./Manager");
 
 module.exports = class CommandManager extends Manager {
 	constructor(plugins = {}) {
 		super();
+		console.log(plugins);
 		this.import(plugins);
 	}
 
@@ -27,13 +28,5 @@ module.exports = class CommandManager extends Manager {
 			return true;
 		});
 		return this.items[index];
-	}
-
-	getContinuousPlugin() {
-		const out = [];
-		for (const plugin of this.items) {
-			if (plugin.type == "continuous") out.push(plugin);
-		}
-		return out;
 	}
 };

@@ -1,4 +1,4 @@
-const { constrain } = kb2abot.utils;
+const { constrain } = kb2abot.helpers;
 
 module.exports = {
 	authorDetails: {

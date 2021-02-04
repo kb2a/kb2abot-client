@@ -1,22 +1,22 @@
 const os = require("os");
 const login = require("facebook-chat-api");
-const storageModel = require("../models/storage.model");
 
 // import all plugin into pluginManager
 const pluginManager = new kb2abot.helpers.PluginManager(kb2abot.plugins);
+
 const {Account} = require("./roles");
-kb2abot.account = new Account({
-	id: kb2abot.id
-});
+kb2abot.account = new Account({id: kb2abot.id});
 try {
-	kb2abot.utils.DATASTORE.load();
+	kb2abot.account.load();
 	console.newLogger.success(`Loaded datastore ${kb2abot.id}.json!`);
 }
 catch(e) {
-	console.newLogger.warn(`Datastore ${kb2abot.id}.json khong hop le!`);
+	console.newLogger.error(`Datastore ${kb2abot.id}.json khong hop le!`);
+	console.newLogger.error(`Vui long xoa hoac sua lai file ${__dirname}\\${kb2abot.id}.json!`);
+	process.exit();
 }
-kb2abot.account.storage = {...storageModel.account, ...kb2abot.account.storage};
-setInterval(kb2abot.utils.DATASTORE.save, 5000);
+kb2abot.account.storage = new kb2abot.schemas.AccountStorage(kb2abot.account.storage);
+setInterval(() => kb2abot.account.save(), 5000);
 
 const executePlugin = async ({
 	api,
@@ -66,7 +66,7 @@ const fn = async function(err, message) {
 	message.body = message.body.trim();
 
 	const thread = kb2abot.account.addThread(message.threadID);
-	thread.storage = {...storageModel.thread, ...thread.storage};
+	thread.storage = new kb2abot.schemas.ThreadStorage(thread.storage);
 	if (Date.now() <= thread.storage.blockTime)
 		return;
 
@@ -110,11 +110,20 @@ const fn = async function(err, message) {
 };
 
 module.exports = appState => {
-	login({appState}, function(err, api) {
+	login({appState}, async (err, api) => {
 		if (err) {
 			console.newLogger.error(JSON.stringify(err));
 			process.exit();
 		}
+		api.setOptions({selfListen: true});
 		api.listenMqtt(fn.bind({api}));
+		for (const key in kb2abot.plugins) {
+			try {
+				await kb2abot.plugins[key].onLoad(api);
+			}
+			catch(e) {
+				console.newLogger.error("onLoad -> " + e.message);
+			}
+		}
 	});
 };
