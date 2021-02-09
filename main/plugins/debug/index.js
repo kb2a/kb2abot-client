@@ -23,6 +23,6 @@ module.exports = {
 	},
 
 	onCall: async function(api, message) {
-		api.sendMessage(`Storage: ${JSON.stringify(this.storage)}`, message.threadID);
+		api.replyMessage(`Storage: ${JSON.stringify(this.storage)}`, message.threadID);
 	}
 };

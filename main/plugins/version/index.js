@@ -53,7 +53,7 @@ module.exports = {
 				const commitMessage = values[1][i];
 				replyMsg += `Ver ${version}: ${commitMessage}\n`;
 			}
-			api.sendMessage(replyMsg, message.threadID);
+			api.replyMessage(replyMsg, message.threadID);
 		});
 	}
 };

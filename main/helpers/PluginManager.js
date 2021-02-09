@@ -3,7 +3,6 @@ const Manager = require("./Manager");
 module.exports = class CommandManager extends Manager {
 	constructor(plugins = {}) {
 		super();
-		console.log(plugins);
 		this.import(plugins);
 	}
 

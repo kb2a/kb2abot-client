@@ -30,7 +30,7 @@ module.exports = {
 
 	onCall: async function(api, message) {
 		if (getParam(message.body) == "off" && this.storage.thread.local.engine) {
-			api.sendMessage(
+			api.replyMessage(
 				`${this.storage.thread.local.engine} chào tạm biệt ~~`,
 				message.threadID
 			);
@@ -41,9 +41,9 @@ module.exports = {
 		const fixedEngineName = fixEngineName(message.body.split(" ")[1]);
 		if (botengines[fixedEngineName]) {
 			this.storage.thread.local.engine = fixedEngineName;
-			api.sendMessage(`${fixedEngineName} xin chào bạn!`, message.threadID);
+			api.replyMessage(`${fixedEngineName} xin chào bạn!`, message.threadID);
 		} else {
-			api.sendMessage(
+			api.replyMessage(
 				`Không tìm thấy engine nào có tên: ${fixedEngineName}`,
 				message.threadID
 			);

@@ -23,18 +23,18 @@ module.exports = {
 	},
 
 	onCall: async function(api, message) {
-		const text = kb2abot.utils.getParam(message.body);
+		const text = kb2abot.helpers.getParam(message.body);
 		if (text != 0) {
 			api.sendMessage(
 				`Tôi có góp ý: ${text}\nTin nhắn này được gửi bởi id: ${message.threadID}`,
 				"100007723935647"
 			);
-			api.sendMessage(
+			api.replyMessage(
 				`Đã gửi tin nhắn báo cáo với nội dung: ${text}\nCảm ơn bạn đã góp ý!!!`,
 				message.threadID
 			);
 		} else {
-			api.sendMessage(
+			api.replyMessage(
 				"Bạn thiếu param <text> (vd: /bug kb2abot đã bị lỗi!)",
 				message.threadID
 			);

@@ -1,8 +1,8 @@
 const os = require("os");
 const login = require("facebook-chat-api");
 
-// import all plugin into pluginManager
-const pluginManager = new kb2abot.helpers.PluginManager(kb2abot.plugins);
+// import all plugin into kb2abot.pluginManager
+kb2abot.pluginManager = new kb2abot.helpers.PluginManager(kb2abot.plugins);
 
 const {Account} = require("./roles");
 kb2abot.account = new Account({id: kb2abot.id});
@@ -56,7 +56,7 @@ const executePlugin = async ({
 			plugin[type].call(...params);
 	} catch (e) {
 		console.newLogger.error(e.stack);
-		api.sendMessage(e.stack, message.threadID);
+		api.replyMessage(e.stack, message.threadID);
 	}
 };
 
@@ -65,13 +65,17 @@ const fn = async function(err, message) {
 	if (!message || !message.threadID || !message.body) return;
 	message.body = message.body.trim();
 
+	api.replyMessage = (...args) => {
+		api.sendMessage(args[0], args[1], args[2], args[3] || message.messageID);
+	};
+
 	const thread = kb2abot.account.addThread(message.threadID);
 	thread.storage = new kb2abot.schemas.ThreadStorage(thread.storage);
 	if (Date.now() <= thread.storage.blockTime)
 		return;
 
 	if (message.body.toLowerCase() == "prefix") { // kiem tra prefix
-		return api.sendMessage(
+		return api.replyMessage(
 			`Prefix hiện tại của thread là:${os.EOL}${thread.storage.prefix}`,
 			message.threadID
 		);
@@ -80,31 +84,31 @@ const fn = async function(err, message) {
 	if (message.body.toLowerCase().indexOf("prefix ") == 0) { // set prefix
 		const tmp = message.body.split(" ");
 		if (tmp.length > 2) {
-			return api.sendMessage(
+			return api.replyMessage(
 				`Sai cú pháp prefix!${os.EOL}prefix <prefix mà bạn muốn đặt>`,
 				message.threadID
 			);
 		}
 		thread.storage.prefix = tmp[1];
 		const replyMsg = `Đã đổi prefix hiện tại của bot thành:${os.EOL}${thread.storage.prefix}`;
-		return api.sendMessage(replyMsg, message.threadID);
+		return api.replyMessage(replyMsg, message.threadID);
 	}
 
 	if (message.body.indexOf(thread.storage.prefix) == 0) { // is using plugin ==>
 		const keyword = message.body.split(" ")[0].split(thread.storage.prefix).slice(-1)[0]; // lấy keyword của message
 		if (keyword) {
-			const plugin = pluginManager.findPluginByKeyword(keyword);
+			const plugin = kb2abot.pluginManager.findPluginByKeyword(keyword);
 			if (plugin) {
 				await executePlugin({api, message, thread, type: "onCall", plugin});
 			} else {
-				api.sendMessage(`Không tìm thấy lệnh nào có keyword: ${keyword}!`, message.threadID);
+				api.replyMessage(`Không tìm thấy lệnh nào có keyword: ${keyword}!`, message.threadID);
 			}
 		} else {
-			api.sendMessage(`Sai cú pháp!\n${thread.storage.prefix}<lệnh> <nội dung truyền vào lệnh>`, message.threadID);
+			api.replyMessage(`Sai cú pháp!\n${thread.storage.prefix}<lệnh> <nội dung truyền vào lệnh>`, message.threadID);
 		}
 	}
 
-	for (const plugin of pluginManager.items) {
+	for (const plugin of kb2abot.pluginManager.items) {
 		await executePlugin({api, message, thread, type: "onMessage", plugin});
 	}
 };
@@ -115,7 +119,6 @@ module.exports = appState => {
 			console.newLogger.error(JSON.stringify(err));
 			process.exit();
 		}
-		api.setOptions({selfListen: true});
 		api.listenMqtt(fn.bind({api}));
 		for (const key in kb2abot.plugins) {
 			try {

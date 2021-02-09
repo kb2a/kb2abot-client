@@ -40,10 +40,10 @@ module.exports = {
 			})\nTemperature: ${Math.round(main.temp_min - 273)}°C ~ ${Math.round(
 				main.temp_max - 273
 			)}°C`;
-			api.sendMessage(replyMsg, message.threadID);
+			api.replyMessage(replyMsg, message.threadID);
 		} catch (e) {
 			const replyMsg = `Không tìm thấy địa điểm nào có tên: ${location}`;
-			api.sendMessage(replyMsg, message.threadID);
+			api.replyMessage(replyMsg, message.threadID);
 		}
 	}
 };

@@ -43,12 +43,12 @@ module.exports = {
 						replyMsg += `Tác giả: ${plugin.authorDetails.name} (${plugin.authorDetails.contact})\n`;
 						replyMsg += "-----\n";
 						replyMsg += `Hướng dẫn sử dụng:\n${prefix}${plugin.keywords[0]} ${plugin.extendedDescription}`;
-						api.sendMessage(replyMsg, message.threadID);
+						api.replyMessage(replyMsg, message.threadID);
 						return;
 					}
 				}
 			}
-			api.sendMessage(`Không tìm thấy lệnh ${param}!`, message.threadID);
+			api.replyMessage(`Không tìm thấy lệnh ${param}!`, message.threadID);
 		} else {
 			let replyMsg = "Danh sách câu lệnh:\n";
 			let index = 0;
@@ -59,7 +59,7 @@ module.exports = {
 				replyMsg += `${index}. ${plugin.keywords[0]} - ${plugin.friendlyName}\n`;
 			}
 			replyMsg += `${prefix}help <tên câu lệnh> để xem chi tiết và hướng dẫn sử dụng lệnh!`;
-			api.sendMessage(replyMsg, message.threadID);
+			api.replyMessage(replyMsg, message.threadID);
 		}
 	}
 };

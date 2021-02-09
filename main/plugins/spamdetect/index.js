@@ -36,7 +36,7 @@ module.exports = {
 			stl.spamScore -= (diff - 800)/1000;
 		stl.spamScore = constrain(stl.spamScore, 0, 10);
 		if (stl.spamScore >= 10) {
-			api.sendMessage("Too frequent! Blocking group for 5 mins...", message.threadID);
+			api.replyMessage("Too frequent! Blocking group for 5 mins...", message.threadID);
 			stl.blockTime = Date.now() + 1000 * 60 * 5;
 			stl.spamScore = 0;
 		}

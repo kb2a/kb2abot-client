@@ -8,6 +8,6 @@ module.exports = (api, message) => {
 	}).then(res => {
 		const replyMsg = /"text":"(.*?)"}/.exec(res.data)[1];
 		if (replyMsg)
-			api.sendMessage(replyMsg, message.threadID);
+			api.replyMessage(replyMsg, message.threadID);
 	});
 };

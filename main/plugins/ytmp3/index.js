@@ -41,7 +41,7 @@ module.exports = {
 
 		if (id) {
 			if (!/^[a-zA-Z0-9-_]{11}$/.test(id)) {
-				api.sendMessage("ID không hợp lệ!", message.threadID);
+				api.replyMessage("ID không hợp lệ!", message.threadID);
 				return;
 			}
 			const YD = new YoutubeMp3Downloader({
@@ -56,7 +56,7 @@ module.exports = {
 				const fileSize = round(stats.averageSpeed / 1024 / 1024, 1);
 				if (fileSize > 100) {
 					const replymessage = `Không thể gửi: dung lượng file id(${id}) quá lớn (${fileSize}MB>100MB)`;
-					api.sendMessage(replymessage, message.threadID);
+					api.replyMessage(replymessage, message.threadID);
 				} else {
 					const timeGet = (Date.now() - start) / 1000;
 					const replymessage = `Tiêu đề: ${videoTitle}\nNhạc sĩ: ${
@@ -65,7 +65,7 @@ module.exports = {
 						stats.transferredBytes / 1024 / 1024,
 						1
 					)}mb\nTốc độ tải: ${fileSize}mb/s`;
-					api.sendMessage(
+					api.replyMessage(
 						{
 							body: replymessage,
 							attachment: fs.createReadStream(path.join(musicPath, filename))
@@ -81,9 +81,9 @@ module.exports = {
 			});
 			YD.on("error", error => {
 				const replymessage = `Đã gặp lỗi '${JSON.stringify(error)}' với id: ${id}`;
-				api.sendMessage(replymessage, message.threadID);
+				api.replyMessage(replymessage, message.threadID);
 			});
-			api.sendMessage(
+			api.replyMessage(
 				`Đang thu thập dữ liệu, vui lòng đợi . . . (${id})`,
 				message.threadID
 			);
@@ -99,7 +99,7 @@ module.exports = {
 					const {title, videoId} = videos[i];
 					replymessage += `${i + 1}. Tiêu đề: ${title}, id: ${videoId}\n`;
 				}
-				api.sendMessage(replymessage, message.threadID);
+				api.replyMessage(replymessage, message.threadID);
 			});
 		}
 	}

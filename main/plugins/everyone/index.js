@@ -41,7 +41,7 @@ module.exports = {
 					fromIndex: replyMsg.length - tag.length
 				});
 			}
-			api.sendMessage(
+			api.replyMessage(
 				{
 					body: replyMsg + (text || ""),
 					mentions

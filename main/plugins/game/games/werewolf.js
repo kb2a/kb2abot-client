@@ -1,5 +1,5 @@
-const {psendMessage} = kb2abot.utils.FCA;
-const {commandHandler} = kb2abot.utils.werewolf;
+// const {psendMessage} = kb2abot.helpers.fca;
+const {commandHandler} = kb2abot.helpers.werewolf;
 const {GameSchema} = kb2abot.schemas;
 
 module.exports = class WerewolfGame extends GameSchema {

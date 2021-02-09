@@ -26,6 +26,6 @@ module.exports = (api, message) => {
 		// }).then(text => {
 		// 	console.log(text); // Hola mundo
 		// });
-		api.sendMessage(replyMsg, message.threadID);
+		api.replyMessage(replyMsg, message.threadID);
 	});
 };

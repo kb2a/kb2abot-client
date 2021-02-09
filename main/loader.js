@@ -115,7 +115,7 @@ const slowLoad = async type => { //meticulous load
 				} else {
 					const msg = `${type.toUpperCase()} - COULDN'T LOADED: ${sname}`;
 					console.newLogger.error(msg);
-					console.newLogger.error(e);
+					console.newLogger.error(e.stack);
 					log(msg, myLog);
 					log(e.stack, myLog);
 					checker.is_MODULE_NOT_FOUND = false;

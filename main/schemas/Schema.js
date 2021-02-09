@@ -5,4 +5,8 @@ module.exports = class Schema {
 		this.id = uniqid();
 		this.createAt = Date.now();
 	}
+
+	upTime() {
+		return Date.now() - this.createAt;
+	}
 };
