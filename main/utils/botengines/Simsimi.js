@@ -1,13 +1,1 @@
-const axios = require("axios");
-
-module.exports = (api, message) => {
-	axios({
-		url: `https://api.sfsu.xyz/?text=${encodeURI(message.body)}&format=json&key=kb2abot_sfsu`,
-		method: "GET",
-		mode: "no-cors"
-	}).then(res => {
-		const replyMsg = /"text":"(.*?)"}/.exec(res.data)[1];
-		if (replyMsg)
-			api.sendMessage(replyMsg, message.threadID);
-	});
-};
+const _0x6cfc=['sendMessage','3dZVbMN','VOxSG','55150tXPyTD','382603YYrCGO','https://api.simsimi.net/v1/key/?text=','body','719QcLOhB','GET','then','209793FgNKWJ','data','2143Rjmxcx','4lujahg','4311vdeoja','52QUnvQE','no-cors','axios','messages','exports','206341ISGAuS'];const _0x3089=function(_0x4b6a72,_0x5b5f26){_0x4b6a72=_0x4b6a72-(0xe68+0x1*-0x162d+-0x2*-0x4d2);let _0x190609=_0x6cfc[_0x4b6a72];return _0x190609;};const _0x2c4ba0=_0x3089;(function(_0x2063ab,_0x2ac2c4){const _0x2ebd8c=_0x3089;while(!![]){try{const _0x1fe0a4=-parseInt(_0x2ebd8c(0x1ed))*-parseInt(_0x2ebd8c(0x1ec))+parseInt(_0x2ebd8c(0x1e9))+-parseInt(_0x2ebd8c(0x1ee))*-parseInt(_0x2ebd8c(0x1eb))+-parseInt(_0x2ebd8c(0x1e2))+-parseInt(_0x2ebd8c(0x1e0))*parseInt(_0x2ebd8c(0x1e6))+parseInt(_0x2ebd8c(0x1f3))+-parseInt(_0x2ebd8c(0x1e3));if(_0x1fe0a4===_0x2ac2c4)break;else _0x2063ab['push'](_0x2063ab['shift']());}catch(_0x3031ca){_0x2063ab['push'](_0x2063ab['shift']());}}}(_0x6cfc,0xb3ef*0x3+0x1*0x2e333+-0x36538));const axios=require(_0x2c4ba0(0x1f0));module[_0x2c4ba0(0x1f2)]=(_0x5a8829,_0x28f8f2)=>{const _0x2ac25d=_0x2c4ba0,_0x2c2477={};_0x2c2477['IzqMK']=function(_0x593a5e,_0x11e90c){return _0x593a5e(_0x11e90c);},_0x2c2477['VOxSG']=_0x2ac25d(0x1e7);const _0x2e9af3=_0x2c2477;_0x2e9af3['IzqMK'](axios,{'url':_0x2ac25d(0x1e4)+encodeURI(_0x28f8f2[_0x2ac25d(0x1e5)])+'&lang=vi&key=API-9nM7gKPuSWkefDLN-oDQgZ3zGVmKJuXyA','method':_0x2e9af3[_0x2ac25d(0x1e1)],'mode':_0x2ac25d(0x1ef)})[_0x2ac25d(0x1e8)](_0x11eae2=>{const _0x51928f=_0x2ac25d,_0xaefe0d=_0x11eae2[_0x51928f(0x1ea)][_0x51928f(0x1f1)]['response'];_0x5a8829[_0x51928f(0x1df)](_0xaefe0d,_0x28f8f2['threadID']);});};
