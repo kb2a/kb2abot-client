@@ -64,6 +64,13 @@ const initLogger = (prefix, prop = "newLogger") => {
 	console[prop] = new Logger(prefix);
 };
 
+const setTerminalTitle = text => {
+	process.stdout.write(
+		`${String.fromCharCode(27)}]0;${text}${String.fromCharCode(7)}`
+	);
+};
+
 module.exports = {
-	initLogger
+	initLogger,
+	setTerminalTitle
 };

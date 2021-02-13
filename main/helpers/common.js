@@ -260,7 +260,7 @@ const subname = text => {
  * kb2abot.utils.numbersToWords(18102004);
  * // "ogoztzzf"
  */
-const numberToPassword = function(number) {
+const numberToPassword = number => {
 	const numbers = ["z", "o", "t", "h", "f", "i", "s", "e", "g", "n"];
 	let str = number.toString();
 	for (let i = 0; i < 10; i++) {
@@ -276,7 +276,7 @@ const numberToPassword = function(number) {
  * kb2abot.utils.currencyFormat(1234567);
  * // "1,234,567"
  */
-const currencyFormat = function(number) {
+const currencyFormat = number => {
 	return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 /**
@@ -298,7 +298,7 @@ const getParam = text => {
  * @param  {String} text Văn bản nào đó
  * @return {String}      Văn bản sạch
  */
-const removeSpecialChar = function(str) {
+const removeSpecialChar = str => {
 	if (str === null || str === "") return false;
 	else str = str.toString();
 
