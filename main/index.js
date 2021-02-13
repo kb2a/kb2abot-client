@@ -5,15 +5,16 @@ const cluster = require("cluster");
 const emoji = require("node-emoji");
 
 const {subname} = require("./helpers/common");
-const {initLogger} = require("./helpers/console");
+const {initLogger, setTerminalTitle} = require("./helpers/console");
 initLogger(emoji.emojify(":star: INTERNAL"));
+let memoryUsages = [0];
 
 /////////////////////////////////////////////////////
 // =============== GLOBAL VARIABLE =============== //
 /////////////////////////////////////////////////////
+const Kb2abotGlobal = require("./Kb2abotGlobal");
 globalThis.loader = require("./loader");
-const schemas = loader.load(path.join(__dirname, "schemas"));
-globalThis.kb2abot = new schemas.Kb2abotGlobal();
+globalThis.kb2abot = new Kb2abotGlobal();
 /////////////////////////////////////////////////////
 // ============ END OF GOBAL VARIBALE ============ //
 /////////////////////////////////////////////////////
@@ -25,9 +26,19 @@ cluster.on("exit", (worker, code, signal) => {
 	if (signal) {
 		console.newLogger.warn(`Bot PID: ${worker.process.pid} da dung, SIGNAL: ${signal}`);
 	} else {
-		const func = code == 0 ? "warn" : "error";
-		console.newLogger[func](`Bot PID: ${worker.process.pid} da dung, ERROR_CODE: ${code}`);
+		const funcKey = code == 0 ? "warn" : "error";
+		console.newLogger[funcKey](`Bot PID: ${worker.process.pid} da dung, ERROR_CODE: ${code}`);
 	}
+});
+
+cluster.on("online", worker => {
+	worker.send("memoryUsage");
+	worker.on("message", dd => {
+		if (dd.event == "memoryUsage") {
+			memoryUsages[worker.id] = dd.data.heapTotal / 1024 / 1024;
+			setTimeout(() => worker.send("memoryUsage"), 2000);
+		}
+	});
 });
 
 const bootloader = async () => {
@@ -35,9 +46,10 @@ const bootloader = async () => {
 	console.newLogger.log("Dang kiem tra cu phap code . . .\n");
 	try {
 		await loader.slowLoad("bootloader");
-		kb2abot.helpers = await loader.slowLoad("helpers");
 		kb2abot.schemas = await loader.slowLoad("schemas");
+		kb2abot.helpers = await loader.slowLoad("helpers");
 		kb2abot.plugins = await loader.slowLoad("plugins");
+		kb2abot.games = await loader.slowLoad("games");
 	}
 	catch(e) {
 		console.newLogger.error(e.stack);
@@ -89,6 +101,10 @@ const bootloader = async () => {
 	if (botList.length == 0) {
 		console.newLogger.error("Ban chua dat cookie vao folder /bots");
 	}
+	setInterval(() => {
+		const memoryUsage = memoryUsages.reduce((a,b) => a+b);
+		setTerminalTitle(`KB2ABOT - CLUSTERS: ${botList.length} - MEMORY: ${memoryUsage.toFixed(2)}MB`);
+	}, 2000);
 	for (const bot of botList) {
 		const cookiePath = path.join(botsDir, bot);
 		cluster.setupMaster({

@@ -16,7 +16,6 @@ module.exports = class Game extends Command {
 	execute(args, api, parent, mssg, group) {
 		super.execute(args, api, parent, mssg, group);
 		api.sendMessage("Game đang bảo trì!", mssg.threadID);
-		return;
 		const name = parseValue(args, ["name", "n"]);
 		const list = parseValue(args, ["list", "l"]);
 		const suspend = parseValue(args, ["suspend", "s"]);

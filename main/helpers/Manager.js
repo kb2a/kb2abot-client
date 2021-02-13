@@ -1,6 +1,6 @@
 module.exports = class Manager {
-	constructor() {
-		this.items = [];
+	constructor(items = []) {
+		this.items = items;
 	}
 
 	getLength() {

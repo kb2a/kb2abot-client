@@ -1,19 +1,19 @@
 const {getParam} = kb2abot.helpers;
-const {preplyMessage} = kb2abot.helpers.fca;
+const {replyMessage} = kb2abot.helpers.fca;
 
 module.exports = {
 	authorDetails: {
-		name: "xxx",
-		contact: "fb.com/xxx"
+		name: "khoakomlem",
+		contact: "fb.com/khoakomlem"
 	},
 
-	friendlyName: "Plugin that do awesome things",
+	friendlyName: "Chơi game",
 
 	keywords: ["game"],
 
-	description: "This plugin is awesome!",
+	description: "Hiện tại gồm các game: werewolf",
 
-	extendedDescription: "",
+	extendedDescription: "<tên game>",
 
 	hideFromHelp: false,
 

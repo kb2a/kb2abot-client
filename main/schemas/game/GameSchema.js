@@ -1,4 +1,4 @@
-const Schema = require("./Schema");
+const Schema = require("../Schema");
 
 module.exports = class GameSchema extends Schema {
 	constructor(options = {}) {

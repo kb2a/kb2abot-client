@@ -1,8 +1,8 @@
 const Manager = require("./Manager");
 
 module.exports = class GameManager extends Manager {
-	constructor(options) {
-		super(options);
+	constructor(options = {}) {
+		super();
 		const {games = {}} = options;
 		this.games = games;
 	}
@@ -15,20 +15,21 @@ module.exports = class GameManager extends Manager {
 	}
 
 	run(name, {threadID, param} = {}) {
-		if (this.isPlaying(threadID))
-			throw new Error(`Game "${this.running()}" đang chạy!`);
-		this.instance = new this.games[name](param);
+		const item = this.playing(threadID);
+		if (item)
+			throw new Error(`Game "${item.instance.name}" đang chạy!`);
+		item.instance = new this.games[name](param);
 	}
 
 	async clean(threadID) {
-		const item = this.find({id: threadID});
+		const item = this.playing(threadID);
 		if (item) {
 			try {
 				await item.instance.clean();
 			}
 			finally {
 				this.instance = {};
-			}	
+			}
 		}
 	}
 
@@ -37,18 +38,18 @@ module.exports = class GameManager extends Manager {
 		return game ? game : null;
 	}
 
-	isValid(name) { // check if game exists
+	isValid(name) { // check if the game exists
 		const game = this.findGameByName(name);
 		return game ? true : false;
 	}
 
-	isPlaying(threadID) { // check if already playing a game
-		const item = this.find({id: threadID});
+	isPlaying(threadID) { // check if threadID is already playing a game
+		const item = this.find({threadID});
 		return item ? true : false;
 	}
 
-	playing(threadID) { // get current game name is playing
-		const item = this.find({id: threadID});
+	playing(threadID) { // get current game name that threadID is playing
+		const item = this.find({threadID});
 		return item ? item.instance.name : null;
 	}
 };

@@ -1,11 +1,6 @@
 const os = require("os");
 const login = require("facebook-chat-api");
 
-// import all plugin into kb2abot.pluginManager
-kb2abot.pluginManager = new kb2abot.helpers.PluginManager(kb2abot.plugins);
-
-const {Account} = require("./roles");
-kb2abot.account = new Account({id: kb2abot.id});
 try {
 	kb2abot.account.load();
 	console.newLogger.success(`Loaded datastore ${kb2abot.id}.json!`);
@@ -15,7 +10,6 @@ catch(e) {
 	console.newLogger.error(`Vui long xoa hoac sua lai file ${__dirname}\\${kb2abot.id}.json!`);
 	process.exit();
 }
-kb2abot.account.storage = new kb2abot.schemas.AccountStorage(kb2abot.account.storage);
 setInterval(() => kb2abot.account.save(), 5000);
 
 const executePlugin = async ({
@@ -66,11 +60,10 @@ const fn = async function(err, message) {
 	message.body = message.body.trim();
 
 	api.replyMessage = (...args) => {
-		api.sendMessage(args[0], args[1], args[2], args[3] || message.messageID);
+		api.sendMessage(args[0], args[1] || message.threadID, args[2], args[3] || message.messageID);
 	};
 
 	const thread = kb2abot.account.addThread(message.threadID);
-	thread.storage = new kb2abot.schemas.ThreadStorage(thread.storage);
 	if (Date.now() <= thread.storage.blockTime)
 		return;
 

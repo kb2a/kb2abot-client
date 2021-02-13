@@ -3,7 +3,7 @@ const path = require("path");
 const log = require("log-to-file");
 const detective = require("detective");
 
-const supportTypes = ["bootloader", "helpers", "plugins", "schemas"];
+const supportTypes = ["bootloader", "helpers", "plugins", "schemas", "games"];
 const {subname, execShellCommand} = require("./helpers/common");
 
 const load = dir => {

@@ -1,5 +1,5 @@
-const {execShellCommand} = require("./COMMON");
-const {psendMessage} = require("./FCA");
+const {execShellCommand} = kb2abot.helpers;
+const {psendMessage} = kb2abot.helpers.fca;
 
 const commandHandler = async (command, {game, api} = {}) => {
 	let result;

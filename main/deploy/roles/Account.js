@@ -6,14 +6,15 @@ module.exports = class Account extends kb2abot.helpers.Manager {
 	constructor({id} = {}) {
 		super();
 		this.id = id;
-		this.storage = {};
+		this.storage = new kb2abot.schemas.storage.Account();
 	}
 
-	addThread(id) {
+	addThread(id, storage = {}) {
 		return this.add(
 			new Thread({
 				id,
-				owner: this.id
+				owner: this.id,
+				storage
 			}),
 			{id}
 		);
@@ -24,11 +25,10 @@ module.exports = class Account extends kb2abot.helpers.Manager {
 			const text = fs.readFileSync(`datastores/${kb2abot.id}.json`);
 			const accountStorage = JSON.parse(text);
 			for (const threadStorage of accountStorage.__threads__) {
-				const thread = this.addThread(threadStorage.__id__);
-				thread.storage = {...threadStorage};
+				const thread = this.addThread(threadStorage.__id__, {...threadStorage});
 				delete thread.storage.__id__;
 			}
-			Object.assign(this.storage, accountStorage);
+			this.storage.extend({...accountStorage});
 			delete this.storage.__threads__;
 		} catch (e) {
 			console.log(e);
@@ -51,7 +51,7 @@ module.exports = class Account extends kb2abot.helpers.Manager {
 			);
 			fs.writeFileSync(`datastores/${kb2abot.id}.json`, save);
 		} catch (e) {
-			console.log(e);
+			console.newLogger.error(e.stack);
 		}
 	}
 };

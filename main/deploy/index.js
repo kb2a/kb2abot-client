@@ -6,14 +6,17 @@ const path = require("path");
 /////////////////////////////////////////////////////
 // =============== GLOBAL VARIABLE =============== //
 /////////////////////////////////////////////////////
+const Kb2abotGlobal = require("../Kb2abotGlobal");
 globalThis.loader = require("../loader");
-const schemas = loader.load(path.join(__dirname, "../schemas"));
-const helpers = loader.load(path.join(__dirname, "../helpers"));
-globalThis.kb2abot = new schemas.Kb2abotGlobal({
-	helpers,
-	schemas
-});
+globalThis.kb2abot = new Kb2abotGlobal();
+kb2abot.schemas = loader.load(path.join(__dirname, "../schemas"));
+kb2abot.helpers = loader.load(path.join(__dirname, "../helpers"));
 kb2abot.plugins = loader.load(path.join(__dirname, "../plugins"));
+kb2abot.games = loader.load(path.join(__dirname, "../games"));
+const {Account} = require("./roles");
+kb2abot.account = new Account();
+kb2abot.pluginManager = new kb2abot.helpers.PluginManager(kb2abot.plugins);
+kb2abot.gameManager = new kb2abot.helpers.GameManager(kb2abot.games);
 /////////////////////////////////////////////////////
 // ============ END OF GOBAL VARIBALE ============ //
 /////////////////////////////////////////////////////
@@ -26,19 +29,28 @@ const {
 	getCookieType,
 } = kb2abot.helpers.deploy;
 
+process.on("message", msg => { // receive ping message from master
+	if (msg == "memoryUsage") {
+		process.send({ // send memoryUsage to master
+			event: msg,
+			data: process.memoryUsage()
+		});
+	}
+});
+
 const deploy = async data => {
 	try {
 		const {name: botName, cookiePath} = data;
 		const {initLogger} = kb2abot.helpers.console;
 		initLogger(emoji.emojify(`:robot_face: ${botName}`));
-
-		// truncateMusics();
 		let unofficialAppState;
 		const cookieText = fs.readFileSync(cookiePath).toString();
 		const cookieType = getCookieType(cookieText);
+
 		if (cookieType != -1) {
 			console.newLogger.log("Cookie type: " + cookieType);
 		}
+
 		switch (cookieType) {
 		case "j2team":
 			unofficialAppState = convertJ2teamToAppstate(cookieText);
@@ -51,9 +63,11 @@ const deploy = async data => {
 			process.exit();
 			break;
 		}
+
 		const {id, name, appState: officialAppState} = await checkCredential({
 			appState: unofficialAppState
 		});
+		kb2abot.account.id = id;
 		Object.assign(kb2abot, {
 			id
 		});

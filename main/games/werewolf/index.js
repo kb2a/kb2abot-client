@@ -1,11 +1,13 @@
 // const {psendMessage} = kb2abot.helpers.fca;
-const {commandHandler} = kb2abot.helpers.werewolf;
-const {GameSchema} = kb2abot.schemas;
+const {commandHandler} = require("./helper");
 
-module.exports = class WerewolfGame extends GameSchema {
+module.exports = class WerewolfGame extends kb2abot.schemas.game.GameSchema {
 	constructor(options) {
-		super(...options, ...{
-			name: "werewolf"
+		super({
+			...{
+				name: "werewolf"
+			},
+			...options, // các props của options sẽ đè lên object ở trên
 		});
 		this.is = {
 			settingUp: true,

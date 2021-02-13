@@ -1,13 +1,12 @@
-const Schema = require("./Schema");
+const Storage = require("./Storage");
 
-module.exports = class ThreadStorageSchema extends Schema {
+module.exports = class ThreadStorageSchema extends Storage {
 	constructor(options = {}) {
 		super(options);
 		const {
 			prefix = "/",
 			blockTime = 0,
 		} = options;
-		Object.assign(this, options);
 		this.prefix = prefix;
 		this.blockTime = blockTime;
 	}

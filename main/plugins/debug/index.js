@@ -1,7 +1,7 @@
 module.exports = {
 	authorDetails: {
-		name: "xxx",
-		contact: "fb.com/xxx"
+		name: "khoakomlem",
+		contact: "fb.com/khoakomlem"
 	},
 
 	friendlyName: "Plugin that do awesome things",
