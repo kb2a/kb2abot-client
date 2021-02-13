@@ -9,8 +9,8 @@ ffmpeg-binary/
 logs/*
 !logs/README.txt
 
-musics/*
-!musics/README.txt
+main/plugins/ytmp3/musics/*
+!main/plugins/ytmp3/musics/README.txt
 
 node_modules/
 packagehash.txt
