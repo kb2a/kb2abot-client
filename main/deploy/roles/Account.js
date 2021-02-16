@@ -31,8 +31,12 @@ module.exports = class Account extends kb2abot.helpers.Manager {
 			this.storage.extend({...accountStorage});
 			delete this.storage.__threads__;
 		} catch (e) {
-			console.log(e);
-			throw "DATASTORE khong hop le!";
+			if (e.code == "ENOENT") {
+				this.save();
+				this.load();
+			} else {
+				throw new Error("DATASTORE khong hop le!");
+			}
 		}
 	}
 
