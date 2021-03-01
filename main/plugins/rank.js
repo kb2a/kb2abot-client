@@ -104,7 +104,7 @@ module.exports = {
 	// Các từ khóa để gọi plugin rank (có thể có nhiều keyword)
 	// ví dụ keyword "test" thì khi có người nhắn <prefix>test là plugin được gọi
 
-	description: "plugin rank(v0.3 beta)",
+	description: "plugin rank(v0.4 beta)",
 	// Nội dung của plugin (hiển thị trong hướng dẫn chi tiết)
 
 	extendedDescription: "",
@@ -121,7 +121,7 @@ module.exports = {
 	// true là tắt, false là bật
 
 	onLoad: async function() {
-		console.log("plugin rank v0.3 (beta)")
+		console.log("plugin rank v0.4 (beta)")
 		// Được gọi ngay sau khi load xong plugin
 		// Chủ yếu dùng để log thôi không quan trọng
 		// (Hoặc cũng có thể chuẩn bị các async function bằng await)
@@ -152,7 +152,7 @@ module.exports = {
 
 	onCall: async function(api, message) {		
 		function reply(msg) {
-			api.sendMessage(msg, message.threadID)
+			api.sendMessage(msg, message.threadID, message.messageID)
 		};
 		
 		const EXP = this.storage.account.global.messageCount[message.threadID + "uid_" + message.senderID];
@@ -164,7 +164,7 @@ module.exports = {
 					reply(`${ret[prop].name}(uid: ${message.senderID})\r\n---\r\nlevel: ${round(EXP/20, 0)}\r\nxp: ${EXP}\r\n---\r\nrank: ${getRank}`)
 				}
 			}
-		})		
+		})
 		// Được gọi khi có member xài lệnh của mình
 		// Là cốt lõi của plugin không có phần này thì có nghĩa sẽ không có chuyện
 		// gì xảy ra khi gọi plugin (để hideFromHelp true nữa là plugin như batman)
