@@ -72,11 +72,11 @@ const deploy = async data => {
 			appState: unofficialAppState
 		});
 		kb2abot.id = id;
+		kb2abot.name = name;
 		kb2abot.account.id = id;
 		require("./kb2abot")(officialAppState);
 		// require kb2abot ở đây bởi vì nếu require sớm hơn thì global kb2abot.id
 		// chưa sẵn sàng cho kb2abot.js => error
-		console.newLogger.success(`${name} (${id}) UP !`);
 	}
 	catch (e) {
 		console.newLogger.error(e.message);

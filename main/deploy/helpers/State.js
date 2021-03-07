@@ -31,4 +31,8 @@ module.exports = class State extends Manager {
 	is(item) { // work only for text, if passing an array/object, will need reference
 		return this.getCurrent() == item;
 	}
+
+	isEnd() {
+		return this.index == this.items.length - 1;
+	}
 };

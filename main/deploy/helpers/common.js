@@ -308,6 +308,22 @@ const removeSpecialChar = str => {
 const random = (start, end) => {
 	return Math.floor(Math.random() * (end - start + 1) + start);
 };
+const shuffle = arr => {
+	// thuật toán bogo-sort
+	let count = arr.length,
+		temp,
+		index;
+
+	while (count > 0) {
+		index = Math.floor(Math.random() * count);
+		count--;
+		temp = arr[count];
+		arr[count] = arr[index];
+		arr[index] = temp;
+	}
+
+	return arr; //Bogosort with no điều kiện dừng
+};
 
 module.exports = {
 	round,
@@ -326,5 +342,6 @@ module.exports = {
 	currencyFormat,
 	getParam,
 	removeSpecialChar,
-	random
+	random,
+	shuffle
 };

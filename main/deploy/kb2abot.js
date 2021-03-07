@@ -121,5 +121,6 @@ module.exports = appState => {
 				console.newLogger.error("onLoad -> " + e.message);
 			}
 		}
+		console.newLogger.success(`${kb2abot.name} (${kb2abot.id}) UP !`);
 	});
 };

@@ -10,7 +10,7 @@ const load = dir => {
 	const exportData = {};
 	const files = fs
 		.readdirSync(dir)
-		.filter(filename => fs.lstatSync(path.join(dir, filename)).isDirectory() || filename.indexOf(".js") != -1);
+		.filter(filename => fs.lstatSync(path.join(dir, filename)).isDirectory() || filename.includes(".js"));
 	for (const filename of files) {
 		try {
 			const data = require(path.join(dir, filename));

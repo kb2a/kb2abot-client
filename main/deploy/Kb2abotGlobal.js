@@ -3,6 +3,7 @@ const uniqid = require("uniqid");
 module.exports = class Kb2abotGlobalSchema {
 	constructor({
 		id = uniqid(),
+		name = "",
 		schemas = {},
 		helpers = {},
 		plugins = {},
@@ -12,6 +13,7 @@ module.exports = class Kb2abotGlobalSchema {
 		gameManager = {}
 	} = {}) {
 		this.id = id;
+		this.name = name;
 		this.schemas = schemas; 							// các schema trong /schemas
 		this.helpers = helpers; 							// các helper trong /helpers
 		this.plugins = plugins; 							// các plugin trong /plugins

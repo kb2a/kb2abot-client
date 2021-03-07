@@ -21,8 +21,7 @@ module.exports = class Game extends Schema {
 
 	async onMessage() {}
 
-	async clean(api) {
-		api.replyMessage("Đã dọn dẹp xong!");
+	async clean() {
 	}
 
 	addParticipant(id, duplicateCheck = true) {

@@ -10,6 +10,26 @@ initLogger(emoji.emojify(":star: INTERNAL"));
 let memoryUsages = [0];
 
 /////////////////////////////////////////////////////
+// =============== 	EXTRACT PLUGINS ============== //
+/////////////////////////////////////////////////////
+const AdmZip = require("adm-zip");
+const ePath = path.join(__dirname, "deploy/plugins/extracted_plugins");
+const extracted = fs.readFileSync(ePath).toString();
+const zipfiles = fs
+	.readdirSync(path.join(__dirname, "deploy/plugins"))
+	.filter(filename => filename.includes(".zip") && !extracted.includes(filename));
+for (const file of zipfiles) {
+	const zipPath = path.join(__dirname, "deploy/plugins", file);
+	const zip = new AdmZip(zipPath);
+	zip.extractAllTo(path.join(__dirname, "deploy/plugins"));
+	console.newLogger.success(`EXTRACTED: ${file}`);
+	fs.appendFileSync(ePath, file + "\n");
+}
+/////////////////////////////////////////////////////
+// =============== 	EXTRACT PLUGINS ============== //
+/////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////
 // =============== GLOBAL VARIABLE =============== //
 /////////////////////////////////////////////////////
 const Kb2abotGlobal = require("./deploy/Kb2abotGlobal");
