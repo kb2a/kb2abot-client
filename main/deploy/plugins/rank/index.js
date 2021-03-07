@@ -1,4 +1,4 @@
-const { round } = kb2abot.utils;
+const { round } = kb2abot.helpers;
 
 const copper = {
 	"I": "đồng I",
@@ -88,7 +88,7 @@ function rankUp (xp, threadID, senderID, userStorage) {
 		userStorage[lmao] = "chưa có";
 	}
 }
-	
+
 module.exports = {
 	authorDetails: {
 		name: "KhoaKoMlem, Citnut",
@@ -128,22 +128,24 @@ module.exports = {
 	},
 
 	onMessage: async function(api, message) {
-		if (!this.storage.account.global.messageCount) {
-			this.storage.account.global.messageCount = {};
+		const storage = this.storage.thread.local;
+		if (!storage.messageCount) {
+			storage.messageCount = {};
 		}
-		if (!this.storage.account.global.rank) {
-			this.storage.account.global.rank = {};
+		if (!storage.rank) {
+			storage.rank = {};
 		}
 
-		if (this.storage.account.global.messageCount[message.threadID + "uid_" + message.senderID] == null) {
-			this.storage.account.global.messageCount[message.threadID + "uid_" + message.senderID] = 0;
+		const uid = message.threadID + "uid_" + message.senderID;
+		if (!storage.messageCount[uid]) {
+			storage.messageCount[uid] = 1;
 		}else {
-			this.storage.account.global.messageCount[message.threadID + "uid_" + message.senderID]++;
+			storage.messageCount[uid]++;
 		}
-		if (this.storage.account.global.rank[message.threadID + "uid_" + message.senderID] == null) {
-			this.storage.account.global.rank[message.threadID + "uid_" + message.senderID] = "chưa có";
+		if (!storage.rank[uid]) {
+			storage.rank[uid] = "chưa có";
 		}else {
-			rankUp(this.storage.account.global.messageCount[message.threadID + "uid_" + message.senderID], message.threadID, message.senderID, this.storage.account.global.rank);
+			rankUp(storage.messageCount[uid], message.threadID, message.senderID, storage.rank);
 		}
 		// Được gọi mỗi khi có message nhắn tới (kể cả khi dùng lệnh)
 		// Chủ yếu dùng để làm mấy plugin kiểu gián điệp hoặc game
@@ -151,12 +153,17 @@ module.exports = {
 	},
 
 	onCall: async function(api, message) {
+		const storage = this.storage.thread.local;
+		const uid = message.threadID + "uid_" + message.senderID;
 		function reply(msg) {
 			api.sendMessage(msg, message.threadID, message.messageID);
 		}
 
-		const EXP = this.storage.account.global.messageCount[message.threadID + "uid_" + message.senderID];
-		const getRank = this.storage.account.global.rank[message.threadID + "uid_" + message.senderID];
+		if (!storage.messageCount)
+			return;
+
+		const EXP = storage.messageCount[uid];
+		const getRank = storage.rank[uid];
 
 		api.getUserInfo(message.senderID, (err, ret) => {
 			for (let prop in ret) {
