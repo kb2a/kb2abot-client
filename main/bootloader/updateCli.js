@@ -1,4 +1,4 @@
-const {execShellCommand} = require("../helpers/common");
+const {execShellCommand} = require("../deploy/helpers/common");
 const axios = require("axios");
 
 module.exports = {

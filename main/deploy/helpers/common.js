@@ -305,6 +305,9 @@ const removeSpecialChar = str => {
 	return str.replace(/[^\x20-\x7E]/g, "");
 	// return str;
 };
+const random = (start, end) => {
+	return Math.floor(Math.random() * (end - start + 1) + start);
+};
 
 module.exports = {
 	round,
@@ -322,5 +325,6 @@ module.exports = {
 	numberToPassword,
 	currencyFormat,
 	getParam,
-	removeSpecialChar
+	removeSpecialChar,
+	random
 };

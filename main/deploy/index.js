@@ -6,17 +6,21 @@ const path = require("path");
 /////////////////////////////////////////////////////
 // =============== GLOBAL VARIABLE =============== //
 /////////////////////////////////////////////////////
-const Kb2abotGlobal = require("../Kb2abotGlobal");
-globalThis.loader = require("../loader");
+const Kb2abotGlobal = require("./Kb2abotGlobal");
+globalThis.loader = require("./loader");
 globalThis.kb2abot = new Kb2abotGlobal();
-kb2abot.schemas = loader.load(path.join(__dirname, "../schemas"));
-kb2abot.helpers = loader.load(path.join(__dirname, "../helpers"));
-kb2abot.plugins = loader.load(path.join(__dirname, "../plugins"));
-kb2abot.games = loader.load(path.join(__dirname, "../games"));
+
+kb2abot.schemas = loader.load(path.join(__dirname, "schemas"));
+kb2abot.helpers = loader.load(path.join(__dirname, "helpers"));
+
 const {Account} = require("./roles");
 kb2abot.account = new Account();
-kb2abot.pluginManager = new kb2abot.helpers.PluginManager(kb2abot.plugins);
+
+kb2abot.games = loader.load(path.join(__dirname, "games"));
 kb2abot.gameManager = new kb2abot.helpers.GameManager(kb2abot.games);
+
+kb2abot.plugins = loader.load(path.join(__dirname, "plugins"));
+kb2abot.pluginManager = new kb2abot.helpers.PluginManager(kb2abot.plugins);
 /////////////////////////////////////////////////////
 // ============ END OF GOBAL VARIBALE ============ //
 /////////////////////////////////////////////////////
@@ -67,10 +71,8 @@ const deploy = async data => {
 		const {id, name, appState: officialAppState} = await checkCredential({
 			appState: unofficialAppState
 		});
+		kb2abot.id = id;
 		kb2abot.account.id = id;
-		Object.assign(kb2abot, {
-			id
-		});
 		require("./kb2abot")(officialAppState);
 		// require kb2abot ở đây bởi vì nếu require sớm hơn thì global kb2abot.id
 		// chưa sẵn sàng cho kb2abot.js => error

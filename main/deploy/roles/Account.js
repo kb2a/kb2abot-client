@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 const safeStringify = require("fast-safe-stringify");
 const Thread = require("./Thread");
 
@@ -7,6 +8,10 @@ module.exports = class Account extends kb2abot.helpers.Manager {
 		super();
 		this.id = id;
 		this.storage = new kb2abot.schemas.storage.Account();
+	}
+
+	storagePath() {
+		return path.join(__dirname, `../datastores/${this.id}.json`);
 	}
 
 	addThread(id, storage = {}) {
@@ -22,7 +27,7 @@ module.exports = class Account extends kb2abot.helpers.Manager {
 
 	load() {
 		try {
-			const text = fs.readFileSync(`datastores/${kb2abot.id}.json`);
+			const text = fs.readFileSync(this.storagePath());
 			const accountStorage = JSON.parse(text);
 			for (const threadStorage of accountStorage.__threads__) {
 				const thread = this.addThread(threadStorage.__id__, {...threadStorage});
@@ -35,7 +40,7 @@ module.exports = class Account extends kb2abot.helpers.Manager {
 				this.save();
 				this.load();
 			} else {
-				throw new Error("DATASTORE khong hop le!");
+				throw new Error(`DATASTORE ${kb2abot.id} khong hop le!`);
 			}
 		}
 	}
@@ -53,7 +58,7 @@ module.exports = class Account extends kb2abot.helpers.Manager {
 			const save = safeStringify(accountStorage, (key, value) =>
 				value == "[Circular]" ? undefined : value
 			);
-			fs.writeFileSync(`datastores/${kb2abot.id}.json`, save);
+			fs.writeFileSync(this.storagePath(), save);
 		} catch (e) {
 			console.newLogger.error(e.stack);
 		}

@@ -6,7 +6,7 @@ try {
 	console.newLogger.success(`Loaded datastore ${kb2abot.id}.json!`);
 }
 catch(e) {
-	console.newLogger.error(`Datastore ${kb2abot.id}.json khong hop le!`);
+	console.newLogger.error(e.message);
 	console.newLogger.error(`Vui long xoa hoac sua lai file ${__dirname}\\${kb2abot.id}.json!`);
 	process.exit();
 }

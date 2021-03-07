@@ -6,7 +6,7 @@
     "scripts": {
         "update": "npm i kb2abot-cli@latest -g && git fetch origin main && git reset --hard origin/main",
         "start": "node main",
-        "dev": "node --use_strict main dev",
+        "dev": "node --use_strict --async-stack-traces main dev",
         "debug": "node --inspect-brk main dev"
     },
     "repository": {

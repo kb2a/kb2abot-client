@@ -29,24 +29,25 @@ module.exports = {
 	},
 
 	onCall: async function(api, message) {
-		if (getParam(message.body) == "off" && this.storage.thread.local.engine) {
-			api.replyMessage(
-				`${this.storage.thread.local.engine} chào tạm biệt ~~`,
-				message.threadID
-			);
-			delete this.storage.thread.local.engine;
-			return;
-		}
-
-		const fixedEngineName = fixEngineName(message.body.split(" ")[1]);
-		if (botengines[fixedEngineName]) {
-			this.storage.thread.local.engine = fixedEngineName;
-			api.replyMessage(`${fixedEngineName} xin chào bạn!`, message.threadID);
+		if (getParam(message.body) != "off") {
+			const fixedEngineName = fixEngineName(message.body.split(" ")[1]);
+			if (botengines[fixedEngineName]) {
+				this.storage.thread.local.engine = fixedEngineName;
+				api.replyMessage(`${fixedEngineName} xin chào bạn!`, message.threadID);
+			} else {
+				api.replyMessage(
+					`Không tìm thấy engine nào có tên: ${fixedEngineName}`,
+					message.threadID
+				);
+			}
 		} else {
-			api.replyMessage(
-				`Không tìm thấy engine nào có tên: ${fixedEngineName}`,
-				message.threadID
-			);
+			if (this.storage.thread.local.engine) {
+				api.replyMessage(
+					`${this.storage.thread.local.engine} chào tạm biệt ~~`,
+					message.threadID
+				);
+				delete this.storage.thread.local.engine;
+			}
 		}
 	}
 };

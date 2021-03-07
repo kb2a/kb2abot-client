@@ -28,21 +28,20 @@ const load = dir => {
 	return exportData;
 };
 
-const slowLoad = async type => { //meticulous load
+const slowLoad = async (type, dir = path.join(__dirname, type)) => { //meticulous load
 	const exportData = {};
 	const dateTime = new Date(Date.now()).toISOString();
 	const myLog = path.join(
 		__dirname,
-		"../logs",
+		"../../logs",
 		dateTime.replace(/:/g, ".") + ".log"
 	);
 	if (supportTypes.indexOf(type) == -1) {
 		throw new Error("Unsupported type: " + type);
 	}
-	const dir = path.join(__dirname, type);
 	const files = fs
 		.readdirSync(dir)
-		.filter(filename => fs.lstatSync(`${__dirname}/${type}/${filename}`).isDirectory() || filename.indexOf(".js") != -1);
+		.filter(filename => fs.lstatSync(path.join(dir, filename)).isDirectory() || filename.indexOf(".js") != -1);
 	for (const filename of files) {
 		let checker = {
 			is_MODULE_NOT_FOUND: true,

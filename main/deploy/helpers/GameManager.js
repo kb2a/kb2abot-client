@@ -1,9 +1,8 @@
 const Manager = require("./Manager");
 
 module.exports = class GameManager extends Manager {
-	constructor(options = {}) {
+	constructor(games) {
 		super();
-		const {games = {}} = options;
 		this.games = games;
 	}
 
@@ -14,21 +13,24 @@ module.exports = class GameManager extends Manager {
 			Object.assign(this.games, games);
 	}
 
-	run(name, {threadID, param} = {}) {
-		const item = this.playing(threadID);
-		if (item)
-			throw new Error(`Game "${item.instance.name}" đang chạy!`);
-		item.instance = new this.games[name](param);
+	run(name, gameOptions) {
+		for (const item of this.items) {
+			if (item.threadID == gameOptions.threadID)
+				throw new Error(`Blocked! Box đang chạy trò chơi: ${item.name}!`);
+			if (item.participants.includes(gameOptions.masterID))
+				throw new Error(`Blocked! Bạn đang chơi trò chơi: ${item.name}!`);
+		}
+		this.add(new this.games[name](gameOptions));
 	}
 
 	async clean(threadID) {
-		const item = this.playing(threadID);
+		const item = this.find({threadID});
 		if (item) {
 			try {
-				await item.instance.clean();
+				await item.clean();
 			}
 			finally {
-				this.instance = {};
+				this.delete({threadID});
 			}
 		}
 	}
@@ -48,8 +50,16 @@ module.exports = class GameManager extends Manager {
 		return item ? true : false;
 	}
 
-	playing(threadID) { // get current game name that threadID is playing
+	playing(threadID) { // get current item that threadID is playing
 		const item = this.find({threadID});
-		return item ? item.instance.name : null;
+		return item ? item : null;
+	}
+
+	getList() {
+		const list = [];
+		for (const name in this.games) {
+			list.push(name);
+		}
+		return list;
 	}
 };
