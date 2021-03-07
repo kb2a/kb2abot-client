@@ -7,6 +7,9 @@ logs/*
 main/deploy/datastores/*
 !main/deploy/datastores/README.txt
 
+main/deploy/games/*
+!main/deploy/games/README.txt
+
 main/deploy/plugins/*
 !main/deploy/plugins/README.txt
 !main/deploy/plugins/autoreply
