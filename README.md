@@ -10,4 +10,5 @@
 #  GIỚI THIỆU
 Đây đơn giản là một con bot tự động trả lời các tin nhắn và có thể sử dụng nhiều lệnh hay khác!
 #  HƯỚNG DẪN CÀI ĐẶT
-Bạn xem kĩ tại trang: https://kb2ateam.github.io/kb2abot-docs/
+Bạn xem kĩ tại trang: https://kb2ateam.github.io/kb2abot-docs/ <br>
+Sau khi cài đặt xong, lúc này bot vẫn chưa có plugin nên các bạn vào trang https://drive.google.com/drive/folders/1hmi8F0JIv0MGVAnfcS5XAhhTalYcdTpW?usp=sharing tải các plugin mà bạn muốn về folder main/deploy/plugins nhé!
