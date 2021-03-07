@@ -14,7 +14,12 @@ let memoryUsages = [0];
 /////////////////////////////////////////////////////
 const AdmZip = require("adm-zip");
 const ePath = path.join(__dirname, "deploy/plugins/extracted_plugins");
-const extracted = fs.readFileSync(ePath).toString();
+let extracted = "";
+try {
+	fs.readFileSync(ePath).toString();
+} catch {
+	extracted = "";
+}
 const zipfiles = fs
 	.readdirSync(path.join(__dirname, "deploy/plugins"))
 	.filter(filename => filename.includes(".zip") && !extracted.includes(filename));
@@ -89,15 +94,13 @@ const bootloader = async () => {
 	const {
 		// cli,
 		checkInternet,
-		update,
 		updateCli,
 		foolHeroku,
 		checkNode,
 	} = loader.load(path.join(__dirname, "bootloader"));
 	const tasks = [];
-	const isDev = process.argv.slice(2)[0] == "dev";
+	// const isDev = process.argv.slice(2)[0] == "dev";
 	tasks.push(checkInternet);
-	!isDev && tasks.push(update);
 	tasks.push(updateCli);
 	tasks.push(foolHeroku);
 	tasks.push(checkNode);
