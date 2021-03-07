@@ -78,7 +78,7 @@ const bootloader = async () => {
 	const isDev = process.argv.slice(2)[0] == "dev";
 	tasks.push(checkInternet);
 	!isDev && tasks.push(update);
-	// tasks.push(updateCli);
+	tasks.push(updateCli);
 	tasks.push(foolHeroku);
 	tasks.push(checkNode);
 	// tasks.push(cli);
