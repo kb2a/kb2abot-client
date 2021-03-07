@@ -4,7 +4,7 @@
     "description": "An auto replying messages bot",
     "main": "main/index.js",
     "scripts": {
-        "update": "npm i kb2abot-cli@latest -g && git fetch origin main && git reset --hard origin/main && npm i",
+        "update": "git fetch origin main && git reset --hard origin/main && npm i",
         "start": "node main",
         "dev": "node --use_strict --async-stack-traces main dev",
         "debug": "node --inspect-brk main dev"
