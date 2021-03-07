@@ -9,6 +9,17 @@ main/deploy/datastores/*
 
 main/deploy/plugins/*
 !main/deploy/plugins/README.txt
+!main/deploy/plugins/autoreply
+!main/deploy/plugins/bug
+!main/deploy/plugins/debug
+!main/deploy/plugins/everyone
+!main/deploy/plugins/game
+!main/deploy/plugins/help
+!main/deploy/plugins/version
+!main/deploy/plugins/weather
+!main/deploy/plugins/ytmp3
+main/deploy/plugins/ytmp3/musics
+
 
 node_modules/
 
