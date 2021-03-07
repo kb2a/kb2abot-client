@@ -1,4 +1,4 @@
-const {botengines, fixEngineName} = require("./autoreply");
+const botengines = loader.load(__dirname + "/botengines");
 const {getParam} = kb2abot.helpers;
 const keywords = ["autoreply", "auto"];
 
@@ -30,13 +30,16 @@ module.exports = {
 
 	onCall: async function(api, message) {
 		if (getParam(message.body) != "off") {
-			const fixedEngineName = fixEngineName(message.body.split(" ")[1]);
-			if (botengines[fixedEngineName]) {
-				this.storage.thread.local.engine = fixedEngineName;
-				api.replyMessage(`${fixedEngineName} xin chào bạn!`, message.threadID);
+			let name = getParam(message.body);
+			if (!botengines[name])
+				name = name.toLowerCase();
+
+			if (botengines[name]) {
+				this.storage.thread.local.engine = name;
+				api.replyMessage(`${name} xin chào bạn!`, message.threadID);
 			} else {
 				api.replyMessage(
-					`Không tìm thấy engine nào có tên: ${fixedEngineName}`,
+					`Không tìm thấy engine nào có tên: ${name}`,
 					message.threadID
 				);
 			}
