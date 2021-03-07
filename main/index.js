@@ -4,61 +4,85 @@ const path = require("path");
 const cluster = require("cluster");
 const emoji = require("node-emoji");
 
-const {subname} = require("./utils/COMMON");
-const {initLogger} = require("./utils/CONSOLE");
+const {subname} = require("./deploy/helpers/common");
+const {initLogger, setTerminalTitle} = require("./deploy/helpers/console");
 initLogger(emoji.emojify(":star: INTERNAL"));
-const k2babotGlobalModel = require("./models/kb2abot-global.model");
-const helpers = require("./helpers");
+let memoryUsages = [0];
+
 /////////////////////////////////////////////////////
 // =============== GLOBAL VARIABLE =============== //
 /////////////////////////////////////////////////////
-globalThis.kb2abot = Object.assign(k2babotGlobalModel, {
-	helpers
-});
-
-// Tại sao file bootloader này cũng có global kb2abot?
-// Vì bootloader là nơi test lỗi của các utils, plugins
-// bởi 2 cái đó do người dùng chỉnh sửa, thêm bớt nên
-// sẽ ko đáng tin lắm, có thể phát sinh lỗi nên cần preload
-// để check tất cả lỗi.
-// (khi loadBot sẽ load lại utils, plugins, helpers thêm lần nữa)
+const Kb2abotGlobal = require("./deploy/Kb2abotGlobal");
+globalThis.loader = require("./deploy/loader");
+globalThis.kb2abot = new Kb2abotGlobal();
 /////////////////////////////////////////////////////
 // ============ END OF GOBAL VARIBALE ============ //
 /////////////////////////////////////////////////////
 
-
-const {
-	// cli,
-	checkInternet,
-	checkNode,
-	foolHeroku,
-	preload,
-	update,
-	updateCli
-} = require("./bootloader");
 const botsDir = path.join(__dirname, "../bots");
 const deployPath = path.join(__dirname, "./deploy/index.js");
-
-const tasks = [];
-const isDev = process.argv.slice(2)[0] == "dev";
-tasks.push(checkInternet);
-!isDev && tasks.push(update);
-tasks.push(updateCli);
-tasks.push(foolHeroku);
-tasks.push(checkNode);
-tasks.push(preload);
-// tasks.push(cli);
 
 cluster.on("exit", (worker, code, signal) => {
 	if (signal) {
 		console.newLogger.warn(`Bot PID: ${worker.process.pid} da dung, SIGNAL: ${signal}`);
 	} else {
-		const func = code == 0 ? "warn" : "error";
-		console.newLogger[func](`Bot PID: ${worker.process.pid} da dung, ERROR_CODE: ${code}`);
+		const funcKey = code == 0 ? "warn" : "error";
+		console.newLogger[funcKey](`Bot PID: ${worker.process.pid} da dung, ERROR_CODE: ${code}`);
 	}
 });
 
+cluster.on("online", worker => {
+	worker.send("memoryUsage");
+	worker.on("message", dd => {
+		if (dd.event == "memoryUsage") {
+			memoryUsages[worker.id] = dd.data.heapTotal / 1024 / 1024;
+			setTimeout(() => worker.send("memoryUsage"), 2000);
+		}
+	});
+});
+
 const bootloader = async () => {
+	const timeStart = Date.now();
+	console.newLogger.log("Dang kiem tra cu phap code . . .\n");
+	try {
+		await loader.slowLoad("bootloader", path.join(__dirname, "bootloader"));
+		kb2abot.schemas = await loader.slowLoad("schemas");
+		kb2abot.helpers = await loader.slowLoad("helpers");
+		kb2abot.games = await loader.slowLoad("games");
+		kb2abot.gameManager = new kb2abot.helpers.GameManager(kb2abot.games); // for description's game plugin
+		kb2abot.plugins = await loader.slowLoad("plugins");
+	}
+	catch(e) {
+		console.newLogger.error(e.stack);
+		console.newLogger.error("Vui long kiem tra lai file tren hoac lien he ho tro: fb.com/khoakomlem");
+		process.exit();
+	}
+	const latency = Date.now() - timeStart;
+	console.log(
+		"\n" +
+		"██  ███ █  █ ███\n" +
+		"█ █ █ █ ██ █ █_\n" +
+		`█ █ █ █ █ ██ █    ${latency}ms!\n` +
+		"██  ███ █  █ ███\n"
+	);
+
+	const {
+		// cli,
+		checkInternet,
+		update,
+		updateCli,
+		foolHeroku,
+		checkNode,
+	} = loader.load(path.join(__dirname, "bootloader"));
+	const tasks = [];
+	const isDev = process.argv.slice(2)[0] == "dev";
+	tasks.push(checkInternet);
+	!isDev && tasks.push(update);
+	tasks.push(updateCli);
+	tasks.push(foolHeroku);
+	tasks.push(checkNode);
+	// tasks.push(cli);
+
 	for (const task of tasks) {
 		const spinner = ora(task.des).start();
 		try {
@@ -78,17 +102,20 @@ const bootloader = async () => {
 	if (botList.length == 0) {
 		console.newLogger.error("Ban chua dat cookie vao folder /bots");
 	}
+	setInterval(() => {
+		const memoryUsage = memoryUsages.reduce((a,b) => a+b);
+		setTerminalTitle(`KB2ABOT - CLUSTERS: ${botList.length} - MEMORY: ${memoryUsage.toFixed(2)}MB`);
+	}, 3000);
 	for (const bot of botList) {
 		const cookiePath = path.join(botsDir, bot);
 		cluster.setupMaster({
 			exec: deployPath,
 			args: ["--cookiePath", cookiePath, "--name", subname(path.basename(cookiePath))]
 		});
+		// console.log(["--cookiePath", cookiePath, "--name", subname(path.basename(cookiePath))]);
 		const worker = cluster.fork();
 		console.newLogger.log(`Dang tao cluster "${bot}" PID: ${worker.process.pid}`);
 	}
 };
 
 bootloader();
-
-module.exports = bootloader;

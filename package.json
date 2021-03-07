@@ -6,7 +6,7 @@
     "scripts": {
         "update": "npm i kb2abot-cli@latest -g && git fetch origin main && git reset --hard origin/main",
         "start": "node main",
-        "dev": "node main dev",
+        "dev": "node --use_strict --async-stack-traces main dev",
         "debug": "node --inspect-brk main dev"
     },
     "repository": {
@@ -25,10 +25,11 @@
         "fast-safe-stringify": "^2.0.7",
         "ffmpeg-static": "^4.2.7",
         "install-changed": "^1.1.0",
+        "is-running": "^2.1.0",
         "log-to-file": "^2.0.2",
         "minimist": "^1.2.5",
         "node-emoji": "^1.10.0",
-        "ora": "^5.2.0",
+        "ora": "^5.3.0",
         "semver": "^7.3.4",
         "simple-git": "^2.34.2",
         "uniqid": "^5.2.0",
@@ -37,6 +38,6 @@
         "ytdl-core": "^4.4.5"
     },
     "devDependencies": {
-        "eslint": "^7.17.0"
+        "eslint": "^7.20.0"
     }
 }

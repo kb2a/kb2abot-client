@@ -27,6 +27,7 @@
 		]
 	},
 	"globals": {
-		"kb2abot": "writable"
+		"kb2abot": "writable",
+		"loader": "readable"
 	}
 }
