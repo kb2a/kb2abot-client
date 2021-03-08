@@ -10,28 +10,40 @@ initLogger(emoji.emojify(":star: INTERNAL"));
 let memoryUsages = [0];
 
 /////////////////////////////////////////////////////
-// =============== 	EXTRACT PLUGINS ============== //
+// =========== 	EXTRACT PLUGINS & GAMES ========== //
 /////////////////////////////////////////////////////
 const AdmZip = require("adm-zip");
-const ePath = path.join(__dirname, "deploy/plugins/extracted_plugins");
-let extracted = "";
-try {
-	fs.readFileSync(ePath).toString();
-} catch {
-	extracted = "";
-}
-const zipfiles = fs
-	.readdirSync(path.join(__dirname, "deploy/plugins"))
-	.filter(filename => filename.includes(".zip") && !extracted.includes(filename));
-for (const file of zipfiles) {
-	const zipPath = path.join(__dirname, "deploy/plugins", file);
-	const zip = new AdmZip(zipPath);
-	zip.extractAllTo(path.join(__dirname, "deploy/plugins"));
-	console.newLogger.success(`EXTRACTED: ${file}`);
-	fs.appendFileSync(ePath, file + "\n");
+const paths = {
+	plugins: {
+		e: path.join(__dirname, "deploy/plugins/extracted_plugins"),
+		dir: path.join(__dirname, "deploy/plugins")
+	},
+	games: {
+		e: path.join(__dirname, "deploy/games/extracted_games"),
+		dir: path.join(__dirname, "deploy/games")
+	}
+};
+for (const key in paths) {
+	const {e, dir} = paths[key];
+	let extracted = "";
+	try {
+		fs.readFileSync(e).toString();
+	} catch {
+		extracted = "";
+	}
+	const zipfiles = fs
+		.readdirSync(dir)
+		.filter(filename => filename.includes(".zip") && !extracted.includes(filename));
+	for (const file of zipfiles) {
+		const zipPath = path.join(dir, file);
+		const zip = new AdmZip(zipPath);
+		zip.extractAllTo(dir);
+		console.newLogger.success(`EXTRACTED ${key.toUpperCase()}: ${file}`);
+		fs.appendFileSync(e, file + "\n");
+	}
 }
 /////////////////////////////////////////////////////
-// =============== 	EXTRACT PLUGINS ============== //
+// =========== 	EXTRACT PLUGINS & GAMES ========== //
 /////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////
