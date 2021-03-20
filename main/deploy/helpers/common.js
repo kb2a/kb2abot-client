@@ -1,9 +1,9 @@
 /**
  * Chứa các function thông thường được sử dụng nhiều<br>
  * Hướng dẫn sử dụng:<br>
- * const {<tên hàm 1>, <tên hàm 2>} = kb2abot.utils;<br>
+ * const {<tên hàm 1>, <tên hàm 2>} = kb2abot.helpers;<br>
  * Ví dụ:
- * <code>const {asyncWait, round, extend} = kb2abot.utils;</code>
+ * <code>const {asyncWait, round, extend} = kb2abot.helpers;</code>
  * @module COMMON
  */
 const fs = require("fs");
@@ -16,7 +16,7 @@ const childProcess = require("child_process");
  * @param  {Number} time Thời gian bạn muốn dừng (milisecond)
  * @example
  * console.log("Loi! Vui long gui lai sau 5 giay")
- * kb2abot.utils.asyncWait(5000).then(() => {
+ * kb2abot.helpers.asyncWait(5000).then(() => {
  * 	console.log("Ban co the gui lai duoc roi!");
  * });
  */
@@ -33,7 +33,7 @@ const asyncWait = async time => {
  * @param  {String}  cmd shell command
  * @return {Promise} stdout hoặc stderr (nếu bị lỗi)
  * @example
- * console.log(await kb2abot.utils.execShellCommand("echo Hello, world!"));
+ * console.log(await kb2abot.helpers.execShellCommand("echo Hello, world!"));
  * // "Hello, world!"
  */
 const execShellCommand = cmd => {
@@ -50,9 +50,9 @@ const execShellCommand = cmd => {
  * @param  {Number} right ràng buộc phải
  * @return {Number} Giá trị trong khoảng [left; right]
  * @example
- * console.log(kb2abot.utils.constrain(5, 1, 10);
+ * console.log(kb2abot.helpers.constrain(5, 1, 10);
  * // 5
- * console.log(kb2abot.utils.constrain(-1, 1, 10);
+ * console.log(kb2abot.helpers.constrain(-1, 1, 10);
  * // 1
  */
 const constrain = (value, left, right) => {
@@ -64,7 +64,13 @@ const constrain = (value, left, right) => {
  * @param  {Number} amount Số lượng chữ số thập phân (x)
  * @return {Number}        Số được làm tròn chữ số thập phân x
  * @example
- * kb2abot.utils.round(Math.PI, 2);
+ * kb2abot.helpers.round(Math.PI, 2);
+ * // 3.14
+ *
+ * @example với cách dùng thứ hai này, code sẽ được đẹp hơn
+ * const { round } = kb2abot.helpers;
+ *
+ * round(Math.PI, 2)
  * // 3.14
  */
 const round = (number, amount) => {
@@ -86,7 +92,7 @@ const round = (number, amount) => {
  * 		c: "kb2abot"
  * 	}
  * }
- * kb2abot.utils.extend(a, b);
+ * kb2abot.helpers.extend(a, b);
  * // { a: { b: "kb2abot", c: true } }
  * }
  */
@@ -154,10 +160,10 @@ const parseArgs = (str, specialChar) => {
  * @param  {Array} validList       Các trường mà bạn cần lấy giá trị
  * @return {Boolean|String|Number} Giá trị của trường đó
  * @example
- * const args = kb2abot.utils.parseArg("kb2abot --version -s");
- * kb2abot.utils.parseValue(args, ["version", "v"]);
+ * const args = kb2abot.helpers.parseArg("kb2abot --version -s");
+ * kb2abot.helpers.parseValue(args, ["version", "v"]);
  * // 1
- * kb2abot.utils.parseValue(args, ["s"]);
+ * kb2abot.helpers.parseValue(args, ["s"]);
  * // TRUE
  */
 const parseValue = (args, validList) => {
@@ -174,7 +180,7 @@ const parseValue = (args, validList) => {
  * @param  {String} json JSON
  * @return {Promise}     Promise với JSON được dịch
  * @example
- * kb2abot.utils.parseJSON('{"kb2abot": true}').then(result => {
+ * kb2abot.helpers.parseJSON('{"kb2abot": true}').then(result => {
  * 	console.log(result);
  * })
  * // {kb2abot: true}
@@ -192,7 +198,7 @@ const parseJSON = text => {
  * Xóa 1 file theo đường dẫn
  * @param  {String} path Đường dẫn tới file
  * @example
- * kb2abot.utils.deleteFile(__dirname + "/test.txt");
+ * kb2abot.helpers.deleteFile(__dirname + "/test.txt");
  * // *File test.txt sẽ bị xóa*
  */
 const deleteFile = path => {
@@ -210,9 +216,9 @@ const deleteFile = path => {
  * @param  {String} text Đoạn tin nhắn của người dùng
  * @return {String}      Keyword của lệnh đó
  * @example
- * kb2abot.utils.getKeyword("/help")
+ * kb2abot.helpers.getKeyword("/help")
  * // "help"
- * kb2abot.utils.getKeyword("/ytmp3 -s 'Anh yeu em'")
+ * kb2abot.helpers.getKeyword("/ytmp3 -s 'Anh yeu em'")
  * // "ytmp3"
  */
 const getKeyword = text => {
@@ -227,7 +233,7 @@ const getKeyword = text => {
  * @return {Number}      Dung lượng của file (mb)
  * @example
  * // file test.txt có dung lượng 1024KB
- * kb2abot.utils.getFileSize(__dirname + "/test.txt");
+ * kb2abot.helpers.getFileSize(__dirname + "/test.txt");
  * // 1
  */
 const getFileSize = path => {
@@ -241,7 +247,7 @@ const getFileSize = path => {
  * @param  {String} text Tên file
  * @return {String}      Tên file không có đuôi
  * @example
- * kb2abot.utils.subname("test.txt");
+ * kb2abot.helpers.subname("test.txt");
  * // "test"
  */
 const subname = text => {
@@ -255,9 +261,9 @@ const subname = text => {
  * @param  {Number} number Số bạn muốn chuyển
  * @return {String}        Mã đặc biệt 1 = "o", 2 = "t",...
  * @example
- * kb2abot.utils.numbersToWords(123);
+ * kb2abot.helpers.numbersToWords(123);
  * // "oth"
- * kb2abot.utils.numbersToWords(18102004);
+ * kb2abot.helpers.numbersToWords(18102004);
  * // "ogoztzzf"
  */
 const numberToPassword = number => {
@@ -273,7 +279,7 @@ const numberToPassword = number => {
  * @param  {String|Number} number Định dạng 1 string, number về dạng tiền tệ
  * @return {String}               Tiền tệ
  * @example
- * kb2abot.utils.currencyFormat(1234567);
+ * kb2abot.helpers.currencyFormat(1234567);
  * // "1,234,567"
  */
 const currencyFormat = number => {
@@ -284,7 +290,7 @@ const currencyFormat = number => {
  * @param  {String} text Lệnh người dùng nhập
  * @return {String}      1 text với keyword đã bị bỏ
  * @example
- * kb2abot.utils.slicePluginName("/help hello, good morning!");
+ * kb2abot.helpers.getParam("/help hello, good morning!");
  * // "hello, good morning!"
  */
 const getParam = text => {
@@ -305,9 +311,28 @@ const removeSpecialChar = str => {
 	return str.replace(/[^\x20-\x7E]/g, "");
 	// return str;
 };
+
+/**
+* thực hiện phép lấy giá trị ngẫu nhiên
+* @example
+* const { random } = kb2abot.helpers;
+*
+* random(1, 10)
+* // trả về giá trị ngẫu nhiên từ 1 đến 10
+*
+* // lưu ý: vì phép ngẫu nhiên này không được làm tròn vì vậy bạn nên dùng random cùng với round
+* @example
+* const { random, round } = kb2abot.helpers;
+*
+* round(random(1, 10), 2)
+* // trả về giá trị ngẫu nhiên từ 1 đến 10 và được làm chòn đến chữ số thập phân thứ hai
+*
+*/
 const random = (start, end) => {
 	return Math.floor(Math.random() * (end - start + 1) + start);
 };
+
+
 const shuffle = arr => {
 	// thuật toán bogo-sort
 	let count = arr.length,
