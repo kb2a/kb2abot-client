@@ -27,7 +27,7 @@ for (const key in paths) {
 	const {e, dir} = paths[key];
 	let extracted = "";
 	try {
-		fs.readFileSync(e).toString();
+		extracted = fs.readFileSync(e).toString();
 	} catch {
 		extracted = "";
 	}
