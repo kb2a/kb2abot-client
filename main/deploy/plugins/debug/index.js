@@ -4,11 +4,11 @@ module.exports = {
 		contact: "fb.com/khoakomlem"
 	},
 
-	friendlyName: "Plugin that do awesome things",
+	friendlyName: "(For developer)",
 
 	keywords: ["debug"],
 
-	description: "This plugin is awesome!",
+	description: "Gửi json storage",
 
 	extendedDescription: "",
 

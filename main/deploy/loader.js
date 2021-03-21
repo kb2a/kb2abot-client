@@ -57,6 +57,7 @@ const slowLoad = async (type, dir = path.join(__dirname, type)) => { //meticulou
 					const msg = `${type.toUpperCase()} - DISABLED: ${sname}`;
 					console.newLogger.warn(msg);
 					log(msg, myLog);
+					break;
 				}
 
 				if (sname == "common") {

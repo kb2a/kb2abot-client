@@ -1,24 +1,27 @@
 const sendMessage = (api, ...params) => {
 	return new Promise(resolve => {
-		api.sendMessage(...params, err => {
-			if (err) console.error(err);
-			resolve();
-		});
+		api.sendMessage(...params, resolve);
 	});
 };
 const getThreadInfo = (api, threadID) => {
 	return new Promise(resolve => {
 		api.getThreadInfo(threadID, (err, info) => {
-			if (err) console.error(err);
-			resolve(info);
+			if (err) {
+				console.error(err);
+				resolve({});
+			}
+			else resolve(info);
 		});
 	});
 };
 const getUserInfo = (api, ids) => {
 	return new Promise(resolve => {
 		api.getUserInfo(ids, (err, obj) => {
-			if (err) console.error(err);
-			resolve(obj);
+			if (err) {
+				console.error(err);
+				resolve({});
+			} else
+				resolve(obj);
 		});
 	});
 };
@@ -30,9 +33,27 @@ const getUsername = fblink => {
 		return /.com\/(.*?)$/.exec(fblink)[1];
 	}
 };
+const getThreadList = (api, limit, timestamp, tags) => {
+	return new Promise(resolve => {
+		api.getThreadList(limit, timestamp, tags, (err, list) => {
+			if (err) {
+				console.error(err);
+				resolve([]);
+			} else
+				resolve(list);
+		});
+	});
+};
+const deleteThread = (api, threadID) => {
+	return new Promise(resolve => {
+		api.deleteThread(threadID, resolve);
+	});
+};
 module.exports = {
 	sendMessage,
 	getThreadInfo,
 	getUserInfo,
-	getUsername
+	getUsername,
+	getThreadList,
+	deleteThread
 };
