@@ -12,6 +12,7 @@ main/deploy/games/*
 
 main/deploy/plugins/*
 !main/deploy/plugins/README.txt
+!main/deploy/plugins/AAR
 !main/deploy/plugins/autoreply
 !main/deploy/plugins/bug
 !main/deploy/plugins/debug
@@ -21,7 +22,8 @@ main/deploy/plugins/*
 !main/deploy/plugins/version
 !main/deploy/plugins/weather
 !main/deploy/plugins/ytmp3
-main/deploy/plugins/ytmp3/musics
+main/deploy/plugins/ytmp3/musics/
+!main/deploy/plugins/ytmp3/musics/README.txt
 
 
 node_modules/
