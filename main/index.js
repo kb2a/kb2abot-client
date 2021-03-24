@@ -7,7 +7,7 @@ const emoji = require("node-emoji");
 const {subname} = require("./deploy/helpers/common");
 const {initLogger, setTerminalTitle} = require("./deploy/helpers/console");
 initLogger(emoji.emojify(":star: INTERNAL"));
-const memoryUsages = [];
+const memoryUsages = [0];
 
 /////////////////////////////////////////////////////
 // =========== 	EXTRACT PLUGINS & GAMES ========== //
