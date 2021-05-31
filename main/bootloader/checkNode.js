@@ -1,7 +1,7 @@
-const semver = require("semver");
+const semver = require('semver');
 
 module.exports = {
-	des: "Kiem tra phien ban nodejs",
+	des: 'Kiem tra phien ban nodejs',
 	fn: async () => {
 		const nodeVersion = semver.parse(process.version);
 		if (

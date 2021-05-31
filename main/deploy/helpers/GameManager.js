@@ -1,4 +1,4 @@
-const Manager = require("./Manager");
+const Manager = require('./Manager');
 
 module.exports = class GameManager extends Manager {
 	constructor(games) {
@@ -7,10 +7,8 @@ module.exports = class GameManager extends Manager {
 	}
 
 	import(games, clear = false) {
-		if (clear)
-			this.games = games;
-		else
-			Object.assign(this.games, games);
+		if (clear) this.games = games;
+		else Object.assign(this.games, games);
 	}
 
 	run(name, gameOptions) {
@@ -28,8 +26,7 @@ module.exports = class GameManager extends Manager {
 		if (item) {
 			try {
 				await item.clean();
-			}
-			finally {
+			} finally {
 				this.delete({threadID});
 			}
 		}
@@ -40,17 +37,20 @@ module.exports = class GameManager extends Manager {
 		return game ? game : null;
 	}
 
-	isValid(name) { // check if the game exists
+	isValid(name) {
+		// check if the game exists
 		const game = this.findGameByName(name);
 		return game ? true : false;
 	}
 
-	isPlaying(threadID) { // check if threadID is already playing a game
+	isPlaying(threadID) {
+		// check if threadID is already playing a game
 		const item = this.find({threadID});
 		return item ? true : false;
 	}
 
-	playing(threadID) { // get current item that threadID is playing
+	playing(threadID) {
+		// get current item that threadID is playing
 		const item = this.find({threadID});
 		return item ? item : null;
 	}

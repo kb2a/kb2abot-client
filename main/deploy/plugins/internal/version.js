@@ -1,43 +1,51 @@
-const {exec} = require("child_process");
+const {exec} = require('child_process');
 const {round, getParam} = kb2abot.helpers;
 
 module.exports = {
-	authorDetails: {
-		name: "khoakomlem",
-		contact: "fb.com/khoakomlem"
+	keywords: ['version'],
+
+	name: 'Kiểm tra phiên bản',
+
+	description: 'Tra cứu lịch sử phiên bản của kb2abot',
+
+	guide: '[<amount>]',
+
+	childs: [],
+
+	permission: {
+		'*': '*'
 	},
 
-	friendlyName: "Kiểm tra phiên bản",
-
-	keywords: ["version", "v"],
-
-	description: "Tra cứu lịch sử phiên bản của kb2abot",
-
-	extendedDescription: "[<amount>]",
-
-	hideFromHelp: false,
-
-	disable: false,
-
-	onLoad: async function() {
+	datastoreDesign: {
+		account: {
+			global: {},
+			local: {}
+		},
+		thread: {
+			global: {},
+			local: {}
+		}
 	},
 
-	onMessage: async function(api, message) {
-	},
+	async onLoad() {},
 
-	onCall: async function(api, message) {
+	hookType: 'none',
+
+	async onMessage(message, reply) {},
+
+	async onCall(message, reply) {
 		let amount = parseInt(getParam(message.body));
 		if (isNaN(amount) || amount <= 0) amount = 5;
 		if (amount > 50) amount = 50;
 		const commitamount = new Promise(resolve => {
-			exec("git rev-list --count origin/main", (err, stdout) =>
+			exec('git rev-list --count origin/main', (err, stdout) =>
 				resolve(stdout.toString().trim())
 			);
 		});
 		const getAllCommits = new Promise(resolve => {
 			exec(`git log -${amount} --pretty=%B`, (err, stdout) => {
 				const out = stdout.toString().trim();
-				const tmp = encodeURI(out).split("%0A%0A");
+				const tmp = encodeURI(out).split('%0A%0A');
 				const final = [];
 				for (const commit of tmp) {
 					final.push(decodeURI(commit));
@@ -53,7 +61,7 @@ module.exports = {
 				const commitMessage = values[1][i];
 				replyMsg += `Ver ${version}: ${commitMessage}\n`;
 			}
-			api.replyMessage(replyMsg, message.threadID);
+			reply(replyMsg);
 		});
 	}
 };

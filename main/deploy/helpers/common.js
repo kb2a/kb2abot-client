@@ -6,9 +6,10 @@
  * <code>const {asyncWait, round, extend} = kb2abot.helpers;</code>
  * @module COMMON
  */
-const fs = require("fs");
-const minimist = require("minimist");
-const childProcess = require("child_process");
+const fs = require('fs');
+const axios = require('axios');
+const minimist = require('minimist');
+const childProcess = require('child_process');
 
 /**
  * Hàm dừng chương trình async
@@ -99,7 +100,7 @@ const round = (number, amount) => {
 const extend = (obj, deep) => {
 	let argsStart, deepClone;
 
-	if (typeof deep === "boolean") {
+	if (typeof deep === 'boolean') {
 		argsStart = 2;
 		deepClone = deep;
 	} else {
@@ -137,7 +138,7 @@ const extend = (obj, deep) => {
  * //Xem ở đây: {@link https://www.npmjs.com/package/minimist} (nhớ CTRL + CLICK)
  */
 const parseArgs = (str, specialChar) => {
-	const quotes = ["\"", "'", "`"];
+	const quotes = ['"', '\'', '`'];
 	for (let quote of quotes) {
 		let tmp = str.split(quote);
 		for (let i = 1; i < tmp.length; i += 2) {
@@ -145,12 +146,12 @@ const parseArgs = (str, specialChar) => {
 				`${quote}${tmp[i]}`,
 				`${tmp[i].replace(/ /g, specialChar)}`
 			);
-			str = str.replace(quote, "");
+			str = str.replace(quote, '');
 		}
 	}
 	const output = [];
-	str.split(" ").forEach(word => {
-		output.push(word.replace(new RegExp(specialChar, "g"), " "));
+	str.split(' ').forEach(word => {
+		output.push(word.replace(new RegExp(specialChar, 'g'), ' '));
 	});
 	return minimist(output);
 };
@@ -170,7 +171,7 @@ const parseValue = (args, validList) => {
 	for (const param in args) {
 		if (validList.indexOf(param) != -1) {
 			const value = args[param];
-			return typeof value == "object" ? value[value.length - 1] : value;
+			return typeof value == 'object' ? value[value.length - 1] : value;
 		}
 	}
 	return undefined;
@@ -223,7 +224,7 @@ const deleteFile = path => {
  */
 const getKeyword = text => {
 	return text
-		.split(" ")
+		.split(' ')
 		.slice(0, 1)[0]
 		.slice(1);
 };
@@ -237,7 +238,7 @@ const getKeyword = text => {
  * // 1
  */
 const getFileSize = path => {
-	let fileSizeInBytes = fs.statSync(path)["size"];
+	let fileSizeInBytes = fs.statSync(path)['size'];
 	//Convert the file size to megabytes (optional)
 	let fileSizeInMegabytes = fileSizeInBytes / 1000000.0;
 	return Math.round(fileSizeInMegabytes);
@@ -252,9 +253,9 @@ const getFileSize = path => {
  */
 const subname = text => {
 	return text
-		.split(".")
+		.split('.')
 		.slice(0, -1)
-		.join(".");
+		.join('.');
 };
 /**
  * Chuyển 1 số về dạng mật mã đặc biệt (theo bảng chữ cái tiếng anh)
@@ -267,10 +268,10 @@ const subname = text => {
  * // "ogoztzzf"
  */
 const numberToPassword = number => {
-	const numbers = ["z", "o", "t", "h", "f", "i", "s", "e", "g", "n"];
+	const numbers = ['z', 'o', 't', 'h', 'f', 'i', 's', 'e', 'g', 'n'];
 	let str = number.toString();
 	for (let i = 0; i < 10; i++) {
-		str = str.replace(new RegExp(i, "g"), numbers[i]);
+		str = str.replace(new RegExp(i, 'g'), numbers[i]);
 	}
 	return str;
 };
@@ -283,7 +284,7 @@ const numberToPassword = number => {
  * // "1,234,567"
  */
 const currencyFormat = number => {
-	return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 /**
  * Lấy dữ liệu của tin nhắn câu lệnh
@@ -295,9 +296,9 @@ const currencyFormat = number => {
  */
 const getParam = text => {
 	return text
-		.split(" ")
+		.split(' ')
 		.slice(1)
-		.join(" ");
+		.join(' ');
 };
 /**
  * Loại bỏ các kí tự lạ trong văn bản
@@ -305,33 +306,32 @@ const getParam = text => {
  * @return {String}      Văn bản sạch
  */
 const removeSpecialChar = str => {
-	if (str === null || str === "") return false;
+	if (str === null || str === '') return false;
 	else str = str.toString();
 
-	return str.replace(/[^\x20-\x7E]/g, "");
+	return str.replace(/[^\x20-\x7E]/g, '');
 	// return str;
 };
 
 /**
-* thực hiện phép lấy giá trị ngẫu nhiên
-* @example
-* const { random } = kb2abot.helpers;
-*
-* random(1, 10)
-* // trả về giá trị ngẫu nhiên từ 1 đến 10
-*
-* // lưu ý: vì phép ngẫu nhiên này không được làm tròn vì vậy bạn nên dùng random cùng với round
-* @example
-* const { random, round } = kb2abot.helpers;
-*
-* round(random(1, 10), 2)
-* // trả về giá trị ngẫu nhiên từ 1 đến 10 và được làm chòn đến chữ số thập phân thứ hai
-*
-*/
+ * thực hiện phép lấy giá trị ngẫu nhiên
+ * @example
+ * const { random } = kb2abot.helpers;
+ *
+ * random(1, 10)
+ * // trả về giá trị ngẫu nhiên từ 1 đến 10
+ *
+ * // lưu ý: vì phép ngẫu nhiên này không được làm tròn vì vậy bạn nên dùng random cùng với round
+ * @example
+ * const { random, round } = kb2abot.helpers;
+ *
+ * round(random(1, 10), 2)
+ * // trả về giá trị ngẫu nhiên từ 1 đến 10 và được làm chòn đến chữ số thập phân thứ hai
+ *
+ */
 const random = (start, end) => {
 	return Math.floor(Math.random() * (end - start + 1) + start);
 };
-
 
 const shuffle = arr => {
 	// thuật toán bogo-sort
@@ -348,6 +348,52 @@ const shuffle = arr => {
 	}
 
 	return arr; //Bogosort with no điều kiện dừng
+};
+
+const getInstructor = (title, commands) => {
+	let out = `===${title}===\nDanh sách lệnh:\n`;
+	for (let i = 0; i < commands.length; i++) {
+		out += `${i + 1}. ${commands[i]}\n`;
+	}
+	return out;
+};
+
+const validURL = str => {
+	var pattern = new RegExp(
+		'^(https?:\\/\\/)?' + // protocol
+		'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+		'((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+		'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+		'(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+			'(\\#[-a-z\\d_]*)?$',
+		'i'
+	); // fragment locator
+	return !!pattern.test(str);
+};
+
+const downloadFile = async (fileUrl, outputLocationPath) => {
+	const writer = fs.createWriteStream(outputLocationPath);
+
+	const response = await axios({
+		method: 'get',
+		url: fileUrl,
+		responseType: 'stream'
+	});
+
+	await new Promise((resolve, reject) => {
+		response.data.pipe(writer);
+		let error = null;
+		writer.on('error', err => {
+			error = err;
+			writer.close();
+			reject(err);
+		});
+		writer.on('close', () => {
+			if (!error) {
+				resolve(true);
+			}
+		});
+	});
 };
 
 module.exports = {
@@ -368,5 +414,8 @@ module.exports = {
 	getParam,
 	removeSpecialChar,
 	random,
-	shuffle
+	shuffle,
+	getInstructor,
+	validURL,
+	downloadFile
 };

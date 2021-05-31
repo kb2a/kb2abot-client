@@ -1,16 +1,17 @@
-const git = require("simple-git")();
-const installChanged = require("install-changed");
+const axios = require('axios');
+const {version} = require('../../package.json');
 
 module.exports = {
-	des: "Kiem tra va cap nhat kb2abot",
+	des: 'Kiem tra va cap nhat kb2abot',
 	fn: async () => {
-		const initResult = await git.init();
-		if (!initResult.existing) {
-			await git.addRemote("origin", "https://github.com/kb2ateam/kb2abot");
+		const {data} = await axios.get(
+			'https://raw.githubusercontent.com/kb2ateam/kb2abot/main/package.json'
+		);
+		console.log();
+		if (data.version != version) {
+			console.newLogger.debug(
+				`Da co phien ban moi: ${data.version}, phien ban hien tai: ${version}. Su dung npm run update de update kb2abot!`
+			);
 		}
-
-		await git.fetch("origin", "main"); //git fetch origin main
-		await git.reset(["origin/main", "--hard"]); //git reset origin/main --hard
-		installChanged.watchPackage();
 	}
 };

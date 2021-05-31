@@ -4,10 +4,10 @@
  * <code>const {Logger, initLogger} = kb2abot.utils.CONSOLE;</code>
  * @module CONSOLE
  */
-const chalk = require("chalk");
+const chalk = require('chalk');
 
 class Logger {
-	constructor(prefixTag = "KB2ABOT") {
+	constructor(prefixTag = 'KB2ABOT') {
 		this.prefixTag = prefixTag;
 		this.chalk = new chalk.Instance();
 	}
@@ -19,10 +19,9 @@ class Logger {
 				newTags.push(tag);
 			}
 		} else {
-			if (tags)
-				newTags.push(tags);
+			if (tags) newTags.push(tags);
 		}
-		let prefix = chalk.white.bgBlack(`[${newTags[0]}]`) + " ";
+		let prefix = chalk.white.bgBlack(`[${newTags[0]}]`) + ' ';
 		for (let i = 1; i < newTags.length; i++) {
 			prefix += `[${newTags[i]}] `;
 		}
@@ -36,31 +35,37 @@ class Logger {
 
 	debug(msg, tags) {
 		const prefix = this.getPrefix(tags);
-		console.log(prefix + chalk.white.bgCyan("[DEBUG]") + " " + chalk.cyan(msg));
+		console.log(prefix + chalk.white.bgCyan('[DEBUG]') + ' ' + chalk.cyan(msg));
 	}
 
 	error(msg, tags) {
 		const prefix = this.getPrefix(tags);
-		console.log(prefix + chalk.white.bgRed("[ERROR]") + " " + chalk.red(msg));
+		console.log(prefix + chalk.white.bgRed('[ERROR]') + ' ' + chalk.red(msg));
 	}
 
 	done(msg, tags) {
 		const prefix = this.getPrefix(tags);
-		console.log(prefix + chalk.white.bgGreen("[DONE]") + " " + chalk.green(msg));
+		console.log(
+			prefix + chalk.white.bgGreen('[DONE]') + ' ' + chalk.green(msg)
+		);
 	}
 
 	success(msg, tags) {
 		const prefix = this.getPrefix(tags);
-		console.log(prefix + chalk.white.bgGreen("[SUCCESS]") + " " + chalk.green(msg));
+		console.log(
+			prefix + chalk.white.bgGreen('[SUCCESS]') + ' ' + chalk.green(msg)
+		);
 	}
 
 	warn(msg, tags) {
 		const prefix = this.getPrefix(tags);
-		console.log(prefix + chalk.white.bgYellow("[WARN]") + " " + chalk.yellow(msg));
+		console.log(
+			prefix + chalk.white.bgYellow('[WARN]') + ' ' + chalk.yellow(msg)
+		);
 	}
 }
 
-const initLogger = (prefix, prop = "newLogger") => {
+const initLogger = (prefix, prop = 'newLogger') => {
 	console[prop] = new Logger(prefix);
 };
 

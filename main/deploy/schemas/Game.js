@@ -1,15 +1,15 @@
-const Schema = require("./Schema");
+const Schema = require('./Schema');
 
 module.exports = class Game extends Schema {
 	constructor(options) {
 		super(options);
 		const {
-			name = "undefined game",
+			name = 'undefined game',
 			masterID, // unique
 			threadID, // unique
-			param = "",
+			param = '',
 			isGroup = false,
-			participants = [masterID],
+			participants = [masterID]
 		} = options;
 		this.name = name;
 		this.masterID = masterID; // ID người tạo game
@@ -21,12 +21,10 @@ module.exports = class Game extends Schema {
 
 	async onMessage() {}
 
-	async clean() {
-	}
+	async clean() {}
 
 	addParticipant(id, duplicateCheck = true) {
-		if (duplicateCheck && this.participants.includes(id))
-			return false;
+		if (duplicateCheck && this.participants.includes(id)) return false;
 		this.participants.push(id);
 		return true;
 	}

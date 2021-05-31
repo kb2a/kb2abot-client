@@ -1,9 +1,9 @@
-const readline = require("readline");
+const readline = require('readline');
 
-const showStatus = require("./showStatus");
+const showStatus = require('./showStatus');
 
 module.exports = {
-	des: "Cai dat cli",
+	des: 'Cai dat cli',
 	fn: async () => {
 		const rl = readline.createInterface({
 			input: process.stdin,
@@ -11,12 +11,12 @@ module.exports = {
 		});
 
 		const readInput = () => {
-			rl.question("", function(data) {
+			rl.question('', function(data) {
 				switch (data) {
-				case "status":
+				case 'status':
 					showStatus();
 					break;
-				case "cls":
+				case 'cls':
 					console.clear();
 					break;
 				}

@@ -1,126 +1,251 @@
-const os = require("os");
-const login = require("facebook-chat-api");
+const login = require('facebook-chat-api');
+const stringSimilarity = require('string-similarity');
 
 try {
 	kb2abot.account.load();
 	console.newLogger.success(`Loaded datastore ${kb2abot.id}.json!`);
-}
-catch(e) {
+} catch (e) {
 	console.newLogger.error(e.message);
-	console.newLogger.error(`Vui long xoa hoac sua lai file ${__dirname}\\${kb2abot.id}.json!`);
+	console.newLogger.error(
+		`Vui long xoa hoac sua lai file ${__dirname}\\${kb2abot.id}.json!`
+	);
 	process.exit();
 }
-setInterval(() => kb2abot.account.save(), 5000);
+setInterval(
+	() => kb2abot.account.save(),
+	kb2abot.config.INTERVAL.SAVE_DATASTORE
+);
 
-const executePlugin = async ({
-	api,
+const executeCommand = async ({
+	reply,
 	message,
 	thread,
-	type = "onCall", // type hiện tại gồm 2 giá trị: onCall hoặc onMessage
-	plugin
+	type = 'onCall',
+	command
 } = {}) => {
-	try {
-		if (!plugin[type])
-			return;
-		const pluginName = plugin.keywords[0];
-		if (!kb2abot.account.storage[pluginName])
-			kb2abot.account.storage[pluginName] = {};
-		if (!thread.storage[pluginName])
-			thread.storage[pluginName] = {};
-		const params = [
-			{
-				thread,
-				storage: {
-					account: {
-						global: kb2abot.account.storage,
-						local: kb2abot.account.storage[pluginName]
-					},
-					thread: {
-						global: thread.storage,
-						local: thread.storage[pluginName]
-					}
+	const permission =
+		command.permission[message.threadID] || command.permission['*'] || [];
+	if (type == 'onCall' && permission != '*') {
+		if (permission == 'superAdmin') {
+			if (!kb2abot.config.SUPER_ADMINS.includes(message.senderID))
+				return reply('Bạn không thể sử dụng lệnh này!');
+		} else if (permission == 'admin') {
+			try {
+				const info =
+					thread.adminIDs ||
+					(await kb2abot.helpers.fca.getThreadInfo(thread.id));
+				if (kb2abot.config.REFRESH_ADMINIDS) thread.adminIDs = info.adminIDs;
+				if (
+					info.adminIDs.findIndex(e => e.id == message.senderID) == -1 &&
+					info.isGroup
+				)
+					return reply('Chỉ admin mới có thể xài lệnh này!');
+			} catch (e) {
+				reply(
+					'Gặp lỗi khi đang lấy danh sách admin, vui lòng thử lại trong giây lát . . .'
+				);
+				console.newLogger.warn(
+					`Error while getting thread ${thread.id} info:`,
+					e
+				);
+				return;
+			}
+		} else if (Array.isArray(permission)) {
+			if (!permission.includes(message.senderID))
+				return reply('Bạn không có quyền sử dụng lệnh này!');
+		} else {
+			console.newLogger.warn(
+				`Command phân quyền sai cú pháp: "${command.name}"`
+			);
+			return reply('Lệnh này chưa phân quyền!');
+		}
+	}
+	const commandName = command.keywords[0];
+	if (!kb2abot.account.storage[commandName])
+		kb2abot.account.storage[commandName] = {};
+	if (!thread.storage[commandName]) thread.storage[commandName] = {};
+	const params = [
+		{
+			storage: {
+				account: {
+					global: kb2abot.account.storage,
+					local: kb2abot.account.storage[commandName]
+				},
+				thread: {
+					global: thread.storage,
+					local: thread.storage[commandName]
 				}
-			},
-			api,
-			message
-		];
-		if (plugin[type].constructor.name === "AsyncFunction")
-			await plugin[type].call(...params);
-		else
-			plugin[type].call(...params);
+			}
+		},
+		message,
+		reply
+	];
+	try {
+		if (command[type].constructor.name === 'AsyncFunction')
+			await command[type].call(...params);
+		else command[type].call(...params);
 	} catch (e) {
 		console.newLogger.error(e.stack);
-		api.replyMessage(e.stack, message.threadID);
+		reply(e.stack);
 	}
 };
 
 const fn = async function(err, message) {
-	const api = this.api; // binded from callback(api) of fca.login
 	if (!message || !message.threadID || !message.body) return;
 	message.body = message.body.trim();
 
-	api.replyMessage = (...args) => {
-		api.sendMessage(args[0], args[1] || message.threadID, args[2], args[3] || message.messageID);
+	const reply = (...args) => {
+		return new Promise(resolve => {
+			// 0: Message Object
+			// 1: ID thread
+			// 2: callback
+			// 3: reply ID
+			fca.sendMessage(
+				args[0],
+				args[1] || message.threadID,
+				(err, messageInfo) => {
+					if (err) console.newLogger.error(err);
+					try {
+						if (args[2]) args[2](err, messageInfo);
+					} catch (e) {
+						console.newLogger.error(e.stack);
+					}
+					resolve({err, messageInfo});
+				},
+				args[3] || message.messageID
+			);
+		});
 	};
 
 	const thread = kb2abot.account.addThread(message.threadID);
-	if (Date.now() <= thread.storage.blockTime)
-		return;
 
-	if (message.body.toLowerCase() == "prefix") { // kiem tra prefix
-		return api.replyMessage(
-			`Prefix hiện tại của thread là:${os.EOL}${thread.storage.prefix}`,
-			message.threadID
-		);
-	}
-
-	if (message.body.toLowerCase().indexOf("prefix ") == 0) { // set prefix
-		const tmp = message.body.split(" ");
-		if (tmp.length > 2) {
-			return api.replyMessage(
-				`Sai cú pháp prefix!${os.EOL}prefix <prefix mà bạn muốn đặt>`,
-				message.threadID
-			);
+	for (const command of kb2abot.pluginManager.getAllCommands()) {
+		const commandName = command.keywords[0];
+		if (!command._.extendedDatastoreDesigns.includes(thread.id)) {
+			kb2abot.account.storage = {
+				...command.datastoreDesign.account.global,
+				...kb2abot.account.storage
+			}; // account.global
+			kb2abot.account.storage[commandName] = {
+				...command.datastoreDesign.account.local,
+				...kb2abot.account.storage[commandName]
+			}; // account.local
+			thread.storage = {
+				...command.datastoreDesign.thread.global,
+				...thread.storage
+			}; // thread.global
+			thread.storage[commandName] = {
+				...command.datastoreDesign.thread.local,
+				...thread.storage[commandName]
+			}; // thread.local
+			command._.extendedDatastoreDesigns.push(thread.id);
 		}
-		thread.storage.prefix = tmp[1];
-		const replyMsg = `Đã đổi prefix hiện tại của bot thành:${os.EOL}${thread.storage.prefix}`;
-		return api.replyMessage(replyMsg, message.threadID);
 	}
 
-	if (message.body.indexOf(thread.storage.prefix) == 0) { // is using plugin ==>
-		const keyword = message.body.split(" ")[0].split(thread.storage.prefix).slice(-1)[0]; // lấy keyword của message
+	if (Date.now() <= thread.storage.blockTime) return;
+
+	if (message.body.indexOf(thread.storage.prefix) == 0) {
+		// is using command ==>
+		const keyword = message.body.split(' ')[0].slice(1); // lấy keyword của message
 		if (keyword) {
-			const plugin = kb2abot.pluginManager.findPluginByKeyword(keyword);
-			if (plugin) {
-				await executePlugin({api, message, thread, type: "onCall", plugin});
+			if (keyword.includes('.')) {
+				const command = kb2abot.pluginManager.findCommandsByClasses(keyword);
+				if (command)
+					await executeCommand({
+						reply,
+						message,
+						thread,
+						type: 'onCall',
+						command
+					});
+				else
+					reply(
+						`Không tìm thấy lệnh: "${keyword}"\n Vui lòng xem lại tên lệnh!`
+					);
 			} else {
-				api.replyMessage(`Không tìm thấy lệnh nào có keyword: ${keyword}!`, message.threadID);
+				const found = kb2abot.pluginManager.findCommandsByKeyword(keyword);
+				if (found.length == 0) {
+					const allKeywords = [];
+					for (const cmd of kb2abot.pluginManager.getAllCommands()) {
+						allKeywords.push(...cmd.keywords);
+					}
+					const {ratings} = stringSimilarity.findBestMatch(
+						keyword,
+						allKeywords
+					);
+					ratings.sort((a, b) => b.rating - a.rating);
+					const bestMatches = [
+						ratings[0].target,
+						ratings[1].target,
+						ratings[2].target
+					];
+					reply(
+						`Không tìm thấy lệnh: "${keyword}"\nCác lệnh gần giống: ${bestMatches.join(
+							', '
+						)}\nBạn có thể xem danh sách lệnh ở ${thread.storage.prefix}help!`
+					);
+				}
+
+				if (found.length == 1)
+					await executeCommand({
+						reply,
+						message,
+						thread,
+						type: 'onCall',
+						command: found[0].command
+					});
+				if (found.length > 1) {
+					const names = [];
+					for (const f of found)
+						if (!f.className.includes('.'))
+							names.push('kb2abot.' + f.className);
+						else names.push(f.className);
+					reply(
+						`Có ${found.length} lệnh: ${names.join(
+							', '
+						)}\nBạn muốn xài lệnh nào?`
+					);
+				}
 			}
 		} else {
-			api.replyMessage(`Sai cú pháp!\n${thread.storage.prefix}<lệnh> <nội dung truyền vào lệnh>`, message.threadID);
+			reply(
+				`Sai cú pháp!\n${thread.storage.prefix}<lệnh> <nội dung truyền vào lệnh>`
+			);
 		}
 	}
 
-	for (const plugin of kb2abot.pluginManager.items) {
-		await executePlugin({api, message, thread, type: "onMessage", plugin});
+	const isCommand = message.body.indexOf(thread.storage.prefix) == 0;
+	for (const command of kb2abot.pluginManager.getAllCommands()) {
+		if (
+			command.hookType == '*' ||
+			(command.hookType == 'command-only' && isCommand) ||
+			(command.hookType == 'non-command' && !isCommand)
+		)
+			await executeCommand({
+				reply,
+				message,
+				thread,
+				type: 'onMessage',
+				command
+			});
 	}
 };
 
 module.exports = appState => {
-	login({appState}, async (err, api) => {
+	login({appState}, async (err, fca) => {
 		if (err) {
-			console.newLogger.error(JSON.stringify(err));
+			console.log(err);
 			process.exit();
 		}
-		api.listenMqtt(fn.bind({api}));
-		for (const key in kb2abot.plugins) {
+		globalThis.fca = fca; // fca will become global
+		for (const command of kb2abot.pluginManager.getAllCommands()) {
 			try {
-				await kb2abot.plugins[key].onLoad(api);
-			}
-			catch(e) {
-				console.newLogger.error("onLoad -> " + e.message);
+				await command.onLoad();
+			} catch (e) {
+				console.newLogger.error('onLoad -> ' + e.stack);
 			}
 		}
+		fca.listenMqtt(fn);
 		console.newLogger.success(`${kb2abot.name} (${kb2abot.id}) UP !`);
 	});
 };

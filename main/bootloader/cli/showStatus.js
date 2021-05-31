@@ -1,4 +1,4 @@
-const isRunning = require("is-running");
+const isRunning = require('is-running');
 
 module.exports = () => {
 	const lives = [],
@@ -10,7 +10,7 @@ module.exports = () => {
 			dies.push(bot);
 		}
 	}
-	let logMessage = "";
+	let logMessage = '';
 	for (const live of lives) {
 		logMessage += `${live.pid} ${live.name} >> live\n`;
 	}

@@ -1,6 +1,6 @@
 {
     "name": "kb2abot",
-    "version": "2.9.4",
+    "version": "2.0.0",
     "description": "An auto replying messages bot",
     "main": "main/index.js",
     "scripts": {
@@ -13,27 +13,19 @@
         "type": "git",
         "url": "git+https://github.com/kb2ateam/kb2abot.git"
     },
-    "author": "KhoaKoMlem",
-    "license": "ISC",
+    "author": "khoakomlem",
+    "license": "MIT",
     "dependencies": {
         "adm-zip": "^0.5.3",
         "axios": "^0.21.1",
-        "canvas": "^2.7.0",
         "chalk": "^4.1.0",
         "check-internet-connected": "^2.0.5",
         "decache": "^4.6.0",
-        "decode-html": "^2.0.0",
-        "deep-extend": "^0.6.0",
         "detective": "^5.2.0",
         "facebook-chat-api": "^1.8.0",
         "fast-safe-stringify": "^2.0.7",
-        "ffmpeg-static": "^4.2.7",
-        "install-changed": "^1.1.0",
         "is-running": "^2.1.0",
-        "jimp": "^0.16.1",
-        "kb2abot-cli": "^0.1.3",
         "log-to-file": "^2.0.2",
-        "merge-images": "^2.0.0",
         "minimist": "^1.2.5",
         "node-emoji": "^1.10.0",
         "ora": "^5.3.0",
@@ -41,10 +33,7 @@
         "semver": "^7.3.4",
         "simple-git": "^2.34.2",
         "string-similarity": "^4.0.4",
-        "uniqid": "^5.2.0",
-        "youtube-mp3-downloader": "^0.7.6",
-        "yt-search": "^2.7.3",
-        "ytdl-core": "^4.4.5"
+        "uniqid": "^5.2.0"
     },
     "devDependencies": {
         "eslint": "^7.26.0"

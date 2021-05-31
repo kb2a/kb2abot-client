@@ -1,0 +1,15 @@
+{
+  "manifest_version": 1,
+  "name": "INTERNAL ⭐",
+  "version": "1.0",
+  "authorDetails": {
+    "name": "khoakomlem",
+    "contact": "fb.com/khoakomlem"
+  },
+  "entry": "index.js",
+  "disable": false,
+  "update": {
+    "manifest": "https://drive.google.com/u/0/uc?id=1GQbwdvhjqW8_zF0jDLJUT8J36R1MlBeF&export=download",
+    "plugin": "https://drive.google.com/u/0/uc?id=1Ssv7mEPaeRf4OmO_Jvtq4Gd3O6qMoJcH&export=download"
+  }
+}

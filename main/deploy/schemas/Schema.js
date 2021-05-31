@@ -1,4 +1,4 @@
-const uniqid = require("uniqid");
+const uniqid = require('uniqid');
 
 module.exports = class Schema {
 	constructor() {

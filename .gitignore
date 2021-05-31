@@ -20,3 +20,5 @@ main/deploy/updates/*
 node_modules/
 
 packagehash.txt
+
+test.js

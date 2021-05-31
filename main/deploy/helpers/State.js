@@ -1,4 +1,4 @@
-const Manager = require("./Manager");
+const Manager = require('./Manager');
 
 module.exports = class State extends Manager {
 	constructor(options) {
@@ -28,7 +28,8 @@ module.exports = class State extends Manager {
 		this.index = this.items.length - 1;
 	}
 
-	is(item) { // work only for text, if passing an array/object, will need reference
+	is(item) {
+		// work only for text, if passing an array/object, will need reference
 		return this.getCurrent() == item;
 	}
 

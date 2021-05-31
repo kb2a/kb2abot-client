@@ -2,9 +2,9 @@
  * Các function cần thiết dùng để khởi động kb2abot cho 1 tài khoản
  * @module DEPLOY
  */
-const fs = require("fs");
-const path = require("path");
-const login = require("facebook-chat-api");
+const fs = require('fs');
+const path = require('path');
+const login = require('facebook-chat-api');
 
 /**
  * Hàm tạo appState từ ATP cookie
@@ -13,27 +13,25 @@ const login = require("facebook-chat-api");
  */
 const convertAtpToAppstate = atp => {
 	const unofficialAppState = [];
-	const items = atp.split(";|")[0].split(";");
-	if (items.length < 2)
-		throw "Not a atp cookie";
-	const validItems = ["sb", "datr", "c_user", "xs"];
+	const items = atp.split(';|')[0].split(';');
+	if (items.length < 2) throw 'Not a atp cookie';
+	const validItems = ['sb', 'datr', 'c_user', 'xs'];
 	let validCount = 0;
 	for (const item of items) {
-		const key = item.split("=")[0];
-		const value = item.split("=")[1];
-		if (validItems.includes(key))
-			validCount++;
+		const key = item.split('=')[0];
+		const value = item.split('=')[1];
+		if (validItems.includes(key)) validCount++;
 		unofficialAppState.push({
 			key,
 			value,
-			domain: "facebook.com",
-			path: "/"
+			domain: 'facebook.com',
+			path: '/'
 		});
 	}
 	if (validCount >= validItems.length) {
 		return unofficialAppState;
 	} else {
-		throw "Not a atp cookie";
+		throw 'Not a atp cookie';
 	}
 };
 /**
@@ -46,15 +44,15 @@ const getCookieType = text => {
 	try {
 		parseTest = JSON.parse(text);
 		if (parseTest.url && parseTest.cookies) {
-			return "j2team"; // cookie của ext j2team cookie
+			return 'j2team'; // cookie của ext j2team cookie
 		} else {
-			return "appstate"; // cookie appstate của facebook-chat-api
+			return 'appstate'; // cookie appstate của facebook-chat-api
 		}
-	} catch(e) {
+	} catch (e) {
 		try {
 			convertAtpToAppstate(text);
-			return "atp"; // cookie của ext atp cookie
-		} catch(e) {
+			return 'atp'; // cookie của ext atp cookie
+		} catch (e) {
 			return -1; // Tào lao
 		}
 	}
@@ -63,12 +61,12 @@ const getCookieType = text => {
  * Xóa hết tất cả file trong folder /musics
  */
 const truncateMusics = () => {
-	fs.readdir("musics", (err, files) => {
+	fs.readdir('musics', (err, files) => {
 		// delete all music files before start
 		if (err) throw err;
 
 		for (const file of files) {
-			fs.unlink(path.join("musics", file), error => {
+			fs.unlink(path.join('musics', file), error => {
 				if (error) throw error;
 			});
 		}
@@ -81,15 +79,17 @@ const truncateMusics = () => {
  */
 const checkCredential = credential => {
 	return new Promise((resolve, reject) => {
-		login(credential, {logLevel: "silent"}, (err, api) => {
+		login(credential, {logLevel: 'silent'}, (err, api) => {
 			if (err) {
-				console.newLogger.error("Wrong/expired cookie!");
-				reject(err);
-				process.exit();
+				return reject(new Error('Wrong/expired cookie!'));
 			}
 			const userID = api.getCurrentUserID();
 			api.getUserInfo(userID, (err, ret) => {
-				if (err) process.exit();
+				if (err) {
+					return reject(
+						new Error('Your account has been disabled or blocked features!')
+					);
+				}
 				resolve({
 					id: userID,
 					name: ret[userID].name,
@@ -111,8 +111,8 @@ const convertJ2teamToAppstate = j2team => {
 		unofficialAppState.push({
 			key: cookieElement.name,
 			value: cookieElement.value,
-			expires: cookieElement.expirationDate || "",
-			domain: cookieElement.domain.replace(".", ""),
+			expires: cookieElement.expirationDate || '',
+			domain: cookieElement.domain.replace('.', ''),
 			path: cookieElement.path
 		});
 	}

@@ -20,7 +20,7 @@ module.exports = class Manager {
 	}
 
 	find(query, options) {
-		const isObject = typeof options == "object";
+		const isObject = typeof options == 'object';
 
 		const returnIndex = Boolean(
 			(isObject ? options.returnIndex : arguments[1]) || false
