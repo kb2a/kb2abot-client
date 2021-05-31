@@ -11,23 +11,12 @@ main/deploy/games/*
 !main/deploy/games/README.txt
 
 main/deploy/plugins/*
+!main/deploy/plugins/internal
 !main/deploy/plugins/README.txt
-!main/deploy/plugins/AAR
-!main/deploy/plugins/autoreply
-!main/deploy/plugins/bug
-!main/deploy/plugins/debug
-!main/deploy/plugins/everyone
-!main/deploy/plugins/game
-!main/deploy/plugins/help
-!main/deploy/plugins/version
-!main/deploy/plugins/weather
-!main/deploy/plugins/ytmp3
-main/deploy/plugins/ytmp3/musics/
-!main/deploy/plugins/ytmp3/musics/README.txt
 
+main/deploy/updates/*
+!main/deploy/updates/README.txt
 
 node_modules/
-
-reworking/
 
 packagehash.txt
