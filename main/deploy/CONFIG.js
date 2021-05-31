@@ -12,7 +12,7 @@ module.exports = {
 	},
 	INTERVAL: {
 		SAVE_DATASTORE: 5000,
-		CHECK_UPDATE: 5 * 60000,
+		CHECK_UPDATE: 10 * 60000,
 		AUTO_ACCEPT_REQUEST: 10000
 	},
 	PRETTY_DATASTORE: false, // enable may cause to its performance (adding tab characters to datastore)

@@ -21,7 +21,7 @@ module.exports = dir => {
 				exportData[sname] = data;
 			}
 		} catch (e) {
-			console.newLogger.error(e.stack);
+			console.error(e.stack);
 			continue;
 		}
 	}
