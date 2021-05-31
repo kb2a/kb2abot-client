@@ -2,7 +2,7 @@
 
 
 1. Chỗ này để lưu trữ data của kb2abot
-2. Tên của datastore được đặt theo id của username bạn xài để login
+2. Tên của datastore được đặt theo UID của bạn xài để login
 3. Không được đổi tên của các file này!
 
 
