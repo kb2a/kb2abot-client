@@ -9,5 +9,5 @@ rm -rf node_modules
 echo "Dang cai dat lai node_modules . . ."
 npm install
 echo "Da xong!"
-echo "Vui long chay lai bot lan dau!"
-read -p "Nhan phim bat ki de thoat . . ."
+echo "Vui long nhap \"npm run update\" de cap nhat bot"
+read -p "Nhan phim ENTER de thoat . . ."

@@ -3,4 +3,4 @@
 # Script chạy bot
 echo "Dang chay kb2abot bootloader . . ."
 npm start
-read -p "Nhan phim bat ki de thoat . . ."
+read -p "Nhan phim ENTER de thoat . . ."

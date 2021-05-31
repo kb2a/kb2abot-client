@@ -1,4 +1,4 @@
-echo "Bash cho mobile setup (by khoakomlem)"
+echo "Bash setup cho mobile setup (by khoakomlem)"
 echo "Cai dat cURL . . ."
 apt install -y curl
 echo "Cai dat nodejs, npm, git . . ."
@@ -8,4 +8,5 @@ apt install -y git
 echo "Cai dat kb2abot-cli . . ."
 npm install kb2abot-cli@latest -g
 kb2abot-cli clone
-sh ./kb2abot/scripts/INSTALL.sh
+echo "Da tai xong!"
+. ./kb2abot/scripts/INSTALL.sh

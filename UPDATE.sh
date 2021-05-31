@@ -3,4 +3,4 @@
 # Script chạy update
 echo "Dang chay update . . ."
 npm run update
-read -p "Nhan phim bat ki de thoat . . ."
+read -p "Nhan phim ENTER de thoat . . ."
