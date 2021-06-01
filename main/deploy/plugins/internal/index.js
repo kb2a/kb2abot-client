@@ -2,7 +2,7 @@ const {getInstructor} = kb2abot.helpers;
 const childs = [
 	'autoreply',
 	'plugman',
-	'AAR',
+	'aar',
 	'backup',
 	'cprefix',
 	'everyone',

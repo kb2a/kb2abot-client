@@ -1,6 +1,6 @@
 {
     "name": "kb2abot",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "description": "An auto replying messages bot",
     "main": "main/index.js",
     "scripts": {
