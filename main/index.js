@@ -94,7 +94,7 @@ const bootloader = async () => {
 		kb2abot.schemas = loader(path.join(__dirname, 'deploy/schemas'));
 		kb2abot.helpers = loader(kb2abot.config.DIR.HELPER);
 		kb2abot.gameManager = new kb2abot.helpers.GameManager(
-			loader(kb2abot.config.DIR.PLUGIN)
+			loader(kb2abot.config.DIR.GAME)
 		);
 		kb2abot.pluginManager = new kb2abot.helpers.PluginManager();
 		await kb2abot.pluginManager.loadAllPlugins(undefined, false);
