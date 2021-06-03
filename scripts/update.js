@@ -8,7 +8,7 @@ const {execShellCommand} = require('../main/deploy/helpers/common');
 	const initResult = await git.init();
 	console.log('Initing git remote . . .');
 	if (!initResult.existing) {
-		await git.addRemote('origin', 'httpsgithub.comkb2ateamkb2abot');
+		await git.addRemote('origin', 'https://github.com/kb2ateam/kb2abot');
 	}
 	const {dependencies} = require('../package.json');
 
