@@ -31,14 +31,15 @@ module.exports = {
 	},
 
 	async onLoad() {
-		setInterval(async () => {
-			console.newLogger.debug('Dang kiem tra update plugins . . .');
+		const checkupdate = async () => {
+			console.newLogger.debug('PLUGINS - Dang kiem tra update . . .');
 			const files = (await recursive(kb2abot.config.DIR.PLUGIN)).filter(
 				file =>
 					path.basename(file) == 'manifest.json' &&
 					validURL(require(file).update.manifest) &&
 					validURL(require(file).update.plugin)
 			);
+			let newVer = false;
 			for (const file of files) {
 				const manifest = require(file);
 				const {data: tmp_manifest} = await axios.get(manifest.update.manifest);
@@ -50,16 +51,22 @@ module.exports = {
 					!fs.existsSync(output) &&
 					manifest.version != tmp_manifest.version
 				) {
+					newVer = true;
 					console.newLogger.warn(
-						`Phien ban moi! Dang tai ${manifest.name} [${tmp_manifest.version}]!`
+						`PLUGINS - Phat hien phien ban moi, dang tai ${manifest.name} [${tmp_manifest.version}]!`
 					);
 					await downloadFile(manifest.update.plugin, output);
 					console.newLogger.debug(
-						`Da tai xong ${manifest.name} [${tmp_manifest.version}] tai ${output}!`
+						`PLUGINS - Da tai ${manifest.name} [${tmp_manifest.version}] tai ${output}!`
 					);
 				}
 			}
-		}, kb2abot.config.INTERVAL.CHECK_UPDATE);
+			if (!newVer) {
+				console.newLogger.debug('PLUGINS - khong tim thay phien ban moi!');
+			}
+		};
+		setInterval(() => checkupdate(), kb2abot.config.INTERVAL.CHECK_UPDATE);
+		checkupdate();
 	},
 
 	hookType: 'none',
