@@ -44,7 +44,7 @@ module.exports = {
 				const manifest = require(file);
 				const {data: tmp_manifest} = await axios.get(manifest.update.manifest);
 
-				const outputFileName = `${manifest.name} ${manifest.version}.zip`;
+				const outputFileName = `${manifest.name} ${tmp_manifest.version}.zip`;
 				const output = path.join(kb2abot.config.DIR.UPDATE, outputFileName);
 
 				if (

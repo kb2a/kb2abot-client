@@ -1,3 +1,4 @@
+const axios = require('axios');
 const recursive = require('recursive-readdir');
 const fs = require('fs');
 const path = require('path');
@@ -106,11 +107,22 @@ module.exports = class PluginManager extends Manager {
 								try {
 									require(requirement);
 									return false;
-								} catch (e) {
+								} catch {
 									return true;
 								}
 							})()
 					); // remove installed module
+
+					for (const dep of filteredModules) {
+						try {
+							await axios.get('https://www.npmjs.com/package/' + dep);
+						} catch {
+							console.newLogger.error(`Dependency "${dep}" khong co tren npm!`);
+							throw new Error(
+								`Dependency "${dep}" khong hop le, vui long kiem tra lai file ${e.requireStack[0]}!`
+							);
+						}
+					}
 
 					let changed = false;
 					for (const m of checker.last_modules) {
@@ -132,10 +144,23 @@ module.exports = class PluginManager extends Manager {
 					} else {
 						checker.loopCount = 0;
 					}
-					const shellCommand = `npm i ${filteredModules.join(' ')}`;
-					console.log(`Dang tu dong cai cac dependencie(s): ${commaJoin}`);
-					console.log('> ' + shellCommand);
-					await execShellCommand(shellCommand);
+					const shellCommand = `npm install ${filteredModules.join(' ')}`;
+					console.newLogger.debug(
+						`Dang tu dong cai cac dependencie(s): ${commaJoin}`
+					);
+					console.newLogger.debug('> ' + shellCommand);
+					try {
+						await execShellCommand(shellCommand);
+						console.newLogger.success(
+							`Da cai xong cac dependencie(s): ${commaJoin}, vui long chay lai bot!`
+						);
+						process.exit();
+					} catch (e) {
+						console.newLogger.error(
+							`Gap loi khi chay > npm install cac dependencie(s): ${commaJoin}!`
+						);
+						throw e;
+					}
 				} else {
 					throw e;
 				}
