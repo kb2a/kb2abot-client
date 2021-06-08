@@ -22,7 +22,20 @@ module.exports = {
 		// Bạn có thể lên trang: findidfb.com hoặc lookup-id.com để lấy ID Facebook
 		'100007723935647'
 	],
-	REFRESH_ADMINIDS: false
+	REFRESH_ADMINIDS: false,
 	// Bật cái này để làm mới lại list admin mỗi khi tin nhắn đến (còn không thì phải restart bot thì nó mới làm mới lại list)
 	// Những bạn nào có acc khỏe hoặc số lượng box hoạt động nhỏ (<10) thì mới nên bật
+	FCA_OPTIONS: {
+		logLevel: 'silent', // logger đăng nhập fb ("silly", "verbose", "info", "http", "warn", "error", or "silent")
+		selfListen: false, // KHÔNG NÊN BẬT KHI SỬ DỤNG PLUGIN CÓ HOOK NHƯ AUTOREPLY (VÒNG LẶP -> SPAM)
+		forceLogin: true, // Tự động accept location lạ khi login
+		userAgent:
+			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/600.3.18 (KHTML, like Gecko) Version/8.0.3 Safari/600.3.18',
+		// Khi userAgent truyền vào không hợp lệ, bot sẽ không nhận được tin nhắn gì hết
+		// Mặc định: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/600.3.18 (KHTML, like Gecko) Version/8.0.3 Safari/600.3.18
+		// Cái userAgent này lạ lắm, mình test thử chrome & firefox thì thấy hoạt động trên mỗi chrome :/
+		// Lưu ý khi bỏ userAgent vào thì nhớ tìm xóa "Chrome/xx.x.xxxx.xx" (kế cuối), mình ko hiểu tại sao nhưng làm vậy nó mới hoạt động :)
+		autoMarkDelivery: true, // Đánh dấu là đã nhận
+		autoMarkRead: true // Đánh dấu là đã đọc
+	}
 };

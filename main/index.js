@@ -49,7 +49,7 @@ for (const key in paths) {
 	for (const file of zipfiles) {
 		const zipPath = path.join(dir, file);
 		const zip = new AdmZip(zipPath);
-		zip.extractAllTo(dir);
+		zip.extractAllTo(dir, true);
 		console.newLogger.success(`EXTRACTED ${key.toUpperCase()}: ${file}`);
 		fs.appendFileSync(e, file + '\n');
 	}

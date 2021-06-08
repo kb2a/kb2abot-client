@@ -235,7 +235,7 @@ const fn = async function(err, message) {
 };
 
 module.exports = appState => {
-	login({appState}, async (err, fca) => {
+	login({appState}, kb2abot.config.FCA_OPTIONS, async (err, fca) => {
 		if (err) {
 			console.log(err);
 			process.exit();

@@ -66,7 +66,7 @@ module.exports = {
 			}
 		};
 		setInterval(() => checkupdate(), kb2abot.config.INTERVAL.CHECK_UPDATE);
-		checkupdate();
+		await checkupdate();
 	},
 
 	hookType: 'none',
@@ -79,7 +79,7 @@ module.exports = {
 			.filter(filename => filename.split('.').pop() == 'zip');
 		if (files.length > 0)
 			reply(
-				'Vui lòng tự update (có thể move, delete hoặc extract)\nDanh sách file updates:\n' +
+				'Đường dẫn file updates: /main/deploy/updates\nVui lòng tự update (có thể move, delete hoặc extract)\nDanh sách file updates:\n' +
 					files.join(', ')
 			);
 		else reply('Không tìm thấy bản cập nhật nào!');

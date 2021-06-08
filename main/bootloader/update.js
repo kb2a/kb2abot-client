@@ -7,11 +7,16 @@ module.exports = {
 		const {data} = await axios.get(
 			'https://raw.githubusercontent.com/kb2ateam/kb2abot/main/package.json'
 		);
-		console.log();
 		if (data.version != version) {
-			console.newLogger.debug(
-				`Da co phien ban moi: ${data.version}, phien ban hien tai: ${version}. Su dung npm run update de update kb2abot!`
+			const {data: info} = await axios.get(
+				'https://api.github.com/repos/kb2ateam/kb2abot/git/refs/heads/main'
 			);
+			const {data: commit} = await axios.get(info.object.url);
+			console.log();
+			console.newLogger.debug(
+				`Da co phien ban moi: ${data.version}, phien ban hien tai: ${version}, go "npm run update" de cap nhat!`
+			);
+			console.newLogger.debug(`Noi dung update: ${commit.message}`);
 		}
 	}
 };
