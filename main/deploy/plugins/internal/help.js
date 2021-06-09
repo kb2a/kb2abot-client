@@ -64,9 +64,7 @@ module.exports = {
 				reply(replyMsg);
 			}
 		} else {
-			let replyMsg = `Hiện tại có tổng ${
-				kb2abot.pluginManager.getAllCommands().length
-			} câu lệnh!\n\n`;
+			let replyMsg = '';
 			for (let index = 0; index < kb2abot.pluginManager.items.length; index++) {
 				const command = kb2abot.pluginManager.items[index];
 				const childKeywords = [];
@@ -80,9 +78,12 @@ module.exports = {
 						command.name
 					}): ${childKeywords.join(', ')}\n`;
 			}
-			replyMsg += `\nNhớ ${prefix}help <tên câu lệnh> để xem chi tiết và hướng dẫn sử dụng lệnh nhé!\n`;
-			replyMsg +=
-				'Lưu ý: Trong vài help có bộ kí tự <,>,[,] ta không cần ghi vào và "[]" nghĩa là không bắt buộc.';
+			replyMsg += `\n[🔎] Hiện tại có tổng ${
+				kb2abot.pluginManager.getAllCommands().length
+			} câu lệnh!\n`;
+			replyMsg += `\n---------\n\n[❕] ${prefix}help <tên câu lệnh> để xem chi tiết và hướng dẫn sử dụng lệnh nhé!\n`;
+			// replyMsg += 'Lưu ý: Trong vài help có bộ kí tự <,>,[,] ta không cần ghi vào và "[]" nghĩa là không bắt buộc.';
+
 			reply(replyMsg);
 		}
 	}
