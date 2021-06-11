@@ -107,7 +107,7 @@ const fn = async function(err, message) {
 				args[0],
 				args[1] || message.threadID,
 				(err, messageInfo) => {
-					if (err) console.newLogger.error(err);
+					if (err) console.error(err);
 					try {
 						if (args[2]) args[2](err, messageInfo);
 					} catch (e) {

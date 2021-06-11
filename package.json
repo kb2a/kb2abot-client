@@ -1,13 +1,14 @@
 {
     "name": "kb2abot",
-    "version": "2.0.8",
+    "version": "2.0.9",
     "description": "An auto replying messages bot",
     "main": "main/index.js",
     "scripts": {
         "update": "node scripts/update",
         "start": "node main",
         "dev": "node --use_strict --async-stack-traces main dev",
-        "debug": "node --inspect-brk main dev"
+        "debug": "node --inspect-brk main dev",
+				"login": "node login"
     },
     "repository": {
         "type": "git",
