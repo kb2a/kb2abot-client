@@ -7,11 +7,31 @@ const getUsername = fblink => {
 		return /.com\/(.*?)$/.exec(fblink)[1];
 	}
 };
-const sendMessage = (...params) => {
-	return new Promise(resolve => {
-		fca.sendMessage(...params, resolve);
-	});
+
+const queueMessage = [];
+const handleMessage = () => {
+	if (queueMessage.length <= 0) return;
+	const [message, threadID, messageID, resolve] = queueMessage[0];
+	fca.sendMessage(
+		message,
+		threadID,
+		(error, messageInfo) => {
+			if (error) {
+				console.newLogger.error(JSON.stringify(error));
+			}
+			queueMessage.splice(0, 1);
+			if (queueMessage.length > 0)
+				setTimeout(handleMessage, kb2abot.config.INTERVAL.QUEUE_MESSAGE);
+			resolve({error, messageInfo});
+		},
+		messageID
+	);
 };
+const sendMessage = (message, threadID, messageID) =>
+	new Promise(resolve => {
+		queueMessage.push([message, threadID, messageID, resolve]);
+		if (queueMessage.length == 1) handleMessage(); // length change from 0 to 1, execute this
+	});
 const getThreadInfo = threadID => {
 	return new Promise((resolve, reject) => {
 		fca.getThreadInfo(threadID, (err, info) => {

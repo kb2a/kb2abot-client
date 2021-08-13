@@ -11,9 +11,10 @@ module.exports = {
 		UPDATE: path.join(__dirname, 'updates')
 	},
 	INTERVAL: {
-		SAVE_DATASTORE: 5000,
-		CHECK_UPDATE: 10 * 60000,
-		AUTO_ACCEPT_REQUEST: 10000
+		SAVE_DATASTORE: 5 * 1000,
+		CHECK_UPDATE: 3 * 60 * 60 * 1000,
+		AUTO_ACCEPT_REQUEST: 10 * 1000,
+		QUEUE_MESSAGE: 1000
 	},
 	PRETTY_DATASTORE: false, // enable may cause to its performance (adding tab characters to datastore)
 	SUPER_ADMINS: [
