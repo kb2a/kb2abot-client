@@ -4,7 +4,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const login = require('facebook-chat-api');
+const login = require('fca-unofficial');
 
 /**
  * Hàm tạo appState từ ATP cookie
@@ -79,7 +79,7 @@ const truncateMusics = () => {
  */
 const checkCredential = credential => {
 	return new Promise((resolve, reject) => {
-		login(credential, {logLevel: 'silent'}, (err, api) => {
+		login(credential, kb2abot.config.FCA_OPTIONS, (err, api) => {
 			if (err) {
 				return reject(new Error('Wrong/expired cookie!'));
 			}
@@ -93,7 +93,8 @@ const checkCredential = credential => {
 				resolve({
 					id: userID,
 					name: ret[userID].name,
-					appState: api.getAppState()
+					appState: api.getAppState(),
+					fca: api
 				});
 			});
 		});
