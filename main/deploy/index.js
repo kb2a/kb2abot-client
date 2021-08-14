@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const emoji = require('node-emoji');
 const minimist = require('minimist');
 
@@ -47,7 +48,9 @@ const deploy = async data => {
 		initLogger(emoji.emojify(`:robot_face: ${botName}`));
 		await kb2abot.pluginManager.loadAllPlugins();
 		let unofficialAppState;
-		const cookieText = fs.readFileSync(cookiePath).toString();
+		const cookieText = fs
+			.readFileSync(path.join(__dirname, '../../bots', cookiePath))
+			.toString();
 		const cookieType = getCookieType(cookieText);
 		kb2abot.cookie = {
 			type: cookieType,
@@ -65,6 +68,9 @@ const deploy = async data => {
 		case 'atp':
 			unofficialAppState = convertAtpToAppstate(cookieText);
 			break;
+		case 'appstate':
+			unofficialAppState = JSON.parse(cookieText);
+			break;
 		case -1:
 			console.newLogger.error(
 				`Cookie ${cookiePath} không hợp lệ, vui lòng kiểm tra lại!`
@@ -73,13 +79,19 @@ const deploy = async data => {
 			break;
 		}
 		try {
-			const {id, name, appState: officialAppState} = await checkCredential({
-				appState: unofficialAppState
-			});
+			const {id, name, fca, appState: officialAppState} = await checkCredential(
+				{
+					appState: unofficialAppState
+				}
+			);
+			fs.writeFileSync(
+				path.join(__dirname, '../../bots', cookiePath),
+				JSON.stringify(officialAppState)
+			);
 			kb2abot.id = id;
 			kb2abot.name = name;
 			kb2abot.account.id = id;
-			require('./kb2abot')(officialAppState);
+			require('./kb2abot')(fca);
 			// require kb2abot ở đây bởi vì nếu require sớm hơn thì global kb2abot.id
 			// chưa sẵn sàng cho kb2abot.js => error
 		} catch (e) {

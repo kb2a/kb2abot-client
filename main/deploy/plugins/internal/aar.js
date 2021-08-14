@@ -39,7 +39,10 @@ module.exports = {
 				const err = await sendMessage('KB2ABOT - CONNECTED', threadID);
 				if (!isSubscribed || err) await deleteThread(threadID);
 				else {
-					await sendMessage('/help để xem danh sách lệnh!', threadID);
+					await sendMessage(
+						`${kb2abot.config.DEFAULT_THREAD_PREFIX}help để xem danh sách lệnh!`,
+						threadID
+					);
 					console.newLogger.success('THREAD ' + threadID + ' CONNECTED!');
 				}
 			}

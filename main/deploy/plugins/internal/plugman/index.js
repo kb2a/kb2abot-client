@@ -1,12 +1,12 @@
 const {getParam, getInstructor} = kb2abot.helpers;
-const childs = ['reload', 'checkupdate'];
+const childs = ['reload', 'reloadgame'];
 
 module.exports = {
 	keywords: ['plugman'],
 
-	name: 'Công cụ plugin/game',
+	name: 'Quản lí plugin/game',
 
-	description: 'Reload các plugin hoặc game',
+	description: 'Công cụ quản lí plugins hoặc games',
 
 	guide: '',
 

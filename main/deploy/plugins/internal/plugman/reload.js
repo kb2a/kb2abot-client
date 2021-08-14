@@ -1,11 +1,12 @@
-const {getParam} = kb2abot.helpers;
 const decache = require('decache');
+const {getParam} = kb2abot.helpers;
+
 module.exports = {
 	keywords: ['reload'],
 
-	name: 'Reload command/game',
+	name: 'Reload command',
 
-	description: 'Reload command(lệnh) hoặc game',
+	description: 'Reload command(lệnh)',
 
 	guide: '<keyword>',
 
@@ -38,7 +39,7 @@ module.exports = {
 		const found = kb2abot.pluginManager.findCommandsByKeyword(keyword);
 		if (found.length == 0) {
 			reply(
-				`Không tìm thấy lệnh: "${keyword}"\n Vui lòng xem danh sách lệnh ở help!`
+				`Không tìm thấy lệnh nào có từ khóa: "${keyword}"\n Vui lòng xem danh sách lệnh ở ${kb2abot.config.DEFAULT_THREAD_PREFIX}help!`
 			);
 		}
 		if (found.length == 1) {
@@ -53,7 +54,7 @@ module.exports = {
 				for (const prop in command) {
 					if (newCommand[prop] === undefined) delete command[prop];
 				}
-				reply(`Đã reload "${command.keywords[0]}"`);
+				reply(`Đã reload lệnh "${command.keywords[0]}"`);
 			} catch (e) {
 				console.newLogger.error(e.stack);
 			}
@@ -61,7 +62,11 @@ module.exports = {
 		if (found.length > 1) {
 			let replyMsg = `Có ${found.length} lệnh: \n`;
 			for (const f of found) {
-				replyMsg += genHelp(prefix, f) + '\n\n';
+				replyMsg +=
+					kb2abot.plugins.help.genHelp(
+						kb2abot.config.DEFAULT_THREAD_PREFIX,
+						f
+					) + '\n\n';
 			}
 			reply(replyMsg);
 		}

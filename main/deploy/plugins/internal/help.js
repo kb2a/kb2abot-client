@@ -86,5 +86,6 @@ module.exports = {
 
 			reply(replyMsg);
 		}
-	}
+	},
+	genHelp
 };

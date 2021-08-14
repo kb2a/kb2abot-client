@@ -1,4 +1,3 @@
-const login = require('facebook-chat-api');
 const stringSimilarity = require('string-similarity');
 
 try {
@@ -97,28 +96,12 @@ const fn = async function(err, message) {
 	if (!message || !message.threadID || !message.body) return;
 	message.body = message.body.trim();
 
-	const reply = (...args) => {
-		return new Promise(resolve => {
-			// 0: Message Object
-			// 1: ID thread
-			// 2: callback
-			// 3: reply ID
-			fca.sendMessage(
-				args[0],
-				args[1] || message.threadID,
-				(err, messageInfo) => {
-					if (err) console.error(err);
-					try {
-						if (args[2]) args[2](err, messageInfo);
-					} catch (e) {
-						console.newLogger.error(e.stack);
-					}
-					resolve({err, messageInfo});
-				},
-				args[3] || message.messageID
-			);
-		});
-	};
+	const reply = (...args) =>
+		kb2abot.helpers.fca.sendMessage(
+			args[0],
+			args[1] || message.threadID,
+			args[2] || message.messageID
+		);
 
 	const thread = kb2abot.account.addThread(message.threadID);
 
@@ -234,21 +217,15 @@ const fn = async function(err, message) {
 	}
 };
 
-module.exports = appState => {
-	login({appState}, kb2abot.config.FCA_OPTIONS, async (err, fca) => {
-		if (err) {
-			console.log(err);
-			process.exit();
+module.exports = async fca => {
+	globalThis.fca = fca; // fca will become global
+	for (const command of kb2abot.pluginManager.getAllCommands()) {
+		try {
+			await command.onLoad();
+		} catch (e) {
+			console.newLogger.error('onLoad -> ' + e.stack);
 		}
-		globalThis.fca = fca; // fca will become global
-		for (const command of kb2abot.pluginManager.getAllCommands()) {
-			try {
-				await command.onLoad();
-			} catch (e) {
-				console.newLogger.error('onLoad -> ' + e.stack);
-			}
-		}
-		fca.listenMqtt(fn);
-		console.newLogger.success(`${kb2abot.name} (${kb2abot.id}) UP !`);
-	});
+	}
+	fca.listenMqtt(fn);
+	console.newLogger.success(`${kb2abot.name} (${kb2abot.id}) UP !`);
 };

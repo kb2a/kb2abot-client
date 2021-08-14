@@ -37,7 +37,8 @@ if (filename.length == 0) {
 			timeout: 0,
 			waitUntil: ['load']
 		});
-		if (response?.url() == 'https://www.facebook.com/') {
+		if (!response) continue;
+		if (response.url() == 'https://www.facebook.com/') {
 			const cookies = await page.cookies(response.url());
 			fs.writeFileSync(
 				path.join(__dirname, 'bots', `${filename}.json`),

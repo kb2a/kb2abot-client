@@ -56,9 +56,6 @@ module.exports = {
 					param: gameParam,
 					isGroup: message.isGroup
 				});
-				reply(
-					`Đã khởi tạo game ${gameName} với param "${gameParam}" thành công!`
-				);
 			} catch (e) {
 				reply(`Không thể tạo game ${gameName}\nGặp lỗi: ${e.message}`);
 			}
