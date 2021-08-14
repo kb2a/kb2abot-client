@@ -49,7 +49,7 @@ const deploy = async data => {
 		await kb2abot.pluginManager.loadAllPlugins();
 		let unofficialAppState;
 		const cookieText = fs
-			.readFileSync(path.join(__dirname, '../../bots', cookiePath))
+			.readFileSync(path.resolve(__dirname, '../../bots', cookiePath))
 			.toString();
 		const cookieType = getCookieType(cookieText);
 		kb2abot.cookie = {
@@ -85,7 +85,7 @@ const deploy = async data => {
 				}
 			);
 			fs.writeFileSync(
-				path.join(__dirname, '../../bots', cookiePath),
+				path.resolve(__dirname, '../../bots', cookiePath),
 				JSON.stringify(officialAppState)
 			);
 			kb2abot.id = id;
