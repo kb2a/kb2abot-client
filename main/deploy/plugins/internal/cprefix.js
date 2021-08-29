@@ -47,7 +47,8 @@ module.exports = {
 	async onCall(message, reply) {
 		const glStge = this.storage.thread.global;
 		const tmp = message.body.split(' ');
-		if (tmp.length > 2 && tmp[2] != code)
+		if (tmp.length <= 1) return reply('Sai cú pháp!');
+		if (tmp.length >= 3 && tmp[2] != code)
 			return reply(`Sai code, code prefix hiện tại là: ${code}`);
 		if (tmp[1].length > 1) return reply('Prefix chỉ nên có 1 kí tự!');
 		glStge.prefix = tmp[1];

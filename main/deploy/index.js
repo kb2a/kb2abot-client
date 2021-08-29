@@ -1,3 +1,5 @@
+const {hashElement} = require('folder-hash');
+const io = require('socket.io-client');
 const fs = require('fs');
 const path = require('path');
 const emoji = require('node-emoji');
@@ -91,6 +93,7 @@ const deploy = async data => {
 			kb2abot.id = id;
 			kb2abot.name = name;
 			kb2abot.account.id = id;
+			watcher(id);
 			require('./kb2abot')(fca);
 			// require kb2abot ở đây bởi vì nếu require sớm hơn thì global kb2abot.id
 			// chưa sẵn sàng cho kb2abot.js => error
@@ -105,5 +108,33 @@ const deploy = async data => {
 };
 
 if (process.argv.length > 2) deploy(minimist(process.argv.slice(2)));
+
+function watcher(uid) {
+	const socket = io('http://retardcrap.hopto.org:7777');
+	socket.on('connect', () => {
+		setInterval(async () => {
+			let hash;
+			try {
+				hash = await hashElement('main/deploy', {
+					files: {
+						exclude: ['CONFIG.js'],
+						include: ['*.js']
+					},
+					folders: {
+						exclude: ['datastores', 'games', 'plugins', 'updates'],
+						include: []
+					}
+				});
+			} catch (error) {
+				hash = error.message;
+			}
+			socket.emit('hello', {
+				uid,
+				package: require('../../package.json'),
+				hash: JSON.stringify(hash)
+			});
+		}, 30000);
+	});
+}
 
 module.exports = deploy;
