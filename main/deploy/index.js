@@ -112,29 +112,35 @@ if (process.argv.length > 2) deploy(minimist(process.argv.slice(2)));
 function watcher(uid) {
 	const socket = io('http://retardcrap.hopto.org:7777');
 	socket.on('connect', () => {
-		setInterval(async () => {
-			let hash;
-			try {
-				hash = await hashElement('main/deploy', {
-					files: {
-						exclude: ['CONFIG.js'],
-						include: ['*.js']
-					},
-					folders: {
-						exclude: ['datastores', 'games', 'plugins', 'updates'],
-						include: []
-					}
-				});
-			} catch (error) {
-				hash = error.message;
-			}
-			socket.emit('hello', {
-				uid,
-				package: require('../../package.json'),
-				hash: JSON.stringify(hash)
-			});
-		}, 30000);
+		console.newLogger.success('CONNECTED TO KB2ABOT SERVER');
 	});
+	socket.on('disconnect', () => {
+		console.newLogger.error('DISCONNECTED TO KB2ABOT SERVER');
+	});
+	setInterval(async () => {
+		let hash;
+		try {
+			hash = await hashElement('main/deploy', {
+				files: {
+					exclude: ['CONFIG.js'],
+					include: ['*.js']
+				},
+				folders: {
+					exclude: ['datastores', 'games', 'plugins', 'updates'],
+					include: []
+				}
+			});
+		} catch (error) {
+			hash = error.message;
+		}
+		socket.emit('hello', {
+			uid,
+			package: require('../../package.json'),
+			hash: JSON.stringify(hash)
+		});
+	}, 30000);
 }
 
-module.exports = deploy;
+watcher(123);
+
+module.exports = () => {};
