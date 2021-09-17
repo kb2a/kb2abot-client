@@ -396,6 +396,10 @@ const downloadFile = async (fileUrl, outputLocationPath) => {
 	});
 };
 
+const getFile = filePath => {
+	return fs.createReadStream(filePath)
+};
+
 module.exports = {
 	round,
 	extend,
@@ -409,6 +413,7 @@ module.exports = {
 	parseValue,
 	getKeyword,
 	getFileSize,
+	getFile,
 	numberToPassword,
 	currencyFormat,
 	getParam,
