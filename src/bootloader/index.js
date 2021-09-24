@@ -1,0 +1,5 @@
+export {default as checkInternet} from "./checkInternet.js"
+export {default as checkNode} from "./checkNode.js"
+export {default as fakeHttp} from "./fakeHttp.js"
+export {default as update} from "./update.js"
+export {default as updateCli} from "./updateCli.js"

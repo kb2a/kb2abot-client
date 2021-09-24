@@ -1,3 +1,3 @@
-echo "Dang cai dat node_modules"
+echo "Installing node_modules"
 npm install
-echo "Da xong!"
+echo "Done!"

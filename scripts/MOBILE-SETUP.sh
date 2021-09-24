@@ -1,12 +1,10 @@
-echo "Bash setup cho mobile setup (by khoakomlem)"
-echo "Cai dat cURL . . ."
+echo "Installing cURL"
 apt install -y curl
-echo "Cai dat nodejs, npm, git . . ."
-curl -sL https://deb.nodesource.com/setup_15.x | bash -
+echo "Installing nodejs 16, npm, git"
+curl -sL https://deb.nodesource.com/setup_16.x | bash -
 apt install -y nodejs
 apt install -y git
-echo "Cai dat kb2abot-cli . . ."
-npm install kb2abot-cli@latest -g
-kb2abot-cli clone
-echo "Da tai xong!"
-. ./kb2abot/scripts/INSTALL.sh
+echo "Install susbot-cli globally"
+npm install susbot-cli@latest -g
+susbot-cli clone
+echo "Done, please run INSTALL.sh"
