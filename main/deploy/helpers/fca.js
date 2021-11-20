@@ -1,4 +1,5 @@
 const axios = require('axios');
+const fetch = require('node-fetch')
 
 const getUsername = fblink => {
 	try {
@@ -67,22 +68,22 @@ const getToken = async () => {
 	for (const e of appstate) {
 		stringifyCookie += e.toString().split(';')[0] + ';';
 	}
-	const {data} = await axios.get(
-		'https://m.facebook.com/composer/ocelot/async_loader/?publisher=feed',
-		{
+	const data = await (await fetch(
+		'https://business.facebook.com/business_locations', {
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded',
 				Referer: 'https://m.facebook.com/',
 				Host: 'm.facebook.com',
 				Origin: 'https://www.facebook.com',
-				'User-Agent':
-					'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/600.3.18 (KHTML, like Gecko) Version/8.0.3 Safari/600.3.18',
+				'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/600.3.18 (KHTML, like Gecko) Version/8.0.3 Safari/600.3.18',
 				Connection: 'keep-alive',
 				cookie: stringifyCookie
 			}
 		}
-	);
-	return /(?<=accessToken\\":\\")(.*?)(?=\\")/.exec(data)[1];
+	)).text()
+	const first = /LMBootstrapper(.*?){"__m":"LMBootstrapper"}/.exec(data)[1]
+	const second = /"],\["(.*?)","/.exec(first)[1]
+	return second
 };
 module.exports = {
 	getUsername,
