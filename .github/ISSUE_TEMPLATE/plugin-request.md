@@ -9,6 +9,4 @@ assignees: ''
 
 - Plugin name: 
 - How's it work: 
-- Why we should adding it:
-
-Thanks.
+- Why we should add it:
