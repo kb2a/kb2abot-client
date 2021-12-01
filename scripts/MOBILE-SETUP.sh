@@ -6,7 +6,7 @@ curl -sL https://deb.nodesource.com/setup_15.x | bash -
 apt install -y nodejs
 apt install -y git
 echo "Cai dat kb2abot-cli . . ."
-npm install kb2abot-cli@latest -g
+npm i kb2abot-cli@latest -g
 kb2abot-cli clone
 echo "Da tai xong!"
 . ./kb2abot/scripts/INSTALL.sh

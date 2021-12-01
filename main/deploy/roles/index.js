@@ -1,7 +1,6 @@
-const Account = require('./Account');
-const Thread = require('./Thread');
-
+const Account = require('./Account')
+const Thread = require('./Thread')
 module.exports = {
-	Account,
-	Thread
-};
+    Account,
+    Thread,
+}

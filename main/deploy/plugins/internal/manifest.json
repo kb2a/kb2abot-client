@@ -1,15 +1,15 @@
 {
-  "manifest_version": 1,
-  "name": "INTERNAL ⭐",
-  "version": "1.0",
-  "authorDetails": {
-    "name": "khoakomlem",
-    "contact": "fb.com/khoakomlem"
-  },
-  "entry": "index.js",
-  "disable": false,
-  "update": {
-    "manifest": "",
-    "plugin": ""
-  }
+    "manifest_version": 1,
+    "name": "INTERNAL ⭐",
+    "version": "1.0",
+    "authorDetails": {
+        "name": "khoakomlem",
+        "contact": "fb.com/khoakomlem"
+    },
+    "entry": "index.js",
+    "disable": false,
+    "update": {
+        "manifest": "",
+        "plugin": ""
+    }
 }
