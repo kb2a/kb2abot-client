@@ -63,9 +63,8 @@ const deleteThread = (threadID) => {
 const getToken = async () => {
     let stringifyCookie
     const appstate = fca.getAppState()
-    for (const e of appstate) {
+    for (const e of appstate)
         stringifyCookie += e.toString().split(';')[0] + ';'
-    }
     const data = await (
         await fetch('https://business.facebook.com/business_locations', {
             headers: {

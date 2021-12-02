@@ -52,9 +52,7 @@ module.exports = class GameManager extends Manager {
     }
     getList() {
         const list = []
-        for (const name in this.games) {
-            list.push(name)
-        }
+        for (const name in this.games) list.push(name)
         return list
     }
 }

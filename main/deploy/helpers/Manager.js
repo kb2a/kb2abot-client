@@ -21,9 +21,7 @@ module.exports = class Manager {
         )
         const indexFind = this.items.findIndex((item) => {
             for (const property in query) {
-                if (query[property] !== item[property]) {
-                    return false
-                }
+                if (query[property] !== item[property]) return false
             }
             return true
         })
@@ -32,7 +30,7 @@ module.exports = class Manager {
     }
     add(item, findQuery = {}) {
         // addingCondition is a condition for checking duplicate of the item before adding
-        if (Object.keys(findQuery).length !== 0) {
+        if (Object.keys(findQuery).length) {
             const index = this.find(findQuery, {
                 returnIndex: true,
             })

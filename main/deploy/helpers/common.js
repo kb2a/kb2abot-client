@@ -117,12 +117,8 @@ const extend = (obj, deep) => {
                     if (!obj[prop] || obj[prop].constructor === Object) {
                         obj[prop] = obj[prop] || {}
                         extend(obj[prop], deepClone, source[prop])
-                    } else {
-                        obj[prop] = source[prop]
-                    }
-                } else {
-                    obj[prop] = source[prop]
-                }
+                    } else obj[prop] = source[prop]
+                } else obj[prop] = source[prop]
             }
         }
     }
@@ -263,9 +259,8 @@ const subname = (text) => {
 const numberToPassword = (number) => {
     const numbers = ['z', 'o', 't', 'h', 'f', 'i', 's', 'e', 'g', 'n']
     let str = number.toString()
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i++)
         str = str.replace(new RegExp(i, 'g'), numbers[i])
-    }
     return str
 }
 /**
@@ -336,13 +331,12 @@ const shuffle = (arr) => {
 }
 const getInstructor = (title, commands) => {
     let out = `===${title}===\nDanh sách lệnh:\n`
-    for (let i = 0; i < commands.length; i++) {
+    for (let i = 0; i < commands.length; i++)
         out += `${i + 1}. ${commands[i]}\n`
-    }
     return out
 }
 const validURL = (str) => {
-    var pattern = new RegExp(
+    const pattern = new RegExp(
         '^(https?:\\/\\/)?' + // protocol
             '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
             '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address

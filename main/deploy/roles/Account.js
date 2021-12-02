@@ -39,21 +39,18 @@ module.exports = class Account extends kb2abot.helpers.Manager {
                 // neu ko co file thi phai save truoc
                 this.save()
                 this.load()
-            } else {
-                throw new Error(`DATASTORE ${kb2abot.id} khong hop le!`)
-            }
+            } else throw new Error(`DATASTORE ${kb2abot.id} khong hop le!`)
         }
     }
     save() {
         try {
             const accountStorage = { ...this.storage }
             accountStorage.__threads__ = []
-            for (const thread of this.items) {
+            for (const thread of this.items)
                 accountStorage.__threads__.push({
                     __id__: thread.id,
                     ...thread.storage,
                 })
-            }
             const save = safeStringify(
                 accountStorage,
                 (key, value) => (value === '[Circular]' ? undefined : value),

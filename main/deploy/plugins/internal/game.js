@@ -48,12 +48,11 @@ module.exports = {
             } catch {
                 reply(`Không thể tạo game ${gameName}`)
             }
-        } else {
+        } else
             reply(
                 `Không tìm thấy game nào có tên ${gameName}!\n\nList các game:\n- ${gameManager
                     .getList()
                     .join('\n- ')}`
             )
-        }
     },
 }

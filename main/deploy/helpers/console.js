@@ -13,16 +13,12 @@ class Logger {
     getPrefix(tags) {
         const newTags = [this.prefixTag]
         if (Array.isArray(tags)) {
-            for (const tag of tags) {
-                newTags.push(tag)
-            }
+            for (const tag of tags) newTags.push(tag)
         } else {
             if (tags) newTags.push(tags)
         }
         let prefix = chalk.white.bgBlack(`[${newTags[0]}]`) + ' '
-        for (let i = 1; i < newTags.length; i++) {
-            prefix += `[${newTags[i]}] `
-        }
+        for (let i = 1; i < newTags.length; i++) prefix += `[${newTags[i]}] `
         return prefix
     }
     debug(msg, tags) {

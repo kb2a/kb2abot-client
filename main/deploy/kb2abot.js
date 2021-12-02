@@ -140,11 +140,10 @@ const fn = async function (err, message) {
             } else {
                 const found =
                     kb2abot.pluginManager.findCommandsByKeyword(keyword)
-                if (found.length === 0) {
+                if (!found.length) {
                     const allKeywords = []
-                    for (const cmd of kb2abot.pluginManager.getAllCommands()) {
+                    for (const cmd of kb2abot.pluginManager.getAllCommands())
                         allKeywords.push(...cmd.keywords)
-                    }
                     const { ratings } = stringSimilarity.findBestMatch(
                         keyword,
                         allKeywords
@@ -184,13 +183,12 @@ const fn = async function (err, message) {
                     )
                 }
             }
-        } else {
+        } else
             reply(
                 `Sai cú pháp!\n${thread.storage.prefix}<lệnh> <nội dung truyền vào lệnh>`
             )
-        }
     }
-    const isCommand = message.body.indexOf(thread.storage.prefix) === 0
+    const isCommand = !message.body.indexOf(thread.storage.prefix)
     for (const command of kb2abot.pluginManager.getAllCommands()) {
         if (
             command.hookType === '*' ||

@@ -26,11 +26,10 @@ module.exports = {
         const keyword = getParam(message.body)
         if (!keyword) return reply('Vui lòng nhập keyword!')
         const found = kb2abot.pluginManager.findCommandsByKeyword(keyword)
-        if (found.length === 0) {
+        if (!found.length)
             reply(
                 `Không tìm thấy lệnh nào có từ khóa: "${keyword}"\n Vui lòng xem danh sách lệnh ở ${kb2abot.config.DEFAULT_THREAD_PREFIX}help!`
             )
-        }
         if (found.length === 1) {
             const command = found[0].command
             try {
@@ -50,13 +49,12 @@ module.exports = {
         }
         if (found.length > 1) {
             let replyMsg = `Có ${found.length} lệnh: \n`
-            for (const f of found) {
+            for (const f of found)
                 replyMsg +=
                     kb2abot.plugins.help.genHelp(
                         kb2abot.config.DEFAULT_THREAD_PREFIX,
                         f
                     ) + '\n\n'
-            }
             reply(replyMsg)
         }
     },

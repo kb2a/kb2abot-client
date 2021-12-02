@@ -37,19 +37,16 @@ module.exports = {
         const keyword = getParam(message.body)
         if (keyword) {
             const found = kb2abot.pluginManager.findCommandsByKeyword(keyword)
-            if (found.length === 0) {
+            if (!found.length)
                 reply(
                     `Không tìm thấy lệnh: "${keyword}"\n Vui lòng xem danh sách lệnh ở ${prefix}help!`
                 )
-            }
             if (found.length === 1) {
                 reply(genHelp(prefix, found[0]))
             }
             if (found.length > 1) {
                 let replyMsg = `Có ${found.length} lệnh: \n`
-                for (const f of found) {
-                    replyMsg += genHelp(prefix, f) + '\n\n'
-                }
+                for (const f of found) replyMsg += genHelp(prefix, f) + '\n\n'
                 reply(replyMsg)
             }
         } else {
@@ -61,9 +58,8 @@ module.exports = {
             ) {
                 const command = kb2abot.pluginManager.items[index]
                 const childKeywords = []
-                for (const child of command._.childs) {
+                for (const child of command._.childs)
                     childKeywords.push(child.keywords[0])
-                }
                 if (command.keywords[0] === 'internal')
                     replyMsg =
                         `🔳 𝐈𝐍𝐓𝐄𝐑𝐍𝐀𝐋: ${childKeywords.join(', ')}\n` + replyMsg

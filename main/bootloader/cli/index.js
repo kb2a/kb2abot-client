@@ -1,7 +1,7 @@
 const readline = require('readline')
 const showStatus = require('./showStatus')
 module.exports = {
-    des: 'Cai dat cli',
+    des: 'Cai dat CLI',
     fn: async () => {
         const rl = readline.createInterface({
             input: process.stdin,

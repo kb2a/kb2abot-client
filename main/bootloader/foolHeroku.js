@@ -1,7 +1,7 @@
 const http = require('http')
 module.exports = {
     des: 'Tao server HTTP gia cho Heroku',
-    fn: async () => {
+    fn: () => {
         const server = http.createServer((req, res) => {
             res.writeHead(200, 'OK', {
                 'Content-Type': 'text/plain',
@@ -9,6 +9,6 @@ module.exports = {
             res.write('This is just a dummy HTTP server to fool Heroku.')
             res.end()
         })
-        await server.listen(process.env.PORT || 0, '0.0.0.0')
+        server.listen(process.env.PORT || 0, '0.0.0.0')
     },
 }

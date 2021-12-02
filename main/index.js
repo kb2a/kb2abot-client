@@ -1,6 +1,6 @@
 const fs = require('fs')
-const ora = require('ora')
 const path = require('path')
+const ora = require('ora')
 const cluster = require('cluster')
 const emoji = require('node-emoji')
 const { subname } = require('./deploy/helpers/common')
@@ -49,12 +49,12 @@ for (const key in paths) {
 const botsDir = path.join(__dirname, '../bots')
 const deployPath = path.join(__dirname, './deploy/index.js')
 cluster.on('exit', (worker, code, signal) => {
-    if (signal) {
+    if (signal)
         console.newLogger.warn(
             `Bot PID: ${worker.process.pid} da dung, SIGNAL: ${signal}`
         )
-    } else {
-        const funcKey = code === 0 ? 'warn' : 'error'
+    else {
+        const funcKey = !code ? 'warn' : 'error'
         console.newLogger[funcKey](
             `Bot PID: ${worker.process.pid} da dung, ERROR_CODE: ${code}`
         )
@@ -105,8 +105,7 @@ const bootloader = async () => {
     const isDev = process.argv.slice(2)[0] === 'dev'
     tasks.push(checkInternet)
     if (!isDev) tasks.push(...[update, updateCli])
-    tasks.push(foolHeroku)
-    tasks.push(cli)
+    tasks.push(...[foolHeroku, cli])
     for (const task of tasks) {
         const spinner = ora(task.des).start()
         try {
@@ -125,9 +124,8 @@ const bootloader = async () => {
                 (name.includes('.txt') && name !== 'README.txt') ||
                 name.includes('.json')
         ) // array include extension *.txt
-    if (botList.length === 0) {
+    if (!botList.length)
         console.newLogger.error('Ban chua dat cookie vao folder /bots')
-    }
     setInterval(() => {
         const memoryUsage = memoryUsages.reduce((a, b) => a + b)
         setTerminalTitle(

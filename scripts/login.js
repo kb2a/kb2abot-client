@@ -6,11 +6,11 @@ try {
     console.log('Dang cai dat dependency "puppeteer" . . .')
     execSync('npm i puppeteer')
 }
+const fs = require('fs')
 const path = require('path')
 const puppeteer = require('puppeteer')
-const fs = require('fs')
 const filename = process.argv.slice(2).join(' ')
-if (filename.length === 0) {
+if (!filename.length) {
     console.log('Ban chua nhap ten file! \n> node login <ten file>')
     process.exit()
 }
@@ -27,7 +27,7 @@ if (filename.length === 0) {
     await page.goto('https://facebook.com/login', {
         waitUntil: ['load', 'networkidle2'],
     })
-    while (1) {
+    while (true) {
         const response = await page.waitForNavigation({
             timeout: 0,
             waitUntil: ['load'],

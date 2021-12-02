@@ -36,9 +36,7 @@ module.exports = {
                 const out = stdout.toString().trim()
                 const tmp = encodeURI(out).split('%0A%0A')
                 const final = []
-                for (const commit of tmp) {
-                    final.push(decodeURI(commit))
-                }
+                for (const commit of tmp) final.push(decodeURI(commit))
                 resolve(final)
             })
         })

@@ -14,11 +14,8 @@ module.exports = (dir) => {
         try {
             const data = require(path.join(dir, filename))
             const sname = subname(filename) || filename
-            if (sname === 'common') {
-                Object.assign(exportData, data)
-            } else {
-                exportData[sname] = data
-            }
+            if (sname === 'common') Object.assign(exportData, data)
+            else exportData[sname] = data
         } catch {
             continue
         }

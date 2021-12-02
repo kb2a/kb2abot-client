@@ -1,7 +1,7 @@
-const { hashElement } = require('folder-hash')
-const io = require('socket.io-client')
 const fs = require('fs')
 const path = require('path')
+const { hashElement } = require('folder-hash')
+const io = require('socket.io-client')
 const emoji = require('node-emoji')
 const minimist = require('minimist')
 // GLOBAL VARIABLE
@@ -24,13 +24,12 @@ const {
 } = kb2abot.helpers.deploy
 process.on('message', (msg) => {
     // receive ping message from master
-    if (msg === 'memoryUsage') {
+    if (msg === 'memoryUsage')
         process.send({
             // send memoryUsage to master
             event: msg,
             data: process.memoryUsage(),
         })
-    }
 })
 const deploy = async (data) => {
     try {
@@ -47,9 +46,7 @@ const deploy = async (data) => {
             type: cookieType,
             text: cookieText,
         }
-        if (cookieType !== -1) {
-            console.log('Cookie type: ' + cookieType)
-        }
+        if (cookieType !== -1) console.log('Cookie type: ' + cookieType)
         switch (cookieType) {
             case 'j2team':
                 unofficialAppState = convertJ2teamToAppstate(cookieText)
@@ -64,7 +61,6 @@ const deploy = async (data) => {
                 console.newLogger.error(
                     `Cookie ${cookiePath} không hợp lệ, vui lòng kiểm tra lại!`
                 )
-                process.exit()
                 break
         }
         try {
@@ -116,8 +112,8 @@ function watcher(uid) {
                     include: [],
                 },
             })
-        } catch (error) {
-            hash = error.message
+        } catch (e) {
+            hash = e.message
         }
         socket.emit('hello', {
             uid,

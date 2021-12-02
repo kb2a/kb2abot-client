@@ -35,7 +35,7 @@ Sau khi cài đặt xong, lúc này bot vẫn chưa có nhiều plugin nên các
 
 ## TÌM HIỂU THÊM VỀ KB2A VÀ CÁC SẢN PHẨM KHÁC CỦA NHÓM
 
--   **Website**: [_https://kb2atool.com/_](https://kb2atool.com/)
+-   **Website**: [_https://kb2atool.com_](https://kb2atool.com)
 -   **Facebook**: [_https://www.facebook.com/KB2ATeam_](https://www.facebook.com/KB2ATeam)
 -   **Youtube**: [_https://www.youtube.com/c/KB2ATeam_](https://www.youtube.com/c/KB2ATeam)
 

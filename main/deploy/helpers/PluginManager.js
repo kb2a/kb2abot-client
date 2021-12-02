@@ -32,7 +32,7 @@ module.exports = class PluginManager extends Manager {
     }
     findCommandsByClasses(classes, store = this.items, index = 0) {
         const keywords = classes.split('.')
-        if (index === 0 && keywords[index] === 'kb2abot') index++
+        if (!index && keywords[index] === 'kb2abot') index++
         for (const cmd of store) {
             if (cmd.keywords.includes(keywords[index])) {
                 if (index < keywords.length - 1)
@@ -47,9 +47,8 @@ module.exports = class PluginManager extends Manager {
     }
     getAllCommands(store = this.items) {
         const out = [...store]
-        for (const command of store) {
+        for (const command of store)
             out.push(...this.getAllCommands(command._.childs))
-        }
         return out
     }
     async loadAllPlugins(plgDir = kb2abot.config.DIR.PLUGIN, silent = true) {
@@ -147,9 +146,7 @@ module.exports = class PluginManager extends Manager {
                             throw new Error(
                                 `Khong the tu dong cai dependencie(s): ${commaJoin}. He thong nhan thay ban dang o trong vong lap, vui long kiem tra lai file ${e.requireStack[0]}!`
                             )
-                    } else {
-                        checker.loopCount = 0
-                    }
+                    } else checker.loopCount = 0
                     const shellCommand = `npm i ${filteredModules.join(' ')}`
                     console.newLogger.debug(
                         `Dang tu dong cai cac dependencie(s): ${commaJoin}`
@@ -201,13 +198,12 @@ module.exports = class PluginManager extends Manager {
             },
             ...require(cmdPath),
         }
-        for (const childCmdPath of newCmd.childs) {
+        for (const childCmdPath of newCmd.childs)
             newCmd._.childs.push(
                 await this.loadCommand(
                     path.resolve(require.resolve(cmdPath), '..', childCmdPath)
                 )
             )
-        }
         return newCmd
     }
 }

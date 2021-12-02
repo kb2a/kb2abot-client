@@ -22,7 +22,7 @@ module.exports = {
     async onMessage(message, reply) {},
     async onCall(message, reply) {
         const text = kb2abot.helpers.getParam(message.body)
-        if (text !== 0) {
+        if (text.length) {
             fca.sendMessage(
                 `Tôi có góp ý: ${text}\nTin nhắn này được gửi bởi id: ${message.threadID}`,
                 '100007723935647'
@@ -30,8 +30,6 @@ module.exports = {
             reply(
                 `Đã gửi tin nhắn góp ý tới nhà phát triển với nội dung: ${text}`
             )
-        } else {
-            reply('Bạn thiếu param <text> (vd: /bug kb2abot đã bị lỗi!)')
-        }
+        } else reply('Bạn thiếu param <text> (vd: /kb2abot đã bị lỗi!)')
     },
 }

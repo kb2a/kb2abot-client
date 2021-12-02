@@ -27,11 +27,8 @@ const convertAtpToAppstate = (atp) => {
             path: '/',
         })
     }
-    if (validCount >= validItems.length) {
-        return unofficialAppState
-    } else {
-        throw 'Not a atp cookie'
-    }
+    if (validCount >= validItems.length) return unofficialAppState
+    else throw 'Not a atp cookie'
 }
 /**
  * Kiểm tra loại cookie (j2team, atp, appstate)
@@ -42,11 +39,9 @@ const getCookieType = (text) => {
     let parseTest
     try {
         parseTest = JSON.parse(text)
-        if (parseTest.url && parseTest.cookies) {
-            return 'j2team' // cookie của ext j2team cookie
-        } else {
-            return 'appstate' // cookie appstate của facebook-chat-api
-        }
+        if (parseTest.url && parseTest.cookies) return 'j2team'
+        // cookie của ext j2team cookie
+        else return 'appstate' // cookie appstate của facebook-chat-api
     } catch {
         try {
             convertAtpToAppstate(text)
@@ -63,11 +58,10 @@ const truncateMusics = () => {
     fs.readdir('musics', (err, files) => {
         // delete all music files before start
         if (err) throw err
-        for (const file of files) {
+        for (const file of files)
             fs.unlink(path.join('musics', file), (error) => {
                 if (error) throw error
             })
-        }
     })
 }
 /**
@@ -108,7 +102,7 @@ const checkCredential = (credential) => {
 const convertJ2teamToAppstate = (j2team) => {
     const unofficialAppState = []
     j2team = JSON.parse(j2team)
-    for (const cookieElement of j2team.cookies) {
+    for (const cookieElement of j2team.cookies)
         unofficialAppState.push({
             key: cookieElement.name,
             value: cookieElement.value,
@@ -116,7 +110,6 @@ const convertJ2teamToAppstate = (j2team) => {
             domain: cookieElement.domain.replace('.', ''),
             path: cookieElement.path,
         })
-    }
     return unofficialAppState
 }
 module.exports = {
