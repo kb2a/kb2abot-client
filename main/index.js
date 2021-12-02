@@ -95,17 +95,17 @@ const bootloader = async () => {
         '\n' +
             '██  ███ █  █ ███\n' +
             '█ █ █ █ ██ █ █_\n' +
-            `█ █ █ █ █ ██ █    ${latency}ms!\n` +
-            '██  ███ █  █ ███\n'
+            `█ █ █ █ █ ██ █\n` +
+            '██  ███ █  █ ███\n' +
+            `Thoi gian setup: ${latency}ms!`
     )
-    const { cli, checkInternet, update, updateCli, foolHeroku, checkNode } =
+    const { cli, checkInternet, update, updateCli, foolHeroku } =
         kb2abot.bootloader
     const tasks = []
     const isDev = process.argv.slice(2)[0] === 'dev'
     tasks.push(checkInternet)
     if (!isDev) tasks.push(...[update, updateCli])
     tasks.push(foolHeroku)
-    tasks.push(checkNode)
     tasks.push(cli)
     for (const task of tasks) {
         const spinner = ora(task.des).start()

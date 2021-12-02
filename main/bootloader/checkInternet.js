@@ -1,6 +1,6 @@
 const checkInternetConnected = require('check-internet-connected')
 module.exports = {
-    des: 'Kiem tra ket noi internet',
+    des: 'Kiem tra ket noi Internet',
     fn: async () => {
         const config = {
             timeout: 5000, //timeout connecting to each server, each try
@@ -10,7 +10,7 @@ module.exports = {
         try {
             await checkInternetConnected(config)
         } catch {
-            throw new Error('Vui long kiem tra lai ket noi internet!')
+            throw new Error('Vui long kiem tra lai ket noi Internet!')
         }
     },
 }

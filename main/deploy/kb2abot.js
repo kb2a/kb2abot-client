@@ -216,5 +216,5 @@ module.exports = async (fca) => {
         }
     }
     fca.listenMqtt(fn)
-    console.newLogger.success(`${kb2abot.name} (${kb2abot.id}) UP !`)
+    console.newLogger.success(`User ${kb2abot.name} (id: ${kb2abot.id}) up!`)
 }

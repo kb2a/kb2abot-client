@@ -1,6 +1,6 @@
 const http = require('http')
 module.exports = {
-    des: 'Tao server http gia cho heroku',
+    des: 'Tao server HTTP gia cho Heroku',
     fn: async () => {
         const server = http.createServer((req, res) => {
             res.writeHead(200, 'OK', {

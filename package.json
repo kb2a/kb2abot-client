@@ -15,7 +15,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/kb2ateam/kb2abot.git"
+        "url": "https://github.com/kb2ateam/kb2abot"
     },
     "author": "khoakomlem",
     "license": "MIT",
@@ -38,8 +38,7 @@
         "node-fetch": "^2.6.6",
         "ora": "^5.4.1",
         "recursive-readdir": "^2.2.2",
-        "semver": "^7.3.5",
-        "simple-git": "^2.47.0",
+        "simple-git": "^2.48.0",
         "socket.io-client": "^4.4.0",
         "string-similarity": "^4.0.4",
         "tiktok-scraper": "^1.4.36",

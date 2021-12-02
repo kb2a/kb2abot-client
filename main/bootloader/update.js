@@ -22,13 +22,15 @@ module.exports = {
                 }
                 return false
             }
-            if (!isNewerVersion(data.version.toString(), version.toString())) {
+            console.log()
+            if (!isNewerVersion(data.version.toString(), version.toString()))
                 console.newLogger.debug(
-                    `Da co phien ban moi: ${data.version}, phien ban hien tai: ${version}, go "npm run update" de cap nhat!`
+                    `Da co phien ban moi: ${data.version}, phien ban hien tai: ${version}\nNoi dung update: ${commit.message}`
                 )
-                console.newLogger.debug(`Noi dung update: ${commit.message}`)
-            } else
-                console.log(' Ban dang phat trien mot phien ban moi hon chang?')
+            else
+                console.newLogger.debug(
+                    'Ban dang phat trien mot phien ban moi hon chang?'
+                )
         }
     },
 }
