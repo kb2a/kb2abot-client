@@ -43,7 +43,7 @@
         "string-similarity": "^4.0.4",
         "tiktok-scraper": "^1.4.36",
         "uniqid": "^5.4.0",
-        "node-fetch": "^2.6.0",
+        "node-fetch": "^2.6.0"
     },
     "devDependencies": {
         "eslint": "^8.3.0",
