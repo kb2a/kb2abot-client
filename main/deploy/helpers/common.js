@@ -6,11 +6,10 @@
  * <code>const {asyncWait, round, extend} = kb2abot.helpers;</code>
  * @module COMMON
  */
-const fs = require('fs');
-const axios = require('axios');
-const minimist = require('minimist');
-const childProcess = require('child_process');
-
+const fs = require('fs')
+const axios = require('axios')
+const minimist = require('minimist')
+const childProcess = require('child_process')
 /**
  * Hàm dừng chương trình async
  * @async
@@ -21,13 +20,13 @@ const childProcess = require('child_process');
  * 	console.log("Ban co the gui lai duoc roi!");
  * });
  */
-const asyncWait = async time => {
-	return new Promise(resolve => {
-		setTimeout(() => {
-			resolve();
-		}, time);
-	});
-};
+const asyncWait = async (time) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve()
+        }, time)
+    })
+}
 /**
  * Hàm thực thi shell command
  * @async
@@ -37,13 +36,13 @@ const asyncWait = async time => {
  * console.log(await kb2abot.helpers.execShellCommand("echo Hello, world!"));
  * // "Hello, world!"
  */
-const execShellCommand = cmd => {
-	return new Promise(resolve => {
-		childProcess.exec(cmd, (error, stdout, stderr) =>
-			resolve(stdout ? stdout : stderr)
-		);
-	});
-};
+const execShellCommand = (cmd) => {
+    return new Promise((resolve) => {
+        childProcess.exec(cmd, (error, stdout, stderr) =>
+            resolve(stdout ? stdout : stderr)
+        )
+    })
+}
 /**
  * Ràng buộc 1 giá trị trong khoảng từ [left; right]
  * @param  {Number} value Giá trị vào
@@ -57,8 +56,8 @@ const execShellCommand = cmd => {
  * // 1
  */
 const constrain = (value, left, right) => {
-	return value >= left ? (value <= right ? value : right) : left;
-};
+    return value >= left ? (value <= right ? value : right) : left
+}
 /**
  * Làm tròn đến chữ số thập phân x
  * @param  {Number} number Số bạn muốn làm tròn
@@ -75,8 +74,8 @@ const constrain = (value, left, right) => {
  * // 3.14
  */
 const round = (number, amount) => {
-	return parseFloat(Number(number).toFixed(amount));
-};
+    return parseFloat(Number(number).toFixed(amount))
+}
 /**
  * Kế thừa các thuộc tính của 1 object sâu (khác với Object.assign)
  * @param  {Object} object Object kế thừa
@@ -98,37 +97,33 @@ const round = (number, amount) => {
  * }
  */
 const extend = (obj, deep) => {
-	let argsStart, deepClone;
-
-	if (typeof deep === 'boolean') {
-		argsStart = 2;
-		deepClone = deep;
-	} else {
-		argsStart = 1;
-		deepClone = true;
-	}
-
-	for (let i = argsStart; i < arguments.length; i++) {
-		const source = arguments[i];
-
-		if (source) {
-			for (let prop in source) {
-				if (deepClone && source[prop] && source[prop].constructor === Object) {
-					if (!obj[prop] || obj[prop].constructor === Object) {
-						obj[prop] = obj[prop] || {};
-						extend(obj[prop], deepClone, source[prop]);
-					} else {
-						obj[prop] = source[prop];
-					}
-				} else {
-					obj[prop] = source[prop];
-				}
-			}
-		}
-	}
-
-	return obj;
-};
+    let argsStart, deepClone
+    if (typeof deep === 'boolean') {
+        argsStart = 2
+        deepClone = deep
+    } else {
+        argsStart = 1
+        deepClone = true
+    }
+    for (let i = argsStart; i < arguments.length; i++) {
+        const source = arguments[i]
+        if (source) {
+            for (let prop in source) {
+                if (
+                    deepClone &&
+                    source[prop] &&
+                    source[prop].constructor === Object
+                ) {
+                    if (!obj[prop] || obj[prop].constructor === Object) {
+                        obj[prop] = obj[prop] || {}
+                        extend(obj[prop], deepClone, source[prop])
+                    } else obj[prop] = source[prop]
+                } else obj[prop] = source[prop]
+            }
+        }
+    }
+    return obj
+}
 /**
  * Dịch 1 đoạn văn bản thành các arguments (xài minimist để dịch)
  * @param  {String} text         Đoạn văn bản nào đó
@@ -138,23 +133,23 @@ const extend = (obj, deep) => {
  * //Xem ở đây: {@link https://www.npmjs.com/package/minimist} (nhớ CTRL + CLICK)
  */
 const parseArgs = (str, specialChar) => {
-	const quotes = ['"', '\'', '`'];
-	for (let quote of quotes) {
-		let tmp = str.split(quote);
-		for (let i = 1; i < tmp.length; i += 2) {
-			str = str.replace(
-				`${quote}${tmp[i]}`,
-				`${tmp[i].replace(/ /g, specialChar)}`
-			);
-			str = str.replace(quote, '');
-		}
-	}
-	const output = [];
-	str.split(' ').forEach(word => {
-		output.push(word.replace(new RegExp(specialChar, 'g'), ' '));
-	});
-	return minimist(output);
-};
+    const quotes = ['"', "'", '`']
+    for (let quote of quotes) {
+        let tmp = str.split(quote)
+        for (let i = 1; i < tmp.length; i += 2) {
+            str = str.replace(
+                `${quote}${tmp[i]}`,
+                `${tmp[i].replace(/ /g, specialChar)}`
+            )
+            str = str.replace(quote, '')
+        }
+    }
+    const output = []
+    str.split(' ').forEach((word) => {
+        output.push(word.replace(new RegExp(specialChar, 'g'), ' '))
+    })
+    return minimist(output)
+}
 /**
  * Lấy giá trị trong minimist arguments (Dùng chung với hàm parseArg)
  * @param  {Object} args           Args của minimist
@@ -168,14 +163,14 @@ const parseArgs = (str, specialChar) => {
  * // TRUE
  */
 const parseValue = (args, validList) => {
-	for (const param in args) {
-		if (validList.indexOf(param) != -1) {
-			const value = args[param];
-			return typeof value == 'object' ? value[value.length - 1] : value;
-		}
-	}
-	return undefined;
-};
+    for (const param in args) {
+        if (validList.indexOf(param) !== -1) {
+            const value = args[param]
+            return typeof value === 'object' ? value[value.length - 1] : value
+        }
+    }
+    return undefined
+}
 /**
  * Dịch json sang object
  * @param  {String} json JSON
@@ -186,15 +181,15 @@ const parseValue = (args, validList) => {
  * })
  * // {kb2abot: true}
  */
-const parseJSON = text => {
-	return new Promise((resolve, reject) => {
-		try {
-			resolve(JSON.parse(text));
-		} catch (e) {
-			reject(e);
-		}
-	});
-};
+const parseJSON = (text) => {
+    return new Promise((resolve, reject) => {
+        try {
+            resolve(JSON.parse(text))
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
 /**
  * Xóa 1 file theo đường dẫn
  * @param  {String} path Đường dẫn tới file
@@ -202,16 +197,16 @@ const parseJSON = text => {
  * kb2abot.helpers.deleteFile(__dirname + "/test.txt");
  * // *File test.txt sẽ bị xóa*
  */
-const deleteFile = path => {
-	return new Promise((resolve, reject) => {
-		try {
-			fs.unlinkSync(path);
-			resolve();
-		} catch (e) {
-			reject(e);
-		}
-	});
-};
+const deleteFile = (path) => {
+    return new Promise((resolve, reject) => {
+        try {
+            fs.unlinkSync(path)
+            resolve()
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
 /**
  * Lấy keyword của 1 đoạn tin nhắn
  * @param  {String} text Đoạn tin nhắn của người dùng
@@ -222,12 +217,9 @@ const deleteFile = path => {
  * kb2abot.helpers.getKeyword("/ytmp3 -s 'Anh yeu em'")
  * // "ytmp3"
  */
-const getKeyword = text => {
-	return text
-		.split(' ')
-		.slice(0, 1)[0]
-		.slice(1);
-};
+const getKeyword = (text) => {
+    return text.split(' ').slice(0, 1)[0].slice(1)
+}
 /**
  * Tính dung lượng của file (theo mb)
  * @param  {String} path Đường dẫn tới file
@@ -237,12 +229,12 @@ const getKeyword = text => {
  * kb2abot.helpers.getFileSize(__dirname + "/test.txt");
  * // 1
  */
-const getFileSize = path => {
-	let fileSizeInBytes = fs.statSync(path)['size'];
-	//Convert the file size to megabytes (optional)
-	let fileSizeInMegabytes = fileSizeInBytes / 1000000.0;
-	return Math.round(fileSizeInMegabytes);
-};
+const getFileSize = (path) => {
+    let fileSizeInBytes = fs.statSync(path)['size']
+    //Convert the file size to megabytes (optional)
+    let fileSizeInMegabytes = fileSizeInBytes / 1000000.0
+    return Math.round(fileSizeInMegabytes)
+}
 /**
  * Lấy tên file bỏ đuôi extension
  * @param  {String} text Tên file
@@ -251,12 +243,9 @@ const getFileSize = path => {
  * kb2abot.helpers.subname("test.txt");
  * // "test"
  */
-const subname = text => {
-	return text
-		.split('.')
-		.slice(0, -1)
-		.join('.');
-};
+const subname = (text) => {
+    return text.split('.').slice(0, -1).join('.')
+}
 /**
  * Chuyển 1 số về dạng mật mã đặc biệt (theo bảng chữ cái tiếng anh)
  * @param  {Number} number Số bạn muốn chuyển
@@ -267,14 +256,13 @@ const subname = text => {
  * kb2abot.helpers.numbersToWords(18102004);
  * // "ogoztzzf"
  */
-const numberToPassword = number => {
-	const numbers = ['z', 'o', 't', 'h', 'f', 'i', 's', 'e', 'g', 'n'];
-	let str = number.toString();
-	for (let i = 0; i < 10; i++) {
-		str = str.replace(new RegExp(i, 'g'), numbers[i]);
-	}
-	return str;
-};
+const numberToPassword = (number) => {
+    const numbers = ['z', 'o', 't', 'h', 'f', 'i', 's', 'e', 'g', 'n']
+    let str = number.toString()
+    for (let i = 0; i < 10; i++)
+        str = str.replace(new RegExp(i, 'g'), numbers[i])
+    return str
+}
 /**
  *
  * @param  {String|Number} number Định dạng 1 string, number về dạng tiền tệ
@@ -283,9 +271,9 @@ const numberToPassword = number => {
  * kb2abot.helpers.currencyFormat(1234567);
  * // "1,234,567"
  */
-const currencyFormat = number => {
-	return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-};
+const currencyFormat = (number) => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
 /**
  * Lấy dữ liệu của tin nhắn câu lệnh
  * @param  {String} text Lệnh người dùng nhập
@@ -294,25 +282,20 @@ const currencyFormat = number => {
  * kb2abot.helpers.getParam("/help hello, good morning!");
  * // "hello, good morning!"
  */
-const getParam = text => {
-	return text
-		.split(' ')
-		.slice(1)
-		.join(' ');
-};
+const getParam = (text) => {
+    return text.split(' ').slice(1).join(' ')
+}
 /**
  * Loại bỏ các kí tự lạ trong văn bản
  * @param  {String} text Văn bản nào đó
  * @return {String}      Văn bản sạch
  */
-const removeSpecialChar = str => {
-	if (str === null || str === '') return false;
-	else str = str.toString();
-
-	return str.replace(/[^\x20-\x7E]/g, '');
-	// return str;
-};
-
+const removeSpecialChar = (str) => {
+    if (str === null || str === '') return false
+    else str = str.toString()
+    return str.replace(/[^\x20-\x7E]/g, '')
+    // return str;
+}
 /**
  * thực hiện phép lấy giá trị ngẫu nhiên
  * @example
@@ -330,97 +313,86 @@ const removeSpecialChar = str => {
  *
  */
 const random = (start, end) => {
-	return Math.floor(Math.random() * (end - start + 1) + start);
-};
-
-const shuffle = arr => {
-	// thuật toán bogo-sort
-	let count = arr.length,
-		temp,
-		index;
-
-	while (count > 0) {
-		index = Math.floor(Math.random() * count);
-		count--;
-		temp = arr[count];
-		arr[count] = arr[index];
-		arr[index] = temp;
-	}
-
-	return arr; //Bogosort with no điều kiện dừng
-};
-
+    return Math.floor(Math.random() * (end - start + 1) + start)
+}
+const shuffle = (arr) => {
+    // thuật toán bogo-sort
+    let count = arr.length,
+        temp,
+        index
+    while (count > 0) {
+        index = Math.floor(Math.random() * count)
+        count--
+        temp = arr[count]
+        arr[count] = arr[index]
+        arr[index] = temp
+    }
+    return arr //Bogosort with no điều kiện dừng
+}
 const getInstructor = (title, commands) => {
-	let out = `===${title}===\nDanh sách lệnh:\n`;
-	for (let i = 0; i < commands.length; i++) {
-		out += `${i + 1}. ${commands[i]}\n`;
-	}
-	return out;
-};
-
-const validURL = str => {
-	var pattern = new RegExp(
-		'^(https?:\\/\\/)?' + // protocol
-		'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-		'((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-		'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-		'(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-			'(\\#[-a-z\\d_]*)?$',
-		'i'
-	); // fragment locator
-	return !!pattern.test(str);
-};
-
+    let out = `===${title}===\nDanh sách lệnh:\n`
+    for (let i = 0; i < commands.length; i++)
+        out += `${i + 1}. ${commands[i]}\n`
+    return out
+}
+const validURL = (str) => {
+    const pattern = new RegExp(
+        '^(https?:\\/\\/)?' + // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$',
+        'i'
+    ) // fragment locator
+    return !!pattern.test(str)
+}
 const downloadFile = async (fileUrl, outputLocationPath) => {
-	const writer = fs.createWriteStream(outputLocationPath);
-
-	const response = await axios({
-		method: 'get',
-		url: fileUrl,
-		responseType: 'stream'
-	});
-
-	await new Promise((resolve, reject) => {
-		response.data.pipe(writer);
-		let error = null;
-		writer.on('error', err => {
-			error = err;
-			writer.close();
-			reject(err);
-		});
-		writer.on('close', () => {
-			if (!error) {
-				resolve(true);
-			}
-		});
-	});
-};
-
-const getFile = filePath => {
-	return fs.createReadStream(filePath)
-};
-
+    const writer = fs.createWriteStream(outputLocationPath)
+    const response = await axios({
+        method: 'get',
+        url: fileUrl,
+        responseType: 'stream',
+    })
+    await new Promise((resolve, reject) => {
+        response.data.pipe(writer)
+        let error = null
+        writer.on('error', (err) => {
+            error = err
+            writer.close()
+            reject(err)
+        })
+        writer.on('close', () => {
+            if (!error) {
+                resolve(true)
+            }
+        })
+    })
+}
+const getFile = (filePath) => {
+    return fs.createReadStream(filePath)
+}
 module.exports = {
-	round,
-	extend,
-	subname,
-	parseArgs,
-	constrain,
-	parseJSON,
-	asyncWait,
-	execShellCommand,
-	deleteFile,
-	parseValue,
-	getKeyword,
-	getFileSize,
-	getFile,
-	numberToPassword,
-	currencyFormat,
-	getParam,
-	removeSpecialChar,
-	random,
-	shuffle,
-	getInstructor,
-	validURL,
-	downloadFile
-};
+    round,
+    extend,
+    subname,
+    parseArgs,
+    constrain,
+    parseJSON,
+    asyncWait,
+    execShellCommand,
+    deleteFile,
+    parseValue,
+    getKeyword,
+    getFileSize,
+    getFile,
+    numberToPassword,
+    currencyFormat,
+    getParam,
+    removeSpecialChar,
+    random,
+    shuffle,
+    getInstructor,
+    validURL,
+    downloadFile,
+}
