@@ -81,7 +81,7 @@ const executeCommand = async ({
         if (command[type].constructor.name === 'AsyncFunction')
             await command[type].call(...params)
         else command[type].call(...params)
-    } catch {
+    } catch(e) {
         reply(e.stack)
     }
 }
