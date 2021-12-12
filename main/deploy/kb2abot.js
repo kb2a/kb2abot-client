@@ -1,10 +1,11 @@
 const stringSimilarity = require('string-similarity')
+const path = require('path')
 try {
     kb2abot.account.load()
     console.newLogger.success(`Loaded datastore ${kb2abot.id}.json!`)
 } catch {
     console.newLogger.error(
-        `Vui long xoa hoac sua lai file ${__dirname}\\${kb2abot.id}.json!`
+        `Vui long xoa hoac sua lai file ${path.join(__dirname, 'datastores', kb2abot.id)}.json!`
     )
     process.exit()
 }

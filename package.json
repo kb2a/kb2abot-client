@@ -1,6 +1,6 @@
 {
     "name": "kb2abot",
-    "version": "2.0.7",
+    "version": "2.0.8",
     "description": "Bot that connected to Facebook Messenger help you to manage members, entertain in any groups!",
     "main": "main/index.js",
     "scripts": {
