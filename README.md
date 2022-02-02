@@ -1,18 +1,18 @@
 
 <h1 align="center">
-	<a href="#"><img src="https://i.imgur.com/MIe7XST.png" alt="kb2abot"></a>
+	<a href="#"><img src="https://i.imgur.com/MIe7XST.png" alt="kb2abot-client"></a>
 </h1>
 <p align="center">
 	<img alt="size" src="https://img.shields.io/github/repo-size/kb2ateam/kb2abot-client.svg?style=flat-square&label=size">
-	<img alt="code-version" src="https://img.shields.io/badge/dynamic/json?color=red&label=code%20version&prefix=v&query=%24.version&url=https://raw.githubusercontent.com/kb2ateam/kb2abot/main/package.json&style=flat-square">
+	<img alt="code-version" src="https://img.shields.io/badge/dynamic/json?color=red&label=code%20version&prefix=v&query=%24.version&url=https://raw.githubusercontent.com/kb2ateam/kb2abot-client/main/package.json&style=flat-square">
 	<img alt="visitors" src="https://visitor-badge.laobi.icu/badge?page_id=kb2ateam.kb2abot-client" />
-	<a href="https://www.codefactor.io/repository/github/kb2ateam/kb2abot"><img src="https://www.codefactor.io/repository/github/kb2ateam/kb2abot/badge" alt="CodeFactor" /></a>
+	<a href="https://www.codefactor.io/repository/github/kb2ateam/kb2abot-client"><img src="https://www.codefactor.io/repository/github/kb2ateam/kb2abot-client/badge" alt="CodeFactor" /></a>
 </p>
 
 #  GIỚI THIỆU
 > Bot này được sử dụng bởi hơn 2.000 người dùng Facebook và hơn 100 máy chủ
 
-Kb2abot là một bot Facebook mã nguồn mở được lập trình bằng JavaScript sử dụng thư viện [kb2abot](https://github.com/kb2ateam/kb2abot) bởi [khoakomlem](https://github.com/khoakomlem)<br>Hãy bấm vào dấu sao ⭐ ở trên cùng bên phải để giúp cho dự án ngày càng phát triển nhé 😊
+Kb2abot-client là một bot Facebook mã nguồn mở được lập trình bằng JavaScript sử dụng thư viện [kb2abot](https://github.com/kb2ateam/kb2abot) bởi [khoakomlem](https://github.com/khoakomlem)<br>Hãy bấm vào dấu sao ⭐ ở trên cùng bên phải để giúp cho dự án ngày càng phát triển nhé 😊
 #  HƯỚNG DẪN CÀI ĐẶT
 Bạn xem kĩ tại trang: [HƯỚNG DẪN CÀI ĐẶT KB2ABOT](https://kb2ateam.github.io/kb2abot-docs/) 🤔
 # Plugin

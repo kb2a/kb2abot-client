@@ -1,5 +1,5 @@
 {
-  "name": "kb2abot-bootloader",
+  "name": "kb2abot-client",
   "type": "module",
   "version": "1.0.0",
   "description": "Bot that connected to Facebook Messenger help you to manage members, entertain in any groups!",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kb2ateam/kb2abot-bootloader.git"
+    "url": "git+https://github.com/kb2ateam/kb2abot-client.git"
   },
   "author": "khoakomlem",
   "license": "MIT",
