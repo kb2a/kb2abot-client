@@ -15,10 +15,12 @@ export default function() {
 	return {
 		description: "Check update for kb2abot core",
 		async fn() {
-			// const localPackage = JSON.parse(fs.readFileSync(process.cwd() + "/node_modules/kb2abot/package.json"))
 			const localPackage = JSON.parse(
-				fs.readFileSync(process.cwd() + "/../kb2abot/package.json")
+				fs.readFileSync(process.cwd() + "/node_modules/kb2abot/package.json")
 			)
+			// const localPackage = JSON.parse(
+			// 	fs.readFileSync(process.cwd() + "/../kb2abot/package.json")
+			// )
 			const localRelease = await json(
 				"https://api.github.com/repos/kb2ateam/kb2abot/releases/tags" +
 					localPackage.version

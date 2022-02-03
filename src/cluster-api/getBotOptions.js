@@ -14,7 +14,13 @@ export default async function getBotOptions() {
 		: process.cwd() + "/bots/" + args.bot
 	const parsed = hjson.parse(fs.readFileSync(botPath).toString())
 	if (parsed.credential.cookie.includes("./")) {
-		parsed.credential.cookie = fs.readFileSync(url.pathToFileURL(path.join(process.cwd(), "bots", parsed.credential.cookie))).toString()
+		parsed.credential.cookie = fs
+			.readFileSync(
+				url.pathToFileURL(
+					path.join(process.cwd(), "bots", parsed.credential.cookie)
+				)
+			)
+			.toString()
 	}
 	return parsed
 }

@@ -14,10 +14,7 @@ const memoryUsages = [0]
 const {success, error, warn} = Logger
 Logger.setPrefix("INTERNAL", ["black", "bgWhite"])
 const botPaths = glob.sync("./bots/*.hjson", {
-	ignore: [
-		"./bots/example-bot.hjson",
-		"./bots/README.txt"
-	]
+	ignore: ["./bots/example-bot.hjson", "./bots/README.txt"]
 })
 
 const bootloader = new Bootloader()

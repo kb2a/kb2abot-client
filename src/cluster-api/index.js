@@ -26,8 +26,7 @@ const pSocket = new SocketClient(socket)
 pSocket.onPromise("ping", timeServer => timeServer)
 pSocket.onPromise("memoryUsage", process.memoryUsage)
 pSocket.onPromise("fca", async (method, args) => {
-	if (client.api[method])
-		return await client.api[method](...args)
+	if (client.api[method]) return await client.api[method](...args)
 	throw new Error(`Method ${method} not found`)
 })
 pSocket.onPromise("sysinfo.static", async () => await sysinfo)
@@ -42,10 +41,9 @@ try {
 			apiOptions: bot.fcaOptions,
 			externalHook: async function(err, message) {
 				if (err) return Logger.error(err)
-				try { 
+				try {
 					return await pSocket.emitPromise("handleMessage", message)
-				}
-				catch(err) {
+				} catch (err) {
 					Logger.error(Label.remoteServer, "handleMessage:", err)
 				}
 			}
@@ -57,7 +55,8 @@ try {
 	process.exit()
 }
 
-process.on("message", msg => { // for master console
+process.on("message", msg => {
+	// for master console
 	if (msg == "memoryUsage") {
 		process.send({
 			event: "memoryUsage",
