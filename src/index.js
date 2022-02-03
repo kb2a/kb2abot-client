@@ -5,7 +5,7 @@ import glob from "glob"
 import cluster from "cluster"
 import * as Logger from "kb2abot/util/logger"
 
-import * as Serverline from "./util/serverline"
+// import * as Serverline from "./util/serverline"
 import * as Task from "./tasks"
 import {convert_to_string_time} from "./util/common"
 import Bootloader from "./Bootloader"
@@ -14,14 +14,17 @@ const memoryUsages = [0]
 const {success, error, warn} = Logger
 Logger.setPrefix("INTERNAL", ["black", "bgWhite"])
 const botPaths = glob.sync("./bots/*.hjson", {
-	ignore: "./bots/example-bot.hjson"
+	ignore: [
+		"./bots/example-bot.hjson",
+		"./bots/README.txt"
+	]
 })
 
 const bootloader = new Bootloader()
-// bootloader.use(Task.fakeHttp(process.env.FAKE_HTTP_PORT))
-// bootloader.use(Task.requireNode(process.env.REQUIRE_NODE_VER))
-// bootloader.use(Task.updateBootloader())
-// bootloader.use(Task.updateCore())
+bootloader.use(Task.fakeHttp(process.env.FAKE_HTTP_PORT))
+bootloader.use(Task.requireNode(process.env.REQUIRE_NODE_VER))
+bootloader.use(Task.updateClient())
+bootloader.use(Task.updateCore())
 
 const timeStart = Date.now()
 await bootloader.load({verbose: true})

@@ -13,17 +13,17 @@ export default function() {
 	})
 
 	return {
-		description: "Check update for kb2abot bootloader",
+		description: "Check update for kb2abot client",
 		async fn() {
 			const localPackage = JSON.parse(
 				fs.readFileSync(process.cwd() + "/package.json")
 			)
 			const localRelease = await json(
-				"https://api.github.com/repos/kb2ateam/kb2abot-bootloader/releases/tags" +
+				"https://api.github.com/repos/kb2ateam/kb2abot-client/releases/tags" +
 					localPackage.version
 			)
 			const releases = await json(
-				"https://api.github.com/repos/kb2ateam/kb2abot-bootloader/tags"
+				"https://api.github.com/repos/kb2ateam/kb2abot-client/tags"
 			)
 
 			if (
@@ -37,7 +37,7 @@ export default function() {
 				let count = 0
 				for (const release of releases) {
 					const {body} = await json(
-						"https://api.github.com/repos/kb2ateam/kb2abot-bootloader/releases/tags/" +
+						"https://api.github.com/repos/kb2ateam/kb2abot-client/releases/tags/" +
 							release.name
 					)
 					if (!body) continue
@@ -52,7 +52,7 @@ export default function() {
 				)
 				console.log(table.toString())
 			} else {
-				console.log("You're using the newest kb2abot-bootloader version!")
+				console.log("You're using the latest kb2abot-client version!")
 			}
 		}
 	}

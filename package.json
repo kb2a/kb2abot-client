@@ -1,7 +1,7 @@
 {
   "name": "kb2abot-client",
   "type": "module",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "description": "Bot that connected to Facebook Messenger help you to manage members, entertain in any groups!",
   "main": "src/index.js",
   "scripts": {

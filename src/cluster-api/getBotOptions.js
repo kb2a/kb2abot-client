@@ -1,4 +1,5 @@
 import fs from "fs"
+import url from "url"
 import path from "path"
 import hjson from "hjson"
 import minimist from "minimist"
@@ -11,5 +12,9 @@ export default async function getBotOptions() {
 	const botPath = path.isAbsolute(args.bot)
 		? args.bot
 		: process.cwd() + "/bots/" + args.bot
-	return hjson.parse(fs.readFileSync(botPath).toString())
+	const parsed = hjson.parse(fs.readFileSync(botPath).toString())
+	if (parsed.credential.cookie.includes("./")) {
+		parsed.credential.cookie = fs.readFileSync(url.pathToFileURL(path.join(process.cwd(), "bots", parsed.credential.cookie))).toString()
+	}
+	return parsed
 }

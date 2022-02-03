@@ -53,7 +53,7 @@ export default function() {
 				)
 				console.log(table.toString())
 			} else {
-				console.log("You're using the newest kb2abot-core version!")
+				console.log("You're using the latest kb2abot-core version!")
 			}
 		}
 	}
